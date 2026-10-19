@@ -1,10 +1,13 @@
-"""Render the power box preview in Blender (headless).
+"""Render a preview of an `eox build` scene in Blender (headless).
 
     uv run eox build
-    /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/render_preview.py -- out/cad/stl docs/img
+    B=/Applications/Blender.app/Contents/MacOS/Blender
+    $B -b -P tools/render_preview.py -- out/cad/powerbox/stl docs/img/powerbox-exploded.png --lift PB-102
+    $B -b -P tools/render_preview.py -- out/cad/pro/stl docs/img/pro-layout.png
 
-Writes powerbox-exploded.png (cover lifted) and powerbox-closed.png.
-Blender is only the viewer here; geometry comes from build123d.
+STL names are <kind>__<label>.stl; colour comes from the label, then the kind.
+--lift raises every object whose label contains one of the given names (an
+exploded view). Blender is only the viewer; geometry comes from build123d.
 """
 
 import sys
@@ -13,40 +16,44 @@ from pathlib import Path
 import bpy
 from mathutils import Vector
 
-argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else ["out/cad/stl", "docs/img"]
-stl_dir, out_dir = Path(argv[0]), Path(argv[1])
-out_dir.mkdir(parents=True, exist_ok=True)
+argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
+stl_dir, out_png = Path(argv[0]), Path(argv[1])
+lift = argv[argv.index("--lift") + 1].split(",") if "--lift" in argv else []
+out_png.parent.mkdir(parents=True, exist_ok=True)
 
-COLORS = {  # RGBA, linear
+COLORS = {  # RGBA, linear. Matched against the label first, then the kind.
     "PB-101": (0.78, 0.80, 0.82, 1),   # tray: brushed aluminium
     "PB-102": (0.92, 0.92, 0.90, 1),   # cover: white powder
-    "PB-103": (0.55, 0.57, 0.60, 1),
-    "PB-104": (0.55, 0.57, 0.60, 1),
-    "PB-105": (0.55, 0.57, 0.60, 1),
-    "PB-106": (0.60, 0.75, 0.62, 1),   # bulkhead: tinted so it reads in the preview
-    "fan": (0.15, 0.15, 0.15, 1),
+    "PB-10": (0.55, 0.57, 0.60, 1),    # small box parts
     "battery": (0.05, 0.18, 0.45, 1),
-    "motor": (0.12, 0.12, 0.13, 1),
+    "distribution": (0.85, 0.35, 0.05, 1),
+    "wheel": (0.06, 0.06, 0.06, 1),
+    "axle": (0.30, 0.30, 0.32, 1),
+    "motor": (0.15, 0.22, 0.30, 1),
     "controller": (0.02, 0.02, 0.02, 1),
-    "electrics": (0.85, 0.35, 0.05, 1),
-    "shaft": (0.70, 0.70, 0.72, 1),
+    "frame": (0.62, 0.15, 0.12, 1),
+    "pivot": (0.80, 0.65, 0.10, 1),
+    "steering": (0.80, 0.65, 0.10, 1),
+    "implement": (0.62, 0.15, 0.12, 1),
+    "seat": (0.10, 0.10, 0.10, 1),
 }
-LIFT = 0.26  # m, cover lift in the exploded view
+LIFT = 0.26  # m
 
 bpy.ops.wm.read_factory_settings(use_empty=True)
 scene = bpy.context.scene
-
-objs = {}
+objs = []
 for f in sorted(stl_dir.glob("*.stl")):
     bpy.ops.wm.stl_import(filepath=str(f), global_scale=0.001)
     ob = bpy.context.selected_objects[0]
-    key = f.stem.split("__")[1]
-    ob.name = key
-    colour = next(v for k, v in COLORS.items() if key.startswith(k))
-    mat = bpy.data.materials.new(key)
+    kind, label = f.stem.split("__", 1)
+    ob.name = label
+    colour = next((v for k, v in COLORS.items() if k in label), COLORS.get(kind, (0.6, 0.6, 0.6, 1)))
+    mat = bpy.data.materials.new(label)
     mat.diffuse_color = colour
     ob.data.materials.append(mat)
-    objs[key] = ob
+    if any(name in label for name in lift):
+        ob.location.z += LIFT
+    objs.append(ob)
 
 scene.render.engine = "BLENDER_WORKBENCH"
 sh = scene.display.shading
@@ -58,31 +65,24 @@ sh.show_shadows = True
 sh.show_object_outline = True
 scene.display.shadow_focus = 0.8
 scene.render.resolution_x, scene.render.resolution_y = 1600, 1000
-scene.render.film_transparent = False
 scene.world = bpy.data.worlds.new("w")
 scene.world.color = (0.96, 0.96, 0.95)
+
+# frame the camera on everything imported
+bpy.context.view_layer.update()
+pts = [ob.matrix_world @ Vector(c) for ob in objs for c in ob.bound_box]
+lo = Vector((min(p.x for p in pts), min(p.y for p in pts), min(p.z for p in pts)))
+hi = Vector((max(p.x for p in pts), max(p.y for p in pts), max(p.z for p in pts)))
+target = (lo + hi) / 2
+size = (hi - lo).length
 
 cam_data = bpy.data.cameras.new("cam")
 cam_data.lens = 50
 cam = bpy.data.objects.new("cam", cam_data)
 scene.collection.objects.link(cam)
 scene.camera = cam
-
-
-def shoot(name, target, dist):
-    direction = Vector((1.0, 1.15, 0.85)).normalized()
-    cam.location = Vector(target) + direction * dist
-    cam.rotation_euler = (Vector(target) - cam.location).to_track_quat("-Z", "Y").to_euler()
-    scene.render.filepath = str(out_dir / name)
-    bpy.ops.render.render(write_still=True)
-
-
-# the fan is screwed to the cover, so it lifts with it
-lifted = [o for k, o in objs.items() if k.startswith("PB-102") or k == "fan"]
-for o in lifted:
-    o.location.z += LIFT
-shoot("powerbox-exploded.png", (0.0, 0.0, 0.22), 2.3)
-for o in lifted:
-    o.location.z -= LIFT
-shoot("powerbox-closed.png", (0.0, 0.0, 0.13), 2.0)
-print("rendered to", out_dir)
+cam.location = target + Vector((1.0, 1.15, 0.85)).normalized() * size * 1.9
+cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
+scene.render.filepath = str(out_png)
+bpy.ops.render.render(write_still=True)
+print("rendered", out_png)

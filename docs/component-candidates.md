@@ -1,5 +1,14 @@
 # Component candidates: battery, motor, controller
 
+> **Status (power box rev B0, EOX Pro P0):** written for power box rev A1,
+> when the box carried its own 2 kW motor and the pack needed 100 A.
+> - **Motor and controller sections: superseded.** EOX now uses 48 V AC
+>   golf-cart motor + controller "3 HP units" on the axle modules (see
+>   [architecture](architecture.md)).
+> - **Battery section: still relevant**, but the pack must now carry
+>   ≥ 200 A continuous / 400 A peak (`Bus` checks). Re-check B1–B3 against
+>   that.
+
 Research date: 2026-10-18. Prices are what the linked page showed that day and
 change often. This file only **proposes** values. `design/powerbox.toml` keeps
 its REF envelopes until someone picks parts and edits it.

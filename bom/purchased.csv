@@ -1,0 +1,44 @@
+module,id,category,item,spec,qty,est_unit_usd,est_mass_kg_each,examples_to_evaluate,notes
+powerbox,P01,Battery,Traction battery pack,"16S LiFePO4 51.2 V 100 Ah, BMS >=200 A cont / 400 A peak, cell OVP <=3.70 V, temp-blocked charging, CAN or RS485",1,900,45,"golf-cart LFP packs; see docs/component-candidates.md","Listed to UL 2271 (or IEC 62619), not UL 1973. Do not build packs from loose cells. Bus calc needs >=200 A continuous."
+powerbox,P02,Protection,Main contactor,"48 V coil with economizer, >=250 A continuous, rated to break >=72 V DC, sealed",1,140,0.6,"Albright SW180 / SW200 48 V class","Coil fed through key + E-stop + BMS enable."
+powerbox,P03,Protection,Main fuse + holder,"Class T 300 A, >=125 V DC, >=20 kA DC interrupt, covered holder",1,80,0.4,"Blue Sea Systems Class T","Within 178 mm of the pack + terminal (33 CFR 183.455)."
+powerbox,P04,Protection,Branch fuses + holders,"ANL-type 100 A, >=80 V DC rated, interrupt rating > pack short circuit (~3.9 kA)",4,25,0.1,,"One per unit branch. Confirm the DC voltage and interrupt ratings on the datasheet."
+powerbox,P05,Protection,Precharge,"47 ohm 100 W aluminium-clad resistor + timed precharge relay",1,30,0.2,,"Calc: 1.1 s to 95% with 4 controllers on the bus."
+powerbox,P06,Protection,Maintenance disconnect,"Rotary battery switch, >=300 A cont, 48 V DC rated",1,60,0.4,"Blue Sea Systems e-Series / m-Series",
+powerbox,P07,Aux power,DC-DC converter,"48 V -> 12 V isolated, >=120 W, IP67",1,60,0.5,"Victron Orion-Tr 48/12","Lights, dash, contactor coil."
+powerbox,P08,Wiring,Main cable,"2/0 AWG fine-strand tinned copper, 105 C, red + black, 0.5 m each",2,15,0.3,,"Sized by calc: 300 A fuse <= 330 A ampacity."
+powerbox,P09,Wiring,Bus bars + lugs,"Positive/negative bus bars (>=300 A), 2/0 and 6 AWG tinned lugs, adhesive heat shrink",1,45,0.5,,
+powerbox,P10,Wiring,Unit branch glands,"IP68 nylon M32, for 2-core 6 AWG",4,5,0.03,,"+x end wall, one per unit branch."
+powerbox,P11,Wiring,Small glands,"IP68 nylon 1x M25 + 2x M20, with locknuts",3,4,0.02,,"Charge inlet, control harness, 12 V aux."
+powerbox,P12,Charging,Charge inlet,"Anderson SB50 pigtail with dust cover",1,25,0.15,,"Also the generator wagon's DC hook-up."
+powerbox,P13,Charging,Charger (off-board),"58.4 V LiFePO4 profile, 10-20 A, listed",1,150,0,,"Not mounted on the tractor; mass not counted."
+powerbox,P14,Hardware,Breather vent,"M12 IP67 pressure-equalisation vent (ePTFE membrane)",1,8,0.01,,"Cover end wall, high."
+powerbox,P15,Hardware,Overlap gasket,"Closed-cell EPDM foam tape 3 x 20 mm",3,5,0.02,,"Metres. On the tray walls under the cover skirt."
+powerbox,P16,Hardware,Corner sealant,"MS-polymer sealant, 290 ml",1,10,0.1,,"Seal the 8 corner reliefs."
+powerbox,P17,Hardware,Rivnuts M5,"Steel, zinc, for 3.2 mm sheet, 7.0 mm hole",8,0.5,0.005,,"Cover screws."
+powerbox,P18,Hardware,Rivnuts M8,"Steel, zinc, 11.1 mm hole",8,0.8,0.01,,"4 frame mounts + 4 clamp rods. Pull-out rating feeds the clamp calc."
+powerbox,P19,Hardware,Cover screws,"M5 x 12 A2 stainless button head + washers",8,0.4,0.005,,
+powerbox,P20,Hardware,Clamp rods,"M8 A2 stainless threaded rod, 260 mm, + nyloc nuts + washers",4,3,0.1,,"Torque to ~800 N preload (see calc)."
+powerbox,P21,Hardware,Structural rivets,"3/16 in steel structural blind rivet, 4.9 mm hole",8,0.5,0.004,,"Battery stops."
+powerbox,P22,Hardware,Battery pads,"Closed-cell neoprene 6 mm, under pack + top strips",1,15,0.3,,
+powerbox,P23,Labels,Safety labels,"Battery / high current / no-step decals",1,10,0,,
+drive_axle,D01,Drive,Golf-cart rear end,"Transaxle ~12.4:1 with drum brakes, hubs and axle tubes; 8 in wheel bolt pattern",1,350,45,"EZGO / Club Car / Yamaha rear ends, used or new","Gearing is an open decision: stock vs an added ~2:1 stage (see Drive checks)."
+drive_axle,D02,Drive,3 HP unit: AC motor,"48 V AC induction golf-cart motor, ~2.2 kW continuous, spline matched to D01",1,500,15,"EZGO RXV / Club Car AC motors","AC, not series DC: no runaway when unloaded."
+drive_axle,D03,Drive,3 HP unit: motor controller,"48 V AC motor controller, programmable >=100 A battery limit, speed limit, regen, CAN",1,600,2.5,"Curtis 1236/1238 class","Mounted on the subframe next to its motor."
+drive_axle,D04,Drive,Wheel + tyre,"18x8.50-8 turf tyre on 8 in golf-cart wheel",2,75,8,,
+drive_axle,D05,Wiring,Branch cable,"2-core 6 AWG flexible, 105 C, oil/UV resistant, 5 m",1,40,1.0,,"Box to unit; strain-relieved where it crosses the pivot."
+drive_axle,D06,Wiring,Unit connectors,"Anderson SB120 pair (power) + Deutsch DT 6-pin pair (enable, interlock, CAN)",1,45,0.3,,"The standard 3 HP unit interface."
+drive_axle,D07,Hardware,Axle U-bolts,"U-bolts to clamp the axle tubes to the subframe rails, grade 8 + nyloc",4,6,0.2,,
+drive_axle,D08,Sheet metal,Subframe (design pending),"Half-frame rails + cross members, sheet steel, SendCutSend",1,,12,,"Mass is the estimate used in the vehicle calc until the frame is designed."
+articulation,A01,Steering,Pivot pins + bearings,"Vertical articulation pin with 2 flanged bearings; fore-aft oscillation pin with bushings; stops at +-35 deg yaw, +-10 deg roll",1,120,10,,
+articulation,A02,Steering,Steering cylinder,"Double-acting, 40 mm bore, 20 mm rod, ~180 mm stroke",1,150,4,,"Calc: 1,158 N*m at full lock vs 902 needed; 2.8 s lock to lock."
+articulation,A03,Steering,Orbital steering valve,"Hand-metering steering unit (orbitrol), ~50 cc/rev",1,250,2,"Danfoss OSPB/OSPC class",
+articulation,A04,Steering,Hydraulic power unit,"48 V DC, 4 L/min @ 100 bar, on-demand (pressure switch + 0.5 L accumulator)",1,450,8,,"Average draw ~110 W while driving (10% duty)."
+articulation,A05,Steering,Hoses + fittings,"Hoses, fittings, return filter, reservoir if not on the power unit",1,90,1.5,,
+articulation,A06,Wiring,Pivot cable management,"Flexible conduit + strain reliefs for power and signal crossing the pivot",1,30,0.5,,
+controls,C01,Controls,Emergency stop,"Red mushroom, latching, 2x NC, DC rated",1,30,0.15,,"Breaks contactor coil and every unit's enable line."
+controls,C02,Controls,Key switch,"2-position, DC rated, removable key",1,15,0.05,,
+controls,C03,Controls,Seat switch,"Operator presence switch under the seat",1,20,0.1,,"Operator presence control (ANSI/OPEI B71.1): drive and PTO stop when the seat is empty."
+controls,C04,Controls,Throttle + direction,"Hall throttle pedal, fwd/neutral/rev switch",1,60,0.6,,
+controls,C05,Controls,Steering wheel,"Steering wheel on the orbital valve",1,40,1.0,,
+controls,C06,Wiring,Control harness,"18 AWG TXL + Deutsch DT connectors, CAN backbone",1,80,0.6,,

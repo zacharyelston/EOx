@@ -32,10 +32,10 @@ could be ordered. Blender stays useful for:
 | Need | How the code approach covers it |
 |---|---|
 | Open-source collaboration | Text diffs and review on every change. No binary CAD files to merge. |
-| Calcs stay in sync with geometry | Calcs read the same `Layout` object the CAD is built from, so they can't drift. |
+| Calcs stay in sync with geometry | Calcs read the same layout objects the CAD is built from, so they can't drift. |
 | SCS rules enforced | `FlangedPanel.scs_checks()` runs on every part, every time. These checks cover flat size, minimum flange, the U-channel rule, hole-to-bend distance and hole-to-edge distance. |
 | Swap a component | Edit the TOML (for example a new battery's dimensions), re-run, and the box, holes, flats, BOM and checks all update. |
-| CI | `uv run pytest` and `uv run eox calc` (exits non-zero on FAIL) can gate pull requests. |
+| CI | `uv run pytest` and `uv run eox calc --model <m>` (exits non-zero on FAIL) can gate pull requests. |
 
 ## Alternatives considered
 
@@ -50,7 +50,7 @@ could be ordered. Blender stays useful for:
 
 `src/eox/sheetmetal.py` defines a `FlangedPanel`: a rectangular base with an
 optional 90° flange on each edge. That covers every power box part (two shells,
-a U-channel, an angle and a plate). Each panel produces:
+a U-channel and an angle). Each panel produces:
 
 - the formed 3D solid, exported to STEP for the SCS order;
 - the flat pattern, using SCS's bend deduction, exported to DXF with `CUT` and

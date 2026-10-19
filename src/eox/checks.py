@@ -15,14 +15,19 @@ class Check:
     op: str = "<="          # value <op> limit must hold
     warn_within: float = 0.0  # PASS becomes WARN when inside this fraction of the limit
     note: str = ""
+    warn_limit: float | None = None  # optional second, stricter limit: past it is WARN, past `limit` is FAIL
+
+    def _ok(self, lim: float) -> bool:
+        return self.value <= lim if self.op == "<=" else self.value >= lim
 
     @property
     def status(self) -> str:
         if self.limit is None:
             return "INFO"
-        ok = self.value <= self.limit if self.op == "<=" else self.value >= self.limit
-        if not ok:
+        if not self._ok(self.limit):
             return "FAIL"
+        if self.warn_limit is not None and not self._ok(self.warn_limit):
+            return "WARN"
         if self.warn_within and self.limit:
             margin = (self.limit - self.value) if self.op == "<=" else (self.value - self.limit)
             if margin < self.warn_within * abs(self.limit):
@@ -31,6 +36,9 @@ class Check:
 
     def row(self) -> tuple[str, ...]:
         lim = "" if self.limit is None else f"{self.op} {_fmt(self.limit)}"
+        if self.warn_limit is not None:
+            fail_op = ">" if self.op == "<=" else "<"
+            lim = f"{self.op} {_fmt(self.warn_limit)}, fail {fail_op} {_fmt(self.limit)}"
         return (self.status, self.group, self.name, f"{_fmt(self.value)} {self.unit}".strip(), lim, self.note)
 
 

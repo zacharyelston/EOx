@@ -1,0 +1,22 @@
+# EOX drive-axle module (shared): a salvaged/new golf-cart rear end with one
+# 3 HP unit bolted to it, on a sheet-steel subframe.
+#   Pro model:  two of these, one per half of the articulated frame (AWD)
+#   Home model: one of these at the rear, plus a golf-cart front steering axle
+#
+# The golf-cart motor bolts straight onto the rear end's input with its axis
+# fore-aft, on the centreline, pointing toward the middle of the tractor.
+
+[axle]
+name = "Golf-cart rear end (transaxle) with drum brakes"
+ratio = 12.4                   # REF: stock rear ends are ~12.3-12.5:1
+extra_reduction = 1.0          # 1 = motor bolted direct (stock). >1 = added chain stage (see Drive: gearing options)
+efficiency = 0.93
+track = 880                    # wheel centre to wheel centre (REF)
+tire_diameter = 457            # 18x8.50-8
+tire_width = 216
+diff_clearance = 140           # ground to the bottom of the diff housing (REF: measure a real one)
+diff_size = [240, 220]         # housing length (x) and width (y), REF envelope
+rear_end_mass_kg = 45          # rear end + brakes + hubs (REF)
+wheel_tire_mass_kg = 8         # each
+subframe_mass_kg = 12          # sheet-steel half-frame, estimate until it is designed
+cg_height = 240                # module CG above ground (axle, motor, wheels sit near hub height)

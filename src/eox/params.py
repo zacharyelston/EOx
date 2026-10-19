@@ -49,12 +49,26 @@ def gauge(materials: dict, material: str, t_mm: float) -> Gauge:
     raise ValueError(f"{material}: no SCS gauge at {t_mm} mm (have {have})")
 
 
-def load(name: str = "powerbox") -> SimpleNamespace:
-    with open(DESIGN / f"{name}.toml", "rb") as f:
-        p = _ns(tomllib.load(f))
+SHARED = ("units", "axle", "powerbox")
+MODELS = tuple(sorted(f.stem for f in (DESIGN / "models").glob("*.toml")))
+
+
+def load(model: str = "pro") -> SimpleNamespace:
+    """Shared design files + one model file, merged into one namespace.
+    Section names must be unique across files."""
+    merged: dict = {}
+    for path in [DESIGN / f"{n}.toml" for n in SHARED] + [DESIGN / "models" / f"{model}.toml"]:
+        if not path.exists():
+            raise FileNotFoundError(f"{path.relative_to(ROOT)} (models: {', '.join(MODELS)})")
+        with open(path, "rb") as f:
+            data = tomllib.load(f)
+        clash = merged.keys() & data.keys()
+        if clash:
+            raise ValueError(f"{path.name}: sections {sorted(clash)} already defined in another design file")
+        merged.update(data)
+    p = _ns(merged)
     mats = load_materials()
     p.scs = _ns(mats["scs"])
     p.finish = _ns(mats["finish"][p.enclosure.finish])
     p.gauge = gauge(mats, p.enclosure.material, p.enclosure.thickness)
-    p.doubler_gauge = gauge(mats, p.enclosure.material, p.enclosure.doubler_thickness)
     return p

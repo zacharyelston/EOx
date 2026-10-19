@@ -1,0 +1,83 @@
+# EOX power units and the 48 V bus (shared by every model)
+#
+# The tractor's work is divided into standard "3 HP units": one golf-cart
+# traction motor + its controller, plugged into a common 48 V bus (16S
+# LiFePO4, 51.2 V nominal). Drive axles, the mower-deck PTO and hydraulic pumps
+# all use the same unit; bigger jobs bundle several.
+#
+# Golf carts are 36/48 V systems (the "12 V" is the battery blocks: 4 x 12 V),
+# so the whole golf-cart parts ecosystem -- motors, controllers, rear ends,
+# chargers, contactors, DC-DC converters, 18x8.50-8 wheels -- fits this bus.
+#
+# REF = typical for a 48 V AC golf-cart motor (EZGO RXV / Club Car AC era).
+# Replace with the datasheet of the unit EOX standardises on.
+
+[unit]
+name = "48 V AC golf-cart motor + controller"
+type = "AC induction"          # NOT series DC: a series motor over-speeds unloaded (thrown belt = runaway blade)
+rated_power_w = 2240           # 3 HP continuous (REF)
+base_speed_rpm = 3600          # REF
+max_speed_rpm = 5000           # REF
+peak_torque_factor = 3.0       # short-time peak torque / rated torque (REF)
+motor_efficiency = 0.85        # REF, near rated load
+controller_efficiency = 0.97
+controller_battery_limit_a = 100   # programmed battery-side current limit, per unit
+controller_capacitance_uf = 2000   # REF, for bus precharge
+motor_mass_kg = 15             # REF
+controller_mass_kg = 2.5       # REF
+motor_diameter = 170           # REF envelope
+motor_length = 260
+controller_size = [250, 150, 80]   # REF envelope, mm
+
+[bus]
+nominal_v = 51.2
+units_installed = 4            # branch outputs on the distribution box: 2 drive + 1 PTO + 1 attachment
+max_simultaneous_units = 3     # the bus is sized for this many units at rated power at once
+branch_connector = "Anderson SB120 (power) + Deutsch DT 6-pin (enable, interlock, CAN)"
+branch_conductor_length_m = 5.0    # round trip, box to the farthest unit (rear axle, across the pivot)
+pump_efficiency = 0.85         # hydraulic pump on a unit (backhoe, log splitter...)
+
+# ---------------------------------------------------------------------------
+# Operating modes: what the units do, on average, during a job.
+# Drive load comes from the vehicle model (speed, slope); PTO and hydraulic
+# loads are average shaft power. Each mode gets a runtime and a current check.
+# ---------------------------------------------------------------------------
+[modes.mowing]
+drive_speed_kmh = 5.0
+drive_slope_deg = 0
+pto_units = 1
+pto_power_w = 1500             # REF: 42 in two-blade deck, average in normal grass
+hydraulic_units = 0
+hydraulic_power_w = 0
+runtime_target_h = 1.5           # below target = WARN
+runtime_min_h = 1.0              # below minimum = FAIL
+
+[modes.slope_mowing]
+drive_speed_kmh = 3.0
+drive_slope_deg = 10           # climbing; worst sustained mowing case
+pto_units = 1
+pto_power_w = 1500
+hydraulic_units = 0
+hydraulic_power_w = 0
+runtime_target_h = 1.0
+runtime_min_h = 0.75
+
+[modes.transport]
+drive_speed_kmh = 8.0
+drive_slope_deg = 0
+pto_units = 0
+pto_power_w = 0
+hydraulic_units = 0
+hydraulic_power_w = 0
+runtime_target_h = 3.0
+runtime_min_h = 1.5
+
+[modes.backhoe]                # tractor parked, three units bundled on a hydraulic pump drive
+drive_speed_kmh = 0
+drive_slope_deg = 0
+pto_units = 0
+pto_power_w = 0
+hydraulic_units = 3
+hydraulic_power_w = 3500       # REF: average over a dig cycle; peak ~6 gpm @ 2000 psi = 5.2 kW
+runtime_target_h = 1.0
+runtime_min_h = 0.5

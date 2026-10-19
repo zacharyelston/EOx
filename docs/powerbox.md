@@ -1,33 +1,32 @@
-# Power box (module 1)
+# Battery & distribution box (shared module)
 
 ![Exploded preview](img/powerbox-exploded.png)
 
-The power box is a self-contained drive module. It holds the battery, traction
-motor, controller and protection in a folded aluminium enclosure. The motor
-shaft comes out of the side wall to take a #40 chain sprocket. Everything is
-sized from `design/powerbox.toml`; run `uv run eox calc` for current numbers.
+The box is the hub of the 48 V bus (see [architecture](architecture.md)). It
+holds the LiFePO4 pack, the main protection, and one fused branch per 3 HP
+unit. Every EOX model uses the same box. It is sized from
+`design/powerbox.toml`; run `uv run eox calc` for current numbers.
 
-## Rev A1 at a glance
+## Rev B0 at a glance
 
 | | |
 |---|---|
-| Outer size | ≈ 809 × 346 × 268 mm (L × W × H, cover on) |
-| Mass | ≈ 70 kg incl. hardware, of which the battery is 45 kg |
-| Battery | 51.2 V 100 Ah LiFePO4 (5.1 kWh), UL 2271 listed, in a **sealed** bay |
-| Motor | 48 V BLDC, 2 kW rated, 15 N·m peak, 3/4 in keyed shaft, in a **ventilated** bay |
-| Drive runtime | ≈ 5.7 h at mowing pace, mower deck not included |
-| Sheet metal | 5052-H32, 0.125 in (3.175 mm), 8 SendCutSend parts. The motor doubler is 0.250 in, laser cut only. |
-| Purchased parts | ≈ $2,130 budgetary, plus the SCS quote |
-| Checks | 0 FAIL, 5 WARN |
+| Outer size | 765 × 345 × 268 mm (L × W × H, cover on) |
+| Mass | ≈ 60 kg with hardware, of which the pack is 45 kg |
+| Pack | 51.2 V 100 Ah LiFePO4 (5.1 kWh), BMS ≥ 200 A continuous / 400 A peak, UL 2271 or IEC 62619 listed |
+| Main protection | 300 A Class T fuse, 250 A contactor, 47 Ω timed precharge, maintenance disconnect, 2/0 AWG cable |
+| Unit branches | 4 × 100 A fuse, 6 AWG, M32 gland each: 2 drive + PTO + attachment |
+| Sheet metal | 5052-H32, 0.125 in (3.175 mm), 6 SendCutSend parts |
+| Purchased parts | ≈ $1,740 budgetary, plus the SCS quote |
 
-**What changed in A1:**
+**What changed from A1.**
 
-- **Bulkhead.** A new part (PB-106) splits the box into a sealed battery bay
-  and a ventilated motor bay.
-- **Inlet.** Floor slots in the motor bay let filtered air in.
-- **Exhaust.** An 80 mm fan blows out through the cover end wall.
-- **Result.** In the screening model the pack runs at ≈ 44 °C, down from 66 °C,
-  in 35 °C sun.
+- **No motor in the box.** The motors moved onto the axle modules and
+  attachments, so the A1 motor bay, bulkhead, fan, vents and motor doubler are
+  gone.
+- **Sealed and shorter.** The box is sealed again and 44 mm shorter.
+- **Rated for the bus.** It carries the higher bus current: 185 A continuous
+  for 3 units at once, against 55 A before.
 
 ## Why a clamshell and not one folded box
 
@@ -36,142 +35,109 @@ SendCutSend limits:
 - **Flat blank size:** at most 30 × 44 in for bending.
 - **Channels:** a U-channel's base must be at least 2 × its flange.
 
-A one-piece 5-sided box deep enough for the battery breaks both rules. So the
+A one-piece 5-sided box deep enough for the pack breaks both rules. So the
 enclosure is two shallow trays:
 
 - **PB-101 tray:** 150 mm walls; holds everything.
 - **PB-102 cover:** 148 mm walls; slips over the tray with a 30 mm gasketed
   overlap.
 
-The flats are 1089 × 627 mm and 1094 × 631 mm, which is **97–98 % of the bend
-limit** (WARN). The battery length and the bulkhead gap set that, so **a longer
-battery means a different layout**: the `SCS PB-10x flat ... fits` checks will
-tell you. The seam where the shells overlap is also a natural crease line for
-the low-poly look.
-
-## Two bays
-
-```
- -x                                                                      +x
- | stop |        battery 520         | stop | bulkhead | motor · electrics · controller | fan → out
- |<--------- sealed battery bay ------------>|          |<-- ventilated "wet" motor bay -->|
-                                                         ↑ filtered floor slots (inlet + drain)
-```
-
-**Sealed battery bay.**
-
-- Enclosed by the cover gasket, the corner sealant, and foam on the bulkhead's
-  side and top flanges.
-- Battery cables and BMS comms reach the motor bay through IP68 glands in the
-  bulkhead.
-- The M12 breather vent on the −x end equalises pressure without letting water
-  in.
-
-**Ventilated motor bay ("wet zone").**
-
-- **Inlet:** 30 floor slots (92 cm²) under the motor and controller, faced with
-  a replaceable foam filter. They face down, so rain can't fall in, and they
-  drain any water that does get in.
-- **Exhaust:** an IP68 80 mm fan runs whenever the key is on and blows out
-  through the cover's +x end wall behind a finger guard.
-- **Rule: everything in this bay must be IP65 or better.** That covers the
-  controller, the DC-DC, a sealed contactor, a covered fuse holder and sealed
-  terminals. The BOM specs reflect it.
-
-**Thermal results** from the screening model, two zones, at 35 °C with full sun
-and still air:
-
-| Case | Pack | Motor bay air |
-|---|---|---|
-| Rev A0, one sealed box (for reference) | 65.8 °C (FAIL) | — |
-| Mowing, fan running | **44.1 °C** | 42.8 °C (controller full-power limit 55 °C) |
-| Mowing, fan failed (stack-effect flow only) | **46.2 °C** | 66 °C: controller derates itself |
-| Parked in sun, charging at 15 A | 42.9 °C (WARN, 45 °C limit) | — |
-
-A failed fan costs power, not safety: the pack stays under its rating.
+The flats are 1045 × 625 mm and 1050 × 630 mm, which is 94 % of the bend limit.
+That leaves about 70 mm for a longer pack. The seam where the shells overlap is
+also a natural crease line for the low-poly look.
 
 ## Parts
 
 | Part | What | Notes |
 |---|---|---|
-| PB-101 | Tray (lower shell) | **+y wall:** motor bolt circle and spigot. **−y wall:** controller rivnuts. **+x end:** cable glands. **Floor:** frame mounts, clamp-rod rivnuts, bulkhead rivets, 30 inlet slots. |
-| PB-102 | Cover (upper shell) | 8 × M5 into rivnuts on the tray. Fan opening and screws on the +x end; M12 breather on the −x end. |
-| PB-103 | Motor doubler | 0.250 in plate behind the motor wall; spreads bolt bearing and stiffens the wall |
+| PB-101 | Tray (lower shell) | **+x end wall:** 4 unit-branch glands (M32) and 3 small glands. **Floor:** frame mounts, clamp-rod rivnuts, stop rivets. **Walls:** rivnuts for the cover screws. |
+| PB-102 | Cover (upper shell) | 8 × M5 into the tray rivnuts; M12 breather vent high on the −x end |
 | PB-104 ×2 | Battery clamp bar | U-channel across the pack top; M8 rods down to floor rivnuts |
-| PB-105 ×2 | Battery stop | L-angle riveted at each end of the pack; takes crash load in x |
-| PB-106 | Bulkhead | 4-flange panel. Bottom flange riveted to the floor (5 rivets); side and top flanges carry 10 mm foam; M25 + M20 glands. **Air barrier only**: the stops carry the crash load. |
+| PB-105 ×2 | Battery stop | L-angle riveted at each end of the pack; takes the crash load in x |
 
-`uv run eox build` writes `out/cad/PB-xxx.step` (order these from SCS) and
-`PB-xxx_flat.dxf` (reference flat with `BEND` layer), plus an assembly STEP.
+`uv run eox build` writes `out/cad/powerbox/PB-xxx.step` (order these from SCS)
+and `PB-xxx_flat.dxf` (reference flat with a `BEND` layer), plus an assembly
+STEP.
 
 ## Electrical single-line
 
 ```mermaid
 flowchart LR
-  B["Battery 51.2 V<br/>BMS"] -->|"6 AWG via bulkhead gland"| F["Class T 100 A<br/>≤178 mm from +"]
+  B["Pack 51.2 V<br/>BMS"] -->|"2/0"| F["Class T 300 A<br/>≤178 mm from +"]
   F --> D["Maintenance<br/>disconnect"]
-  D --> K["Main contactor<br/>(sealed)"]
-  D --> P["Precharge<br/>100 Ω 50 W + timer"]
-  P --> C
-  K --> C["Motor controller"]
-  C --> M["BLDC motor"]
-  D --> DC["DC-DC 48→12 V"]
-  DC --> FAN["Bay fan 12 V<br/>(on with key)"]
-  KEY["Key switch"] --> ES["E-stop (NC)"] --> COIL["Contactor coil<br/>+ controller enable"]
+  D --> K["Main contactor 250 A"]
+  D --> P["Precharge<br/>47 Ω 100 W + timer"]
+  P --> BUS
+  K --> BUS["+ bus bar"]
+  BUS --> B1["100 A → drive unit, front"]
+  BUS --> B2["100 A → drive unit, rear"]
+  BUS --> B3["100 A → PTO unit"]
+  BUS --> B4["100 A → attachment port"]
+  BUS --> DC["DC-DC 48→12 V"]
+  KEY["Key"] --> ES["E-stop (NC)"] --> COIL["Contactor coil<br/>+ every unit's enable"]
   BMS["BMS enable"] --> COIL
-  SEAT["Seat switch (OPC)"] --> C
+  SEAT["Seat switch"] --> EN["Unit enable logic"]
 ```
 
-Negative returns to the pack go through the BMS. The chassis is not used as a
-conductor. The fuse must sit within 178 mm of the battery's + terminal (33 CFR
-183.455), so mount the fuse holder on the bay side of the bulkhead, right at
-the M25 gland.
+- **Returns:** negatives go back to the pack through the BMS. The chassis is
+  not used as a conductor.
+- **Branch interface:** each branch leaves through its own gland. Use an
+  Anderson SB120 for power and a Deutsch DT 6-pin for enable, interlock and CAN
+  (see the 3 HP unit standard in [architecture](architecture.md)).
+
+## Thermal
+
+The box is sealed. While mowing, about 66 W is generated inside, mostly the
+pack's own I²R at 56 A, and the lid picks up about 66 W from the sun.
+
+The pack weighs 45 kg and its thermal time constant is about 3.9 h, so a
+mowing run never reaches steady state. The check is the pack temperature at
+the end of a full run (1.4 h), starting heat-soaked in the sun:
+
+| | Pack temperature |
+|---|---|
+| Starting heat-soaked in the sun | 43 °C |
+| End of a full mowing run in 35 °C sun | **48 °C** (rating 60 °C) |
+| Steady state, if it ran forever | 61 °C |
+
+Parked in the sun while charging at 15 A it reaches 43.9 °C, a WARN against the
+45 °C charge rating. Charge in shade, and let a hot pack cool before charging.
 
 ## Assembly sequence
 
 1. Install the rivnuts in the tray:
    - M8: 4 frame mounts + 4 clamp rods, in the floor;
-   - M6: 4 for the controller, on the −y wall;
    - M5: 8 for the cover.
-2. Rivet both battery stops (PB-105) and the bulkhead (PB-106) to the floor.
-3. Seal the 4 tray corner reliefs, the 4 cover corner reliefs, and the
-   bulkhead's bottom flange-to-floor joint with MS-polymer.
-4. Apply 10 mm foam to the bulkhead's side and top flanges. Fit the bulkhead
-   glands.
-5. Mount the motor through the +y wall: motor flange inside, then the wall,
-   then the doubler. Use M8 8.8 bolts with nyloc nuts.
-6. Mount the controller on the −y wall with a thermal pad.
-7. Bond the inlet filter (foam + mesh) inside, over the floor slots.
-8. Build the electrics plate on the floor between the controller and the motor:
-   fuse right at the bulkhead gland, contactor, precharge, DC-DC.
-9. Lay the pads, drop in the pack, fit the clamp bars (PB-104) and rods, and
-   preload to about 800 N per rod. Pass the cables through the bulkhead glands.
-10. Route the harness through the end-wall glands and fit the breather.
-11. Fit the fan and guard to the cover, and plug in its connector.
-12. Apply EPDM tape to the tray walls in the overlap band, then fit the cover
-    with 8 × M5.
+2. Rivet both battery stops (PB-105) to the floor.
+3. Seal the 4 tray corner reliefs and the 4 cover corner reliefs with
+   MS-polymer.
+4. Build the distribution bay on the floor at the +x end:
+   - main fuse at the pack + terminal;
+   - disconnect, contactor and precharge;
+   - bus bars and the 4 branch fuses;
+   - the DC-DC converter.
+5. Fit the glands: 4 × M32 branch, M25 charge inlet, 2 × M20.
+6. Lay the pads, drop in the pack, fit the clamp bars (PB-104) and rods, and
+   preload to about 800 N per rod.
+7. Fit the breather. Apply EPDM tape to the tray walls in the overlap band,
+   then fit the cover with 8 × M5.
 
-## Known issues (rev A1)
+## Known issues (rev B0)
 
-1. **Flats at 97–98 % of SCS's 30 × 44 in bend limit (WARN).**
-   - There is about 25 mm of length left.
-   - If a real battery is longer than the 520 mm REF, the layout has to change.
-     One option is a shorter cover with a separate end panel.
-2. **Charging in sun (WARN).**
-   - The pack reaches 42.9 °C against its 45 °C charge rating.
-   - Charge in shade. Most LFP BMSs block charging above 45 °C.
-3. **Mounting clearance.**
-   - The floor inlet needs air underneath the box.
-   - Mount the box on rails or standoffs; at least 15 mm of clear gap is
-     suggested.
-   - Keep the fan exhaust clear of the operator's legs and of grass discharge.
-4. **The thermal model is a screening estimate.**
-   - It is steady state, uses still outside air, and ignores the pack's thermal
-     mass.
-   - The fan's delivered flow (30 m³/h) is a REF value.
-   - Validate with thermocouples on a prototype: pack surface, bay air,
-     controller baseplate.
-5. **REF parts.** The battery, motor, controller and fan are generic envelopes.
-   Replace them with datasheet values before ordering metal.
-6. **REF hardware ratings.** The rivnut pull-out and rivet shear values are
-   placeholders. Confirm them with supplier data.
+1. **Pack capacity (WARN).**
+   - One 100 Ah pack gives the Pro 1.4 h of mowing; the target is 1.5 h.
+   - Transport and backhoe runtimes are also below target.
+   - 70 mm of flat length is left for a longer pack. Beyond that, the options
+     are a second pack or swapping.
+2. **Bus current near the pack rating (WARN).** 185 A against a 200 A
+   continuous BMS when 3 units run at rated power.
+3. **REF ratings.** These are placeholders; confirm each on its datasheet:
+   - branch fuse DC voltage and interrupt ratings;
+   - rivnut pull-out;
+   - rivet shear.
+4. **Pack candidates.**
+   [docs/component-candidates.md](component-candidates.md) was written for
+   rev A1, when the pack only needed 100 A.
+   - Re-check the recommended pack against the new ≥ 200 A continuous
+     requirement.
+   - Its motor and controller picks are superseded by golf-cart units.
