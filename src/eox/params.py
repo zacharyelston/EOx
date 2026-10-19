@@ -49,7 +49,7 @@ def gauge(materials: dict, material: str, t_mm: float) -> Gauge:
     raise ValueError(f"{material}: no SCS gauge at {t_mm} mm (have {have})")
 
 
-SHARED = ("units", "axle", "steer_axle", "powerbox")
+SHARED = ("units", "axle", "steer_axle", "powerbox", "course")
 MODELS = tuple(sorted(f.stem for f in (DESIGN / "models").glob("*.toml")))
 
 

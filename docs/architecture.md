@@ -108,7 +108,9 @@ The Home is a golf cart turned into a tractor. The geometry follows
   about 0.6 m.
 - **Front:** an E-Z-GO TXT-style beam front axle with its rack bolted on. It is
   the only self-contained golf-cart front axle we found. The frame necks in to
-  ±100 mm at the nose so the steered wheels can sweep.
+  ±100 mm at the nose so the steered wheels can sweep. On the terrain course
+  its leaf springs run out of roll travel on twisting ground, and a front wheel
+  lifts ([simulation.md](simulation.md)). A pivoting front axle would fix it.
 - **Mid-mount deck:** fits under the box, with its PTO unit standing on it
   outboard of the left rail. The front axle has no diff, so it clears the deck
   by +50 mm (REF) and the tractor can drive over it to hitch up.
@@ -240,6 +242,9 @@ values confirmed from B71.1.
   - The Home's beam front axle has no diff and clears a mid-mount deck.
   - The mass model carries the deck (45 kg, REF) and its PTO unit at those
     positions whenever it is fitted. The coupling design is still open.
+  - On the terrain course, a rigidly mounted Pro front deck would dig
+    130–310 mm into climbs, the twist and a ditch, so its coupling has to
+    pivot, not just float ([simulation.md](simulation.md)).
 - **Magnetic coupling: switchable permanent magnets.** They hold with no power,
   so a power loss can't drop the deck.
 - **Steel strike plates on the deck.** Our box shells are aluminium, and magnets

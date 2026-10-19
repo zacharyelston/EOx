@@ -350,6 +350,110 @@ def modes_svg(p, tr, theme: str) -> str:
                     "split by consumer, with runtime on one pack.")
 
 
+# ---------------------------------------------------------------------------
+# Terrain course: elevation profile + per-obstacle results
+# ---------------------------------------------------------------------------
+STATUS = {"PASS": ("#0ca30c", "\u2713"), "WARN": ("#fab219", "!"), "FAIL": ("#d03b3b", "\u2715"), "INFO": (None, "i")}
+
+
+def _wrap(text: str, width: int, lines: int = 2) -> list[str]:
+    out, cur = [], ""
+    for word in text.split():
+        if cur and len(cur) + 1 + len(word) > width:
+            out.append(cur)
+            cur = word
+        else:
+            cur = f"{cur} {word}".strip()
+    out.append(cur)
+    if len(out) > lines:
+        out = out[:lines]
+        out[-1] = out[-1][: width - 1] + "\u2026"
+    return out
+
+
+def course_svg(p, course, results, theme: str) -> str:
+    """The course profile along the centreline, then one row of obstacle
+    results per configuration (status icon + label + the key number)."""
+    from eox.sim.report import headline
+
+    t = THEMES[theme]
+    W, x0, label_w = 980, 40, 96
+    x1 = W - 24
+    k = (x1 - x0) / course.length                     # px per m
+    vex = 5                                           # vertical exaggeration
+    xs, zc = course.centreline()
+    zmax = float(course.z.max())
+    y_base = 96 + zmax * k * vex                       # ground line z = 0
+    X = lambda x: x0 + x * k                           # noqa: E731
+    Y = lambda z: y_base - z * k * vex                 # noqa: E731
+    n = len(course.segments)
+    col_w = (W - 24 - x0 - label_w) / n
+    top = y_base + 0.25 * k * vex + 46
+    row_h = 58
+    s = Svg(W, top + 30 + row_h * len(results) + 34, theme)
+    s.text(16, 26, f"{p.model.name} on the test course (MuJoCo), {course.length:.0f} m at {p.course.speed_kmh:g} km/h",
+           16, weight=600)
+    s.text(16, 44, f"elevation along the centreline, vertical x{vex} · rated climb {p.vehicle.max_slope_deg:g} deg; "
+           "steeper ramps are scored INFO", 11, t["ink2"])
+
+    # side-slope bands and twist humps (off the centreline, so not in the profile)
+    for seg in course.segments:
+        if seg.kind == "side_slope":
+            s.add(f'<rect x="{X(seg.x0):.1f}" y="{Y(0) - 20:.1f}" width="{(seg.x1 - seg.x0) * k:.1f}" height="20" '
+                  f'fill="{t["series"][0]}" fill-opacity="0.14"/>')
+            s.text(X((seg.x0 + seg.x1) / 2), Y(0) - 6, f"{seg.spec.slope_deg:g} deg across", 10, t["ink2"], "middle")
+        if seg.kind == "twist":
+            r0 = seg.spec.length / 2
+            for i in range(seg.spec.count):
+                cx = X(seg.x0 + r0 + i * seg.spec.pitch)
+                s.add(f'<circle cx="{cx:.1f}" cy="{Y(0) - 6:.1f}" r="3" fill="{t["series"][0]}"/>')
+    pts = " ".join(f"{X(x):.1f},{Y(z):.1f}" for x, z in zip(xs[::2], zc[::2]))
+    s.add(f'<polygon points="{X(0):.1f},{Y(-0.3):.1f} {pts} {X(course.length):.1f},{Y(-0.3):.1f}" '
+          f'fill="{t["grid"]}" stroke="none"/>')
+    s.add(f'<polyline points="{pts}" fill="none" stroke="{t["ink2"]}" stroke-width="2" stroke-linejoin="round"/>')
+    for i, seg in enumerate(course.segments, 1):
+        cx = X((seg.x0 + seg.x1) / 2)
+        zt = float(zc[(xs >= seg.x0) & (xs <= seg.x1)].max())
+        cy = Y(max(zt, 0)) - 30
+        s.add(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="9" fill="{t["surface"]}" stroke="{t["ink2"]}" stroke-width="1"/>')
+        s.text(cx, cy + 4, i, 10, t["ink"], "middle", weight=600)
+    s.text(X(0), Y(-0.3) + 16, "start", 10, t["muted"])
+    s.text(X(course.length), Y(-0.3) + 16, f"{course.length:.0f} m", 10, t["muted"], "end")
+
+    # results grid
+    gx = x0 + label_w
+    for i, seg in enumerate(course.segments, 1):
+        s.text(gx + (i - 0.5) * col_w, top + 14, f"{i} {seg.name}", 11, t["ink"], "middle", weight=600)
+    s.line(x0, top + 24, x1, top + 24, t["base"], 1)
+    for rnum, r in enumerate(results):
+        y = top + 30 + rnum * row_h
+        s.text(x0, y + 20, r.config, 12, t["ink"], weight=600)
+        if rnum:
+            s.line(x0, y - 3, x1, y - 3, t["grid"], 1)
+        for i, o in enumerate(r.obstacles):
+            cx = gx + i * col_w + 10
+            colour, glyph = STATUS[o.status]
+            fill = colour or t["muted"]
+            s.add(f'<circle cx="{cx + 7:.1f}" cy="{y + 15:.1f}" r="7" fill="{fill}"/>')
+            s.text(cx + 7, y + 19, glyph, 10, "#ffffff" if o.status != "WARN" else "#0b0b0b", "middle", weight=700)
+            s.text(cx + 19, y + 19, o.status, 11, t["ink"], weight=600)
+            for j, ln in enumerate(_wrap(headline(o), int(col_w / 5.6))):
+                s.text(cx, y + 35 + 12 * j, ln, 10, t["ink2"])
+    return s.render(f"{p.model.name} terrain course results",
+                    "Course elevation profile with numbered obstacles, and per-configuration results: " +
+                    "; ".join(f"{r.config}: " + ", ".join(f"{o.name} {o.status}" for o in r.obstacles) for r in results))
+
+
+def write_course(p, course, results, out_dir) -> list[str]:
+    model = p.model.name.split()[-1].lower()
+    written = []
+    for theme in THEMES:
+        f = out_dir / f"{model}-course-{theme}.svg"
+        f.write_text(course_svg(p, course, results, theme))
+        written.append(str(f))
+    return written
+
+
 def write_all(p, tr, out_dir) -> list[str]:
     """Write every figure in both themes; returns the paths written."""
     out_dir.mkdir(parents=True, exist_ok=True)
