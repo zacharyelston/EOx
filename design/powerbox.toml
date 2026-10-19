@@ -1,0 +1,229 @@
+# EOX Power Box — design parameters (single source of truth)
+#
+# Everything downstream (calcs, CAD, flat patterns, BOM rollup) reads this file.
+# Units: mm, kg, N, W, V, A, degC unless the key says otherwise.
+#
+# Values tagged REF are reference envelopes for a *class* of part, not a specific
+# product. Replace them with datasheet values once a part is chosen, then re-run
+# `uv run eox calc` to see what changed.
+
+[meta]
+module = "powerbox"
+revision = "A1"   # A1: bulkhead + ventilated motor bay
+
+# ---------------------------------------------------------------------------
+# What the power box has to move. Feeds the drive, runtime and thermal calcs.
+# ---------------------------------------------------------------------------
+[vehicle]
+mass_tractor_kg = 180          # complete machine incl. power box, excl. operator (target)
+mass_operator_kg = 100
+mass_payload_kg = 0
+tire_diameter = 457            # 18x8.50-8 turf tire
+rolling_resistance = 0.10      # ~0.06 firm lawn, 0.10 typical turf, 0.15+ soft/wet ground
+drivetrain_efficiency = 0.90   # chain/reduction from motor shaft to wheel
+reduction_ratio = 40           # motor rpm : wheel rpm (drivetrain is the next module)
+top_speed_kmh = 8.0
+cruise_speed_kmh = 5.0         # typical mowing pace
+design_grade_deg = 15.0        # steepest slope the drive must climb continuously
+grade_speed_kmh = 3.0
+duty_overhead = 1.25           # turns, short slopes, accel on top of the flat-cruise case
+runtime_target_h = 2.0         # drive-only; mower deck load is added when that module exists
+
+# ---------------------------------------------------------------------------
+# REF: 16S LiFePO4 pack, 51.2 V nominal, integrated BMS (golf-cart / LEV class).
+# Buy a listed pack (see docs/safety-requirements.md); do not build one from cells.
+# ---------------------------------------------------------------------------
+[battery]
+chemistry = "LiFePO4"
+cells_series = 16
+cell_nominal_v = 3.2
+cell_max_v = 3.65              # full charge
+cell_min_v = 2.75              # BMS low-voltage cutoff (check pack datasheet)
+capacity_ah = 100
+usable_dod = 0.80
+internal_resistance_mohm = 20  # whole pack incl. BMS FETs
+max_continuous_a = 100         # BMS continuous discharge rating
+max_peak_a = 200               # BMS short-duration rating
+max_temp_discharge_c = 60
+max_temp_charge_c = 45
+bms_cell_ovp_v = 3.70          # BMS cell over-voltage cutoff: the single-fault ceiling for SELV
+mass_kg = 45
+length = 520                   # along box x
+width = 270                    # along box y
+height = 220
+terminal_clearance = 35        # above the pack, for lugs and bend radius of 6 AWG
+
+# ---------------------------------------------------------------------------
+# REF: 48 V BLDC traction motor, 2 kW class, face-mounted, keyed shaft.
+# ---------------------------------------------------------------------------
+[motor]
+rated_power_w = 2000
+rated_speed_rpm = 3000
+peak_torque_nm = 15
+max_speed_rpm = 4500
+efficiency = 0.85
+diameter = 150
+length = 160                   # body only, flange to rear cover
+shaft_diameter = 19.05         # 3/4" keyed, common for #40 sprockets
+shaft_length = 45
+pilot_diameter = 80            # spigot on the mounting face
+bolt_count = 4
+bolt_pcd = 115
+bolt_diameter = 8              # M8
+mass_kg = 7.5
+heat_to_wall_fraction = 0.5    # share of motor loss conducted through the flange into the wall
+
+# ---------------------------------------------------------------------------
+# REF: 48 V sine-wave BLDC controller, mounted flat on the box wall as its heatsink.
+# ---------------------------------------------------------------------------
+[controller]
+battery_current_limit_a = 100  # programmed battery-side limit; must be <= battery peak
+efficiency = 0.97
+input_capacitance_uf = 2000    # for precharge sizing
+length = 170                   # along x, flat on the -y wall
+width = 100                    # along z
+thickness = 55                 # off the wall (along y)
+mass_kg = 1.2
+heat_to_wall_fraction = 0.8
+max_ambient_c = 55             # REF: full-power ambient before the controller derates itself
+
+[aux]
+dcdc_output_w = 60             # average 12 V load: lights, dash, contactor if 12 V coil
+dcdc_efficiency = 0.90
+quiescent_w = 8                # BMS + controller idle + contactor economizer hold
+quiescent_battery_bay_w = 2    # the BMS share of quiescent_w; the rest is in the motor bay
+
+# ---------------------------------------------------------------------------
+# Protection. Standard fuse steps are filtered by the chosen family.
+# ---------------------------------------------------------------------------
+[protection]
+fuse_family = "Class T"
+fuse_voltage_rating_v = 125    # DC; REF, confirm on the fuse datasheet
+fuse_interrupt_rating_a = 20000  # DC AIC; REF
+fuse_steps_a = [50, 60, 70, 80, 90, 100, 110, 125, 150, 175, 200]
+fuse_continuous_factor = 1.25  # fuse >= 1.25 x continuous current
+conductor_temp_rating_c = 105
+conductor_in_engine_space = true  # motor shares the box, so derate like an engine room
+main_conductor_length_m = 1.2  # total positive + negative run inside the box
+max_voltage_drop_pct = 3.0
+contactor_continuous_a = 150   # REF
+contactor_voltage_rating_v = 72  # REF
+precharge_resistor_ohm = 100
+precharge_resistor_w = 50          # aluminium-clad; survives being left on into a short
+precharge_max_time_s = 2.0
+selv_limit_v = 60.0            # DC, dry — see docs/safety-requirements.md
+
+# ---------------------------------------------------------------------------
+# Enclosure construction (see docs/powerbox.md for the part breakdown)
+# ---------------------------------------------------------------------------
+# Clamshell: a shallow lower TRAY (holds battery, motor, controller) and a
+# shallow COVER that slips over it with a gasketed overlap. Two shells because
+# SCS can't bend one deep box: flat blank <= 30x44" and U-base >= 2x flange.
+[enclosure]
+material = "al_5052_h32"
+thickness = 3.175              # 0.125" (SCS gauge)
+finish = "powder_white"        # local powder coater: SCS caps powder coat at 30x36" flats
+wall_clearance = 30            # battery side to wall (y); clamp rods run in this gap
+battery_end_clearance = 35     # battery -x end to wall; holds a battery stop
+bay_end_clearance = 10         # motor bay to +x wall (gland nuts live here)
+floor_clearance = 5            # motor body to floor
+battery_pad = 6                # closed-cell foam/rubber under the pack
+tray_height = 150              # OML, floor underside to tray rim
+cover_overlap = 30             # cover skirt overlaps the tray walls by this much
+cover_fit_clearance = 1.0      # per side, cover inner face to tray outer face (gasket tape)
+corner_gap = 0.5               # between butted flanges at a box corner (SCS min 0.38)
+lid_screw_hole = 5.5           # M5 clearance in cover skirt
+lid_screws_per_long_side = 3
+lid_screws_per_short_side = 1
+rivnut_hole_m5 = 7.0
+rivnut_hole_m6 = 9.0
+rivnut_hole_m8 = 11.1
+rivet_hole = 4.9               # 3/16" structural blind rivet
+gland_holes = [25.5, 20.5, 20.5]  # M25 battery/charge, 2x M20 control + 12 V aux
+breather_hole = 12.5           # M12 pressure-equalisation vent (cover end wall, high)
+mount_bolt_count = 4           # box to tractor frame
+mount_bolt_diameter = 8
+mount_hole = 8.5
+mount_inset = 40               # mount hole centre from the outer floor edges
+doubler_thickness = 6.35       # 0.250" 5052, laser only, inside the motor wall
+doubler_margin = 20            # beyond the motor bolt circle
+
+[battery_clamp]
+count = 2
+web = 50                       # U-channel base must be >= 2 x flange (SCS)
+flange = 20
+end_inset = 70                 # bar centreline from each x-end of the battery (keep clear of terminals)
+end_clearance = 2              # bar end to tray wall
+rod_preload_n = 800            # per rod; friction from this holds the pack laterally
+pad_friction = 0.4             # rubber pad on pack top/bottom
+rod_diameter = 8               # M8 threaded rod into floor rivnuts / PEM studs
+rod_stress_area_mm2 = 36.6
+rod_proof_mpa = 380            # class A2-70 stainless ~ 450 yield; use conservative
+rivnut_pullout_n = 3000        # REF: steel M8 rivnut in 3 mm Al; verify with supplier data
+
+# Bulkhead: splits a SEALED battery bay from a VENTILATED motor bay ("wet zone":
+# everything in it IP65+, the floor inlet slots double as drains).
+[bulkhead]
+flange = 24                    # bottom flange riveted to the floor; >= 22 leaves room for a rivet
+stop_clearance = 2             # battery stop leg to bulkhead face
+bay_clearance = 3              # bulkhead flange tips to motor-bay components
+side_gap = 4                   # to tray walls (clears the floor bend fillet); 10 mm foam strip seals it
+top_gap = 3                    # to cover underside; foam gasket on the top flange
+rivets = 5
+rivet_h = 14.2                 # rivet line on the bottom flange, from the bulkhead face
+gland_holes = [25.5, 20.5]     # M25 battery cables, M20 BMS comms
+gland_z = 190                  # above the floor
+
+[vent]
+fan_size = 80                  # mm frame, 12 V IP68, exhausts through the cover +x end wall
+fan_hole_spacing = 71.5
+fan_opening = 76
+fan_screw_hole = 4.5
+fan_y = 60                     # fan centre across the box (+y = motor side)
+fan_drop = 55                  # fan centre below the cover top
+fan_flow_m3h = 30              # REF: delivered through filter + guard (~half of free-air rating)
+fan_power_w = 2.5
+inlet_slot_length = 32         # centre-to-centre; slots run along x
+inlet_slot_width = 8
+inlet_pitch_y = 16
+inlet_pitch_x = 50
+discharge_coefficient = 0.5    # filter + grille, for the fan-off stack-effect flow
+
+[battery_stop]                 # L-angles riveted to the floor at both ends of the pack
+count = 2
+length = 250
+leg = 30                       # floor leg, points away from the pack
+height = 35                    # upright the pack bears on
+rivets = 4
+rivet_shear_n = 2500           # REF: 3/16" steel structural blind rivet; verify with supplier
+
+[electrics]                    # contactor, fuse, precharge, DC-DC on the floor in the motor bay
+length = 170
+width = 100
+height = 120
+mass_kg = 2.5
+
+# ---------------------------------------------------------------------------
+# Design loads. These are engineering-practice choices for an off-road garden
+# machine, not numbers lifted from a standard — see docs/safety-requirements.md.
+# ---------------------------------------------------------------------------
+[loads]
+vertical_g = 3.0
+longitudinal_g = 2.0
+lateral_g = 2.0
+safety_factor = 2.0            # on yield
+crash_safety_factor = 1.0      # on yield: no permanent set at the crash load
+crash_stop_distance = 50       # obstacle strike at top speed: crush/compliance distance
+bolt_shear_allow_mpa = 200     # class 8.8 bolt, ~0.6 x 640 MPa proof / 1.9
+bearing_yield_factor = 1.5     # aluminum bearing yield ~1.5 x tensile yield
+sprocket_teeth = 11
+chain_pitch = 12.7             # #40 roller chain
+chain_offset_from_wall = 20    # sprocket centerline to outer wall face
+
+[thermal]
+ambient_c = 35
+solar_w_m2 = 1000
+h_outside_w_m2k = 5.0          # still air (parked / slow) — conservative
+h_inside_w_m2k = 4.0           # still internal air
+battery_margin_c = 5           # WARN when within this of a temperature rating
+charge_current_a = 15          # off-board charger, for the parked-charging case

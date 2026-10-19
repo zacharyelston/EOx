@@ -1,0 +1,38 @@
+id,category,item,spec,qty,est_unit_usd,est_mass_kg_each,examples_to_evaluate,notes
+E01,Battery,Traction battery pack,"16S LiFePO4 51.2 V 100 Ah, integrated BMS >=100 A cont / 200 A peak, cell OVP <=3.70 V, temp-blocked charging, CAN or RS485",1,900,45,"golf-cart / LEV class packs","Must be listed to UL 2271 (or IEC 62619). Not UL 1973 (stationary). Do not build packs from loose cells."
+E02,Drive,BLDC traction motor,"48 V, 2 kW rated @ 3000 rpm, >=15 N*m peak, face mount 4x M8 on 115 PCD, 80 mm spigot, 3/4 in keyed shaft, Hall sensors",1,260,7.5,"Golden Motor HPM series; Motenergy ME1117 class","Update [motor] in design/powerbox.toml from the datasheet of the motor you buy."
+E03,Drive,Motor controller,"48 V sine/FOC BLDC, programmable >=100 A battery limit, inputs: key, seat switch, brake, fwd/rev, throttle; IP65",1,180,1.2,"Kelly KLS-S series; Votol EM class","Mount flat on the -y wall (the wall is its heatsink)."
+E04,Protection,Main contactor,"48 V coil with economizer, >=150 A continuous, rated to break >=72 V DC, sealed (IP66+): it lives in the vented motor bay",1,90,0.4,"Albright SW80/SW180 48 V; TE Kilovac LEV100","Coil is fed through key switch + E-stop + BMS enable."
+E05,Protection,Main fuse + holder,"Class T 100 A, >=125 V DC, >=20 kA DC interrupt, holder with cover",1,60,0.3,"Blue Sea Systems Class T fuse block","Within 7 in (178 mm) of the battery positive terminal (33 CFR 183.455)."
+E06,Protection,Precharge resistor,"100 ohm, 50 W aluminium-clad, + timed precharge relay or controller-integrated precharge",1,15,0.1,,"Calc: 0.6 s to 95%; 34 W if left on into a short."
+E07,Protection,Emergency stop,"Red mushroom, latching, 2x NC, DC rated; dash-mounted on the tractor",1,30,0.15,,"Breaks contactor coil and controller key line."
+E08,Protection,Key switch,"2-position, DC rated, removable key",1,15,0.05,,"Dash."
+E09,Protection,Maintenance disconnect,"Rotary battery switch, >=150 A cont, 48 V DC rated",1,40,0.3,"Blue Sea Systems e-Series","Not required below 60 V (UL 2271 s15.1.4) but makes servicing safe."
+E10,Aux power,DC-DC converter,"48 V -> 12 V isolated, >=120 W, IP67",1,60,0.5,"Victron Orion-Tr 48/12","Lights, dash, accessories."
+E11,Wiring,Main cable,"6 AWG fine-strand tinned copper, 105 C insulation, red + black, 1 m each",2,12,0.12,,"Sized by calc: 100 A fuse <= 102 A derated ampacity."
+E12,Wiring,Cable lugs + heat shrink,"6 AWG tinned copper lugs, adhesive-lined heat shrink",8,2,0.01,,
+E13,Wiring,Control harness,"18 AWG TXL + Deutsch DT connectors (key, E-stop, seat, brake, fwd/rev, throttle, 12 V out)",1,60,0.4,,"Seat switch = operator presence control (ANSI/OPEI B71.1)."
+E14,Wiring,Cable glands,"IP68 nylon, 1x M25 + 2x M20, with locknuts",3,4,0.02,,"+x end wall."
+E15,Charging,Charge inlet,"Anderson SB50 pigtail with dust cover",1,25,0.15,,"Through the M25 gland."
+E16,Charging,Charger (off-board),"58.4 V LiFePO4 profile, 10-20 A, listed",1,150,0,,"Not mounted in the box; mass not counted."
+E17,Wiring,Electrics plate parts,"DIN rail, sealed terminal blocks, 6 AWG busbar, cable ties",1,25,0.3,,"Floor of the motor bay between controller and motor. The bay is a wet zone: everything here IP65+."
+E18,Cooling,Motor bay fan,"80 mm, 12 V, IP68, ball bearing, >=55 m3/h free air",1,25,0.12,,"Exhausts through the cover +x end wall; runs whenever the key is on. Calc assumes 30 m3/h delivered."
+E19,Cooling,Fan guard,"80 mm stainless finger guard",1,4,0.02,,"Outside the cover, on the fan screws."
+E20,Wiring,Fan connector,"Deutsch DT 2-pin pair + 20 AWG pigtail",1,8,0.02,,"So the cover can come off without cutting wires."
+M01,Hardware,Breather vent,"M12 IP67 pressure-equalisation vent (ePTFE membrane)",1,8,0.01,,"Cover end wall, high."
+M02,Hardware,Overlap gasket,"Closed-cell EPDM foam tape 3 x 20 mm",3,5,0.02,,"Metres. On the tray walls under the cover skirt."
+M03,Hardware,Corner sealant,"MS-polymer sealant, 290 ml",1,10,0.1,,"Seal the 8 corner reliefs."
+M04,Hardware,Rivnuts M5,"Steel, zinc, for 3.2 mm sheet, 7.0 mm hole",8,0.5,0.005,,"Cover screws."
+M05,Hardware,Rivnuts M6,"Steel, zinc, 9.0 mm hole",4,0.6,0.007,,"Controller."
+M06,Hardware,Rivnuts M8,"Steel, zinc, 11.1 mm hole",8,0.8,0.01,,"4 frame mounts + 4 clamp rods. Pull-out rating feeds the clamp calc."
+M07,Hardware,Cover screws,"M5 x 12 A2 stainless button head + washers",8,0.4,0.005,,
+M08,Hardware,Clamp rods,"M8 A2 stainless threaded rod, 260 mm, + nyloc nuts + washers",4,3,0.1,,"Torque to ~800 N preload (see calc)."
+M09,Hardware,Motor bolts,"M8 x 25 class 8.8, nyloc nuts, washers",4,0.8,0.02,,"Through motor flange, wall and doubler."
+M10,Hardware,Controller screws,"M6 x 16 A2 stainless + washers",4,0.4,0.008,,
+M11,Hardware,Structural rivets,"3/16 in steel structural blind rivet, 4.9 mm hole",13,0.5,0.004,,"Battery stops (8) + bulkhead to floor (5)."
+M12,Hardware,Battery pads,"Closed-cell neoprene 6 mm, under pack + top strips",1,15,0.3,,
+M13,Hardware,Thermal pad,"0.5 mm silicone thermal pad for controller baseplate",1,10,0.02,,
+M14,Labels,Safety labels,"Battery / high current / no-step / pinch point / keep vents clear decals",1,10,0,,
+M15,Cooling,Inlet filter,"10 mm open-cell PU filter foam + stainless mesh, cut to the floor slot field",1,12,0.05,,"Bonded inside over the motor-bay floor slots; replaceable. Slots also drain the bay."
+M16,Hardware,Bulkhead seal,"10 mm soft closed-cell EPDM strip, 1.2 m",1,8,0.03,,"On bulkhead side + top flanges; the cover compresses the top strip."
+M17,Hardware,Bulkhead glands,"IP68 nylon, 1x M25 + 1x M20, with locknuts",2,4,0.02,,"Battery cables and BMS comms from the sealed bay into the motor bay."
