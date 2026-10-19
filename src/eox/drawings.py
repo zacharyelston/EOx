@@ -198,9 +198,11 @@ def flat_svg(part: FlangedPanel, theme: str, qty: int = 1) -> str:
 # Stability plan view
 # ---------------------------------------------------------------------------
 def stability_svg(tr, theme: str) -> str:
-    """Plan view: support polygons, pivot and CGs. Pro: straight + full lock,
-    with each half's triangle. Home: one panel, four wheels."""
+    """Plan view: support polygons, pivot and CGs, mowing configuration (deck
+    fitted). Pro: straight + full lock, with each half's triangle. Home: one
+    panel, four wheels."""
     from eox.calcs.vehicle import stability
+    from eox.tractor import DECK
 
     t = THEMES[theme]
     p = tr.p
@@ -215,7 +217,7 @@ def stability_svg(tr, theme: str) -> str:
     items = [(0, "whole machine on 4 wheels")]
     if tr.articulated:
         items += [(1, "front half triangle"), (2, "rear half triangle")]
-    s.text(16, 26, f"{p.model.name}: static stability, plan view", 16, weight=600)
+    s.text(16, 26, f"{p.model.name}: static stability, plan view, mowing (deck fitted)", 16, weight=600)
     lx = 16
     for i, label in items:
         s.add(f'<rect x="{lx}" y="40" width="14" height="10" rx="2" fill="{t["series"][i]}" fill-opacity="0.15" '
@@ -236,7 +238,7 @@ def stability_svg(tr, theme: str) -> str:
         ox, oy = 20 + k * (pw + 20), 70
         cx0, cy0 = ox - x_lo * sc, oy + 30 + ph / 2
         P = lambda pt, cx0=cx0, cy0=cy0: (cx0 + pt[0] * sc, cy0 - pt[1] * sc)   # noqa: E731
-        res = stability(tr, gamma)
+        res = stability(tr, gamma, DECK)
         if tr.articulated:
             s.text(ox, oy + 6, "straight" if not gamma else f"full lock {gamma:g}°", 13, weight=600)
             sub = f"tip angles: rigid {res['rigid']:.0f}° · front {res['front']:.0f}° · rear {res['rear']:.0f}°"
@@ -281,7 +283,7 @@ def stability_svg(tr, theme: str) -> str:
             s.text(jx, jy - 9, "pivot", 10, t["ink2"], "middle")
             dots += [("front", t["series"][1]), ("rear", t["series"][2])]
         for group, fill in dots:              # 2 px surface ring
-            x, y = P(tr.cg(group, gamma))
+            x, y = P(tr.cg(group, gamma, DECK))
             s.add(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="5" fill="{fill}" stroke="{t["surface"]}" stroke-width="2"/>')
         ax_, ay_ = ox + pw - 110, oy + ph + 22
         s.line(ax_, ay_, ax_ + 60, ay_, t["muted"], 1.5)

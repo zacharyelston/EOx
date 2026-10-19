@@ -29,17 +29,17 @@
 <line x1="630.0" y1="88.0" x2="630.0" y2="270.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
 <text x="630.0" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">6 kW</text>
 <text x="100.0" y="111.0" font-size="12" font-weight="400" fill="#0b0b0b" text-anchor="end">mowing</text>
-<rect x="110.0" y="96" width="81.9" height="22" fill="#2a78d6"/>
-<rect x="193.9" y="96" width="165.5" height="22" fill="#eb6834"/>
-<rect x="361.4" y="96" width="7.6" height="22" fill="#eda100"/>
-<path d="M371.1,96 H373.8 Q376.5,96 376.5,98.73555555555552 V115.26444444444448 Q376.5,118 373.8,118 H371.1 Z" fill="#e87ba4"/>
-<text x="384.5" y="111.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">3.1 kW · 1.3 h  (target 1.5 h)</text>
+<rect x="110.0" y="96" width="95.3" height="22" fill="#2a78d6"/>
+<rect x="207.3" y="96" width="165.5" height="22" fill="#eb6834"/>
+<rect x="374.8" y="96" width="7.6" height="22" fill="#eda100"/>
+<path d="M384.5,96 H387.2 Q389.9,96 389.9,98.73555555555555 V115.26444444444445 Q389.9,118 387.2,118 H384.5 Z" fill="#e87ba4"/>
+<text x="397.9" y="111.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">3.2 kW · 1.3 h  (target 1.5 h)</text>
 <text x="100.0" y="159.0" font-size="12" font-weight="400" fill="#0b0b0b" text-anchor="end">slope mowing</text>
-<rect x="110.0" y="144" width="134.4" height="22" fill="#2a78d6"/>
-<rect x="246.4" y="144" width="165.5" height="22" fill="#eb6834"/>
-<rect x="413.9" y="144" width="7.6" height="22" fill="#eda100"/>
-<path d="M423.5,144 H426.3 Q429.0,144 429.0,146.73555555555555 V163.26444444444445 Q429.0,166 426.3,166 H423.5 Z" fill="#e87ba4"/>
-<text x="437.0" y="159.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">3.7 kW · 1.1 h</text>
+<rect x="110.0" y="144" width="156.2" height="22" fill="#2a78d6"/>
+<rect x="268.2" y="144" width="165.5" height="22" fill="#eb6834"/>
+<rect x="435.8" y="144" width="7.6" height="22" fill="#eda100"/>
+<path d="M445.4,144 H448.1 Q450.9,144 450.9,146.73555555555555 V163.26444444444445 Q450.9,166 448.1,166 H445.4 Z" fill="#e87ba4"/>
+<text x="458.9" y="159.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">3.9 kW · 1.0 h</text>
 <text x="100.0" y="207.0" font-size="12" font-weight="400" fill="#0b0b0b" text-anchor="end">transport</text>
 <rect x="110.0" y="192" width="131.7" height="22" fill="#2a78d6"/>
 <rect x="243.7" y="192" width="7.6" height="22" fill="#eda100"/>

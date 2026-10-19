@@ -58,7 +58,8 @@ flowchart LR
 | Layout | Golf-cart front steering axle, rack and pinion | Articulated: two halves on a centre pivot |
 | Drive | 2WD: 1 drive-axle module | AWD: 2 drive-axle modules |
 | Units at once | 2 (drive + PTO) | 3 (2 drive + PTO, or 3 hydraulic) |
-| Machine mass | 237 kg | 305 kg |
+| Machine mass (bare / deck fitted) | 237 / 302 kg | 305 / 371 kg |
+| Rated climb, deck fitted | 12° (15:1 gear set) | 15° (stock gearing) |
 | Purchased parts | ≈ $3,700 | ≈ $5,300 |
 | Status | In design: `--model home`, H0 | In design: `--model pro`, P0 |
 
@@ -87,40 +88,49 @@ A golf cart turned into a tractor:
   seat on top at about 0.6 m.
 - **Front:** a TXT-style beam front axle with its rack bolted on. The frame
   necks in at the nose to clear the steered wheels.
-- **Under the box:** room for a mid-mount mower deck.
+- **Under the box:** the mid-mount mower deck, with its PTO unit standing on it
+  outboard of the left rail.
 
 | | |
 |---|---|
-| Machine mass | 237 kg without operator. Axle split 33 / 67 with operator. |
-| Drive | 1 × stock golf-cart rear end (12.4:1) + 3 HP DC sepex unit, rear-drive, 8 km/h limit |
+| Machine mass | 237 kg without operator, 302 kg with the deck and its PTO unit. Axle split 33 / 67 with operator, 36 / 64 with the deck. |
+| Drive | 1 × golf-cart rear end with a 15:1 gear set + 3 HP DC sepex unit, rear-drive, 8 km/h limit |
+| Rated climb | 12° short climbs with the deck fitted |
 | Steering | Manual rack and pinion, ~90 N at the rim to steer at a standstill (estimate) |
 | Turning radius | 2.8 m, outer front tyre (golf-cart wheelbase 1.6 m) |
-| Runtime, one pack | 1.46 h mowing (target 1.5), 3.0 h transport |
+| Runtime, one pack | 1.39 h mowing (target 1.5), 3.0 h transport |
 | Deck | The front axle has no diff, so it clears a mid-mount deck by +50 mm (REF) and the tractor can drive over it |
-| Checks | `eox calc --model home`: **0 FAIL, 6 WARN** |
+| Checks | `eox calc --model home`: **0 FAIL, 4 WARN** |
 
-**Stock gearing, chosen for simplicity**
-([issue 2](https://github.com/zacharyelston/EOx/issues/2)).
+**Rated for 12° climbs, on a 15:1 gear set**
+([issue 2](https://github.com/zacharyelston/EOx/issues/2); [design review](docs/reviews/initial-design-review.md)).
 
-- The Home uses the plain golf-cart rear end and motor. A golf cart carrying
-  two people climbs harder than this every day.
-- With one driven axle, the motor runs above its rated torque on climbs. That
-  is fine for short climbs (golf-cart DC motors peak at about 4× rated:
-  Carryall 3.3 hp rated, 13 hp peak), but long climbs heat it.
-- If your ground is steep, the cheap fix is a drop-in gear set.
+- Mowing a slope is the design case, so the climb checks carry the 45 kg deck
+  and its PTO unit.
+- With one driven axle, the motor runs above its rated torque on climbs.
+  Golf-cart DC motors peak at about 4× rated (Carryall 3.3 hp rated, 13 hp
+  peak), and long climbs heat them.
+- **Grip sets the rating.** With the deck's weight between the axles, the rear
+  tyres grip up to about **14°** on turf (traction 0.5), whatever the gearing.
+  Home is rated for 12° short climbs, inside that limit; the Pro (AWD) keeps
+  15°.
+- **The 15:1 gear set is standard** (BOM G01, in the stock rear end). On the
+  stock 12.4:1 set a 12° climb needs 4.0× rated, right at the peak; on 15:1 it
+  needs 3.3×.
 
-| Rear end | 10° climb | 15° short climb | Top speed at base rpm |
+| Rear end | 10° climb | 12° short climb | Top speed at base rpm |
 |---|---|---|---|
-| **Stock golf-cart, 12.4:1** (default) | 3.0× rated (WARN) | 3.9× (WARN, peak ~4×) | 25 km/h, limited to 8 |
-| Stock + aftermarket 15:1 gear set | 2.5× | 3.2× | 21 km/h |
-| Stock + 2:1 chain stage | 1.5× | 2.0× | 13 km/h |
+| Stock golf-cart, 12.4:1 | 3.6× rated | 4.0× (at the peak) | 25 km/h |
+| **Stock + aftermarket 15:1 gear set** (Home standard) | 3.0× (WARN) | 3.3× | 21 km/h, limited to 8 |
+| Stock + 2:1 chain stage | 1.8× | 2.1× | 13 km/h |
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/home-stability-dark.svg">
   <img alt="Plan view of the EOX Home support polygon and centre of gravity" src="docs/img/home-stability-light.svg" width="100%">
 </picture>
 
-The static tip angle is 46° in the worst direction, which gives a **22.8° max
+The figure shows the mowing configuration. The static tip angle, the worse of
+bare and deck-fitted, is 45° in the worst direction, which gives a **22.7° max
 working slope**.
 
 ---
@@ -144,12 +154,12 @@ and the rear half carries the operator.
 
 | | |
 |---|---|
-| Machine mass | 305 kg without operator. Axle split 43 / 57 with operator. |
+| Machine mass | 305 kg without operator, 371 kg with the front-mount deck and its PTO unit. Axle split 43 / 57 with operator, 58 / 42 with the deck. |
 | Drive | 2 × stock golf-cart rear end + 3 HP DC sepex unit each, AWD, 8 km/h limit |
-| Steering | Hydraulic: 1,173 N·m available vs ~890 N·m needed at standstill, 3.3 s lock to lock, ±40° |
+| Steering | Hydraulic: 1,173 N·m available vs ~1,050 N·m needed at standstill with the deck fitted (WARN, 12 % margin), 3.3 s lock to lock, ±40° |
 | Pivot | Halves clear each other at ±40° (checked); the front half stays 231 mm from the footwell; 5 kN per pin at 3 g |
 | Turning radius | 2.4 m, outer tyre |
-| Checks | `eox calc --model pro`: **0 FAIL, 7 WARN** |
+| Checks | `eox calc --model pro`: **0 FAIL, 8 WARN** |
 
 ### Stability
 
@@ -162,8 +172,10 @@ Past the roll stop, the whole machine rests on all four wheels.
   <img alt="Plan view of the EOX Pro support polygons, pivot and centres of gravity, straight and at full lock" src="docs/img/pro-stability-light.svg" width="100%">
 </picture>
 
-- The lowest tip angle is **41°**, on the rear half's triangle.
-- Half of that gives a **20.3° max working slope**, which is industry practice
+- The figure shows the mowing configuration (deck fitted). The checks take the
+  worse of bare and deck-fitted.
+- The lowest tip angle is **40°**, on the rear half's triangle.
+- Half of that gives a **20.2° max working slope**, which is industry practice
   rather than a confirmed standard value.
 - For workplace use, label both models for **17° across a slope** (MIOSHA
   5443).
@@ -200,7 +212,7 @@ flowchart LR
 **Thermal:**
 
 - A full 1.3 h Pro mowing run in 35 °C sun takes the pack from 43 °C (already
-  heat-soaked) to **48 °C**, against its 60 °C rating.
+  heat-soaked) to **49 °C**, against its 60 °C rating.
 - The pack's 45 kg of cells give it a ~3.9 h thermal time constant, so a run
   never reaches steady state.
 
@@ -255,18 +267,18 @@ Both models run on one 51.2 V 100 Ah pack (4.1 kWh usable).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/home-modes-dark.svg">
-  <img alt="EOX Home: stacked bars of average battery power by operating mode: mowing 2.8 kW, slope mowing 3.3 kW, transport 1.3 kW" src="docs/img/home-modes-light.svg" width="100%">
+  <img alt="EOX Home: stacked bars of average battery power by operating mode: mowing 3.0 kW, slope mowing 3.6 kW, transport 1.3 kW" src="docs/img/home-modes-light.svg" width="100%">
 </picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/pro-modes-dark.svg">
-  <img alt="EOX Pro: stacked bars of average battery power by operating mode: mowing 3.1 kW, slope mowing 3.7 kW, transport 1.7 kW, backhoe 5.4 kW" src="docs/img/pro-modes-light.svg" width="100%">
+  <img alt="EOX Pro: stacked bars of average battery power by operating mode: mowing 3.2 kW, slope mowing 3.9 kW, transport 1.7 kW, backhoe 5.4 kW" src="docs/img/pro-modes-light.svg" width="100%">
 </picture>
 
 | Mode | Home: power / runtime | Pro: power / runtime | Target |
 |---|---|---|---|
-| Mowing (5 km/h, flat) | 2.8 kW / 1.46 h (WARN) | 3.1 kW / 1.3 h (WARN) | 1.5 h |
-| Mowing a 10° slope (3 km/h) | 3.3 kW / 1.2 h | 3.7 kW / 1.1 h | 1.0 h |
+| Mowing (5 km/h, flat) | 3.0 kW / 1.39 h (WARN) | 3.2 kW / 1.27 h (WARN) | 1.5 h |
+| Mowing a 10° slope (3 km/h) | 3.6 kW / 1.15 h | 3.9 kW / 1.04 h | 1.0 h |
 | Transport (8 km/h) | 1.3 kW / 3.0 h | 1.7 kW / 2.4 h (WARN) | 3.0 h |
 | Backhoe (3 hydraulic units) | n/a | 5.4 kW / 0.8 h (WARN) | 1.0 h |
 
@@ -357,8 +369,8 @@ uv run eox drawings --model pro
 
 | Model | Checks | What's open |
 |---|---|---|
-| **EOX Home H0** | 0 FAIL, 6 WARN | The stock gearing works for short climbs, with a thin margin at 15°; a 15:1 gear set is the cheap upgrade ([issue 2](https://github.com/zacharyelston/EOx/issues/2)). Some golf-cart geometry is still unmeasured ([issue 1](https://github.com/zacharyelston/EOx/issues/1)). |
-| **EOX Pro P0** | 0 FAIL, 7 WARN | Runtime on one pack ([issue 3](https://github.com/zacharyelston/EOx/issues/3)). Gearing on a sustained 10° climb ([issue 2](https://github.com/zacharyelston/EOx/issues/2)). Bus current near the pack rating. Pivot detail design ([issue 5](https://github.com/zacharyelston/EOx/issues/5)). |
+| **EOX Home H0** | 0 FAIL, 4 WARN | Rated for 12° climbs with the deck fitted, set by rear-tyre grip (~14° on turf); the standard 15:1 gear set (G01) still needs a quote and a fit check on the rear end you buy ([issue 2](https://github.com/zacharyelston/EOx/issues/2)). Some golf-cart geometry is still unmeasured ([issue 1](https://github.com/zacharyelston/EOx/issues/1)). |
+| **EOX Pro P0** | 0 FAIL, 8 WARN | Steering cylinder margin with the front deck fitted (12 %). Runtime on one pack ([issue 3](https://github.com/zacharyelston/EOx/issues/3)). Gearing on a sustained 10° climb ([issue 2](https://github.com/zacharyelston/EOx/issues/2)). Bus current near the pack rating. Pivot detail design ([issue 5](https://github.com/zacharyelston/EOx/issues/5)). |
 
 Both models share two thin margins:
 

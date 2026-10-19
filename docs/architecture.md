@@ -76,9 +76,9 @@ These are averages over a job, on one 51.2 V 100 Ah pack (4.1 kWh usable).
 
 | Mode | Units | Battery power | Runtime | Target |
 |---|---|---|---|---|
-| Mowing (5 km/h, flat) | 2 drive + PTO | 3.1 kW | 1.3 h | 1.5 h: WARN |
-| Mowing a 10° slope (3 km/h) | 2 drive + PTO | 3.5 kW | 1.2 h | 1.0 h |
-| Transport (8 km/h) | 2 drive | 1.6 kW | 2.6 h | 3.0 h: WARN |
+| Mowing (5 km/h, flat) | 2 drive + PTO | 3.2 kW | 1.3 h | 1.5 h: WARN |
+| Mowing a 10° slope (3 km/h) | 2 drive + PTO | 3.9 kW | 1.0 h | 1.0 h |
+| Transport (8 km/h) | 2 drive | 1.7 kW | 2.4 h | 3.0 h: WARN |
 | Backhoe | 3 hydraulic | 5.4 kW | 0.8 h | 1.0 h: WARN |
 
 A Pro doing real work wants more than one 100 Ah pack. The options (tracked in
@@ -109,29 +109,41 @@ The Home is a golf cart turned into a tractor. The geometry follows
 - **Front:** an E-Z-GO TXT-style beam front axle with its rack bolted on. It is
   the only self-contained golf-cart front axle we found. The frame necks in to
   ±100 mm at the nose so the steered wheels can sweep.
-- **Mid-mount deck:** fits under the box. The front axle has no diff, so it
-  clears the deck by +50 mm (REF) and the tractor can drive over it to hitch up.
+- **Mid-mount deck:** fits under the box, with its PTO unit standing on it
+  outboard of the left rail. The front axle has no diff, so it clears the deck
+  by +50 mm (REF) and the tractor can drive over it to hitch up.
 
 | | H0 value |
 |---|---|
-| Machine mass | 237 kg without operator |
+| Machine mass | 237 kg without operator; 302 kg with the deck and its PTO unit |
 | Wheelbase / tracks | 1,600 mm / rear 978, front 860 mm |
-| Axle split (with operator) | 33 / 67 front / rear |
+| Axle split (with operator) | 33 / 67 front / rear; 36 / 64 with the deck |
 | Turning radius | 2.8 m, outer front tyre, at a 50° inner lock (REF) |
 | Steering effort | ~90 N at the rim to steer at a standstill (estimate) |
-| Front axle load climbing 15° | 25 % of weight, enough to keep steering (≥ 15 %) |
-| Stability | 46° tip angle, so a 22.8° max working slope |
-| Runtime on one pack | 1.46 h mowing (target 1.5), 3.0 h transport |
+| Rated climb, deck fitted | 12° short climbs (rear-tyre grip runs out near 14° on turf) |
+| Front axle load climbing 12° | 27 % of weight, enough to keep steering (≥ 15 %) |
+| Stability | 45° tip angle (worse of bare and deck-fitted), so a 22.7° max working slope |
+| Runtime on one pack | 1.39 h mowing (target 1.5), 3.0 h transport |
 
-**Gearing: stock, chosen for simplicity ([issue 2](https://github.com/zacharyelston/EOx/issues/2)).**
-A golf cart carrying two people climbs harder than the Home does. With one
-driven axle, the torque each motor needs, as a multiple of its rated torque:
+**Gearing and rated slope: 15:1, 12° ([issue 2](https://github.com/zacharyelston/EOx/issues/2)).**
+Climbs are checked with the deck and its PTO unit fitted, since mowing a slope
+is the design case ([design review](reviews/initial-design-review.md)).
 
-| Rear end | 10° climb | 15° short climb |
+- **Grip sets the rating.** With the deck's weight between the axles, the rear
+  tyres grip up to about 14° on turf (traction 0.5), whatever the ratio. Rear
+  ballast that restored grip at 15° (~40 kg) would push the torque past the
+  motor's peak, so Home is rated for 12° short climbs. The AWD Pro keeps 15°.
+- **The 15:1 gear set is standard** (`"axle.ratio" = 15.0` in
+  `design/models/home.toml`; BOM G01). On the stock set a 12° climb sits right
+  at the ~4× peak.
+
+The torque each motor needs, as a multiple of its rated torque:
+
+| Rear end | 10° climb | 12° short climb |
 |---|---|---|
-| **Stock 12.4:1** (default) | 3.0× (heats on long climbs) | 3.9×, inside the ~4× peak but a thin margin |
-| Stock + aftermarket 15:1 gear set, the cheap upgrade | 2.5× | 3.2× |
-| Stock + 2:1 chain stage | 1.5× | 2.0× |
+| Stock 12.4:1 | 3.6× (heats on long climbs) | 4.0×, at the peak |
+| **Stock + aftermarket 15:1 gear set** (standard) | 3.0× | 3.3× |
+| Stock + 2:1 chain stage | 1.8× | 2.1× |
 
 ## EOX Pro: articulated AWD
 
@@ -176,9 +188,10 @@ driven axle, the torque each motor needs, as a multiple of its rated torque:
 
 **Mass.**
 
-- 305 kg without the operator.
-- The axle split with the operator is 43 / 57 (front / rear).
-- A front implement brings it toward 50 / 50.
+- 305 kg without the operator; 371 kg with the front-mount deck and its PTO
+  unit.
+- The axle split with the operator is 43 / 57 (front / rear), and 58 / 42 with
+  the deck fitted.
 
 **Stability (static).**
 
@@ -186,19 +199,20 @@ driven axle, the torque each motor needs, as a multiple of its rated torque:
 |---|---|
 | Whole machine | 48° straight, 44° at full lock |
 | Front half's triangle (its wheels + pivot) | 54° |
-| Rear half's triangle | 41° |
-| Half the lowest, used as the max working slope | 20.3° (design slope 15°) |
+| Rear half's triangle | 40° |
+| Half the lowest, used as the max working slope | 20.2° (design slope 15°) |
 
-These are industry practice, not values confirmed from B71.1.
+Each is the worse of bare and deck-fitted. These are industry practice, not
+values confirmed from B71.1.
 
 **Steering.**
 
-- Articulating at a standstill needs about 890 N·m, because the tyres scrub
-  sideways.
+- Articulating at a standstill needs about 1,050 N·m with the front deck
+  fitted (about 880 N·m bare), because the tyres scrub sideways.
 - One 45 mm cylinder at 100 bar runs from the front frame to a steering arm on
   the knuckle, so roll can't steer the machine. On a 120 mm lever arm it gives
-  1,173 N·m at full lock and goes lock to lock in 3.3 s, from a small 48 V
-  power unit.
+  1,173 N·m at full lock (WARN: a 12 % margin with the deck) and goes lock to
+  lock in 3.3 s, from a small 48 V power unit.
 - An 8 kN electric actuator would take ~15 s lock to lock, which is too slow.
 - A manual chain-and-wire-rope linkage (Stiga / Husqvarna style) would need
   ~280 N at the rim at a standstill (est.).
@@ -208,9 +222,9 @@ These are industry practice, not values confirmed from B71.1.
 
 | Option | Torque per motor on a sustained 10° climb |
 |---|---|
-| Stock (default) | 1.8× rated (WARN: fine short, heats on long climbs) |
-| Aftermarket 15:1 gear set | 1.5× rated |
-| ~2:1 chain stage added | 0.9× rated |
+| Stock (default) | 2.1× rated, deck fitted (WARN: fine short, heats on long climbs) |
+| Aftermarket 15:1 gear set | 1.7× rated |
+| ~2:1 chain stage added | 1.1× rated |
 
 ## Attachments
 
@@ -218,11 +232,14 @@ These are industry practice, not values confirmed from B71.1.
 
 - The deck carries its own PTO unit, so the coupling is mechanical plus one
   connector, not a shaft.
-- **Front-mount vs drive-over is open.**
+- **Where it mounts follows from the front axle.**
   - A golf-cart diff hangs 114 mm (4.5 in) above the ground, which is 36 mm
     *lower* than the top of a typical deck at its lowest cut height, so the
-    Pro's front axle can't roll over a deck.
+    Pro's front axle can't roll over a deck. The Pro's deck is front-mounted on
+    the implement face.
   - The Home's beam front axle has no diff and clears a mid-mount deck.
+  - The mass model carries the deck (45 kg, REF) and its PTO unit at those
+    positions whenever it is fitted. The coupling design is still open.
 - **Magnetic coupling: switchable permanent magnets.** They hold with no power,
   so a power loss can't drop the deck.
 - **Steel strike plates on the deck.** Our box shells are aluminium, and magnets

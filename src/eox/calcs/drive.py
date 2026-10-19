@@ -12,16 +12,19 @@ import math
 from eox.calcs.bus import drivetrain_efficiency
 from eox.calcs.common import Report, tractive_force
 from eox.checks import Check
+from eox.tractor import DECK
 
 
-def _per_motor(p, tr, slope_deg: float, extra: float | None = None, ratio: float | None = None) -> float:
+def _per_motor(p, tr, slope_deg: float, extra: float | None = None, ratio: float | None = None,
+               fitted: tuple = DECK) -> float:
     """Torque per drive motor. `ratio` overrides the overall ratio outright
-    (a different rear end); `extra` multiplies the stock ratio (a chain stage)."""
+    (a different rear end); `extra` multiplies the stock ratio (a chain stage).
+    Climbs are checked with the deck fitted: mowing a slope is the design case."""
     a = p.axle
     extra = a.extra_reduction if extra is None else extra
     overall = ratio if ratio is not None else a.ratio * extra
     eta = a.efficiency * (0.97 if overall > a.ratio * 1.5 else 1.0)       # chain stage loss
-    F = tractive_force(tr.mass(), slope_deg, p.vehicle.rolling_resistance)
+    F = tractive_force(tr.mass(fitted=fitted), slope_deg, p.vehicle.rolling_resistance)
     return F / tr.drive_units * (a.tire_diameter / 2000) / (overall * eta)
 
 
@@ -41,13 +44,14 @@ def run(p, tr, r: Report):
     n_top = _motor_rpm(p, v.top_speed_kmh)
     n_mow = _motor_rpm(p, p.modes.mowing.drive_speed_kmh)
     ratio = a.ratio * a.extra_reduction
+    label = next((o.label for o in a.gearing_options if abs(o.ratio - ratio) < 0.05), None)
     r.add(
         Check(grp, "overall ratio (rear end x extra stage)", round(ratio, 1), ":1",
-              note="stock golf-cart rear end" if a.extra_reduction == 1 else f"{a.extra_reduction:g}:1 stage added"),
-        Check(grp, f"motor torque each, {v.design_slope_deg:g} deg climb (sustained)", round(T_design, 1), "N*m",
+              note=label or f"{a.ratio:g}:1 rear end, {a.extra_reduction:g}:1 stage added"),
+        Check(grp, f"motor torque each, {v.design_slope_deg:g} deg climb, deck fitted (sustained)", round(T_design, 1), "N*m",
               round(T_peak, 1), "<=", warn_limit=round(T_rated, 1),
               note=f"{T_design / T_rated:.1f}x rated: over rated = short-time duty, motor heats"),
-        Check(grp, f"motor torque each, {v.max_slope_deg:g} deg climb (short)", round(T_max, 1), "N*m",
+        Check(grp, f"motor torque each, {v.max_slope_deg:g} deg climb, deck fitted (short)", round(T_max, 1), "N*m",
               round(T_peak, 1), "<=", 0.1, note=f"{T_max / T_rated:.1f}x rated"),
         Check(grp, f"motor speed at {v.top_speed_kmh:g} km/h", round(n_top), "rpm", u.max_speed_rpm, "<=", 0.05),
         Check(grp, "motor speed at mowing pace vs base speed", round(n_mow / u.base_speed_rpm * 100), "%",
@@ -60,14 +64,14 @@ def run(p, tr, r: Report):
     driven = [ax.name for ax in tr.axles if ax.driven]
 
     def grip(slope):
-        loads = tr.axle_loads_n(slope)
+        loads = tr.axle_loads_n(slope, fitted=DECK)
         return v.traction_coefficient * sum(loads[n] for n in driven)
 
     F_motors = tr.drive_units * T_peak * a.ratio * a.extra_reduction * drivetrain_efficiency(p) / (a.tire_diameter / 2000)
     lo_, hi_ = 0.0, 45.0
     for _ in range(50):                                   # steepest climb the driven tyres can grip
         mid = (lo_ + hi_) / 2
-        if grip(mid) >= tractive_force(tr.mass(), mid, v.rolling_resistance):
+        if grip(mid) >= tractive_force(tr.mass(fitted=DECK), mid, v.rolling_resistance):
             lo_ = mid
         else:
             hi_ = mid

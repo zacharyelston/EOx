@@ -9,7 +9,9 @@ import numpy as np
 
 from eox.calcs.common import Report
 from eox.checks import Check
-from eox.tractor import HALVES
+from eox.tractor import DECK, HALVES
+
+CONFIGS = ((), DECK)            # bare, and mowing with the deck fitted: every check takes the worse
 
 
 def tip_angle(cg, edges, headings: int = 360) -> float:
@@ -45,22 +47,22 @@ def _ring(points):
     return list(zip(pts, pts[1:] + pts[:1]))
 
 
-def stability(tr, gamma: float = 0.0) -> dict[str, float]:
+def stability(tr, gamma: float = 0.0, fitted: tuple = ()) -> dict[str, float]:
     """Tip angles. rigid: all four wheels, whole-machine CG.
     Pro only, front/rear: each half's stability triangle (its two wheels + the
     pivot). The pivot locks pitch, so a half can only tip sideways, about the
     lines from its wheels to the pivot, never back over its own axle."""
     four = tr.contacts("front", gamma) + tr.contacts("rear", gamma)
-    out = {"rigid": tip_angle(tr.cg(None, gamma), _ring(four))}
+    out = {"rigid": tip_angle(tr.cg(None, gamma, fitted), _ring(four))}
     if tr.articulated:
         j = tr.joint()
         for half in HALVES:
             left, right = tr.contacts(half, gamma)
-            out[half] = tip_angle(tr.cg(half, gamma), [(left, j), (right, j)])
+            out[half] = tip_angle(tr.cg(half, gamma, fitted), [(left, j), (right, j)])
     elif getattr(tr.p.steer_axle, "oscillates", False):
         f = tr.axle("front")
         pivot = (f.x, 0.0, f.tire_diameter / 2)
-        out["triangle"] = tip_angle(tr.cg(), _ring(tr.contacts("rear") + [pivot]))
+        out["triangle"] = tip_angle(tr.cg(fitted=fitted), _ring(tr.contacts("rear") + [pivot]))
     return out
 
 
@@ -109,7 +111,8 @@ def halves_collide(tr, gamma: float) -> list[str]:
 # case/motor, the frame members among themselves, the seat's own pieces.
 _JOINED = {frozenset(k) for k in (("wheel", "axle"), ("axle", "motor"), ("frame", "frame"), ("seat", "seat"),
                                    ("axle", "axle"), ("pivot", "pivot"), ("pivot", "frame"), ("steering", "axle"),
-                                   ("steering", "frame"), ("implement", "frame"), ("controller", "frame"))}
+                                   ("steering", "frame"), ("implement", "frame"), ("controller", "frame"),
+                                   ("deck", "pto"), ("deck", "implement"))}
 
 
 def parts_overlap(tr) -> list[str]:
@@ -135,24 +138,29 @@ def parts_overlap(tr) -> list[str]:
 
 def run(p, tr, r: Report):
     v, a = p.vehicle, p.axle
-    loads = tr.axle_loads_n()
-    m_machine = tr.mass() - v.mass_operator_kg - v.mass_payload_kg
+    people = v.mass_operator_kg + v.mass_payload_kg
     grp = "Vehicle"
-    cg = tr.cg()
-    split = loads["front"] / (loads["front"] + loads["rear"]) * 100
-    r.add(Check(grp, "machine mass (no operator)", round(m_machine), "kg"))
+    r.add(Check(grp, "machine mass (no operator): bare / deck fitted",
+                " / ".join(f"{tr.mass(fitted=f) - people:.0f}" for f in CONFIGS), "kg",
+                note=f"deck {p.deck.mass_kg:g} kg + its PTO unit, mount = {p.deck.mount}"))
     if tr.articulated:
-        r.add(Check(grp, "mass with operator: front / rear half", f"{tr.mass('front'):.0f} / {tr.mass('rear'):.0f}", "kg"))
+        r.add(Check(grp, "mass with operator, front / rear half: bare; deck fitted",
+                    "; ".join(f"{tr.mass('front', f):.0f} / {tr.mass('rear', f):.0f}" for f in CONFIGS), "kg"))
+    splits, cgs = [], []
+    for f in CONFIGS:
+        ld = tr.axle_loads_n(fitted=f)
+        splits.append(f"{ld['front'] / (ld['front'] + ld['rear']) * 100:.0f} / {ld['rear'] / (ld['front'] + ld['rear']) * 100:.0f}")
+        c = tr.cg(fitted=f)
+        cgs.append(f"{c[0]:.0f} / {c[1]:.0f} / {c[2]:.0f}")
     r.add(
-        Check(grp, "axle load split front / rear (with operator)", f"{split:.0f} / {100 - split:.0f}", "%",
-              note="a front implement moves this forward"),
-        Check(grp, "CG x / y / z (with operator)", f"{cg[0]:.0f} / {cg[1]:.0f} / {cg[2]:.0f}", "mm",
+        Check(grp, "axle load split front / rear (with operator): bare; deck fitted", "; ".join(splits), "%"),
+        Check(grp, "CG x / y / z (with operator): bare; deck fitted", "; ".join(cgs), "mm",
               note="origin on the ground under the pivot" if tr.articulated else "origin on the ground under the rear axle"),
     )
     if tr.articulated:
-        _pro_turning_and_steering(p, tr, r, loads)
+        _pro_turning_and_steering(p, tr, r)
     else:
-        _home_turning_and_steering(p, tr, r, loads)
+        _home_turning_and_steering(p, tr, r)
     hits = parts_overlap(tr)
     r.add(Check(grp, "major parts clear each other (power box, units, axles, seat, frame)", len(hits), "overlaps", 0, "<=",
                 note="; ".join(hits) if hits else "box outlines within each rigid group"))
@@ -162,29 +170,31 @@ def run(p, tr, r: Report):
     angles = [0.0] + ([p.layout.articulation_max_deg] if tr.articulated else [])
     worst = 90.0
     for gamma in angles:
-        s = stability(tr, gamma)
+        runs = [stability(tr, gamma, f) for f in CONFIGS]           # bare and deck fitted
+        s = {k: min(run_[k] for run_ in runs) for k in runs[0]}
         worst = min(worst, *s.values())
         label = "straight" if not gamma else f"articulated {gamma:g} deg"
         if tr.articulated:
             r.add(Check(grp, f"tip angle, {label}: rigid / front half / rear half",
                         f"{s['rigid']:.0f} / {s['front']:.0f} / {s['rear']:.0f}", "deg",
-                        note="worst slope direction; a half starts to roll onto its oscillation stop at its own angle"))
+                        note="worst slope direction, bare or deck fitted; a half starts to roll onto its oscillation stop at its own angle"))
         else:
             r.add(Check(grp, "tip angle, four wheels" + (" / front-axle triangle" if "triangle" in s else ""),
-                        " / ".join(f"{s[k]:.0f}" for k in s), "deg", note="worst slope direction"))
+                        " / ".join(f"{s[k]:.0f}" for k in s), "deg", note="worst slope direction, bare or deck fitted"))
     r.add(Check(grp, "max working slope (half the lowest tip angle)", round(worst / 2, 1), "deg",
                 v.design_slope_deg, ">=", warn_limit=v.max_slope_deg,
                 note="industry practice, not a confirmed standard value: B71.1 stability numbers still to verify"))
 
     # ---- deck mounting (open decision, issue 7) ---------------------------------------
     d, front = p.deck, tr.axle("front")
+    note = ("the front axle must roll over the deck: negative means it can't" if d.mount.startswith("mid")
+            else "the deck couples to the implement face and never passes under an axle: reference only")
     r.add(Check("Deck", "drive-over: front axle clearance minus deck top at min cut",
-                front.clearance - d.top_height_min_cut, "mm",
-                note=f"mount = {d.mount}; the front axle must roll over a mid-mount deck, negative means it can't"))
+                front.clearance - d.top_height_min_cut, "mm", note=f"mount = {d.mount}; {note}"))
     r.values.update(worst_tip=worst)
 
 
-def _pro_turning_and_steering(p, tr, r, loads):
+def _pro_turning_and_steering(p, tr, r):
     lo, a, st = p.layout, p.axle, p.steering
     gmax = math.radians(lo.articulation_max_deg)
     af, ar = lo.front_axle_x, -lo.rear_axle_x
@@ -194,8 +204,11 @@ def _pro_turning_and_steering(p, tr, r, loads):
                 note="articulated: both axles track the same arc when a = b"))
 
     grp = "Steering"
-    M_f = st.scrub_coefficient * loads["front"] * af / 1000
-    M_r = st.scrub_coefficient * loads["rear"] * ar / 1000
+    M_f = M_r = 0.0
+    for f in CONFIGS:                                            # the heavier configuration sets the moment
+        ld = tr.axle_loads_n(fitted=f)
+        M_f = max(M_f, st.scrub_coefficient * ld["front"] * af / 1000)
+        M_r = max(M_r, st.scrub_coefficient * ld["rear"] * ar / 1000)
     M_req = max(M_f, M_r)
     A_full = math.pi / 4 * st.bore ** 2
     A_rod = math.pi / 4 * (st.bore ** 2 - st.rod ** 2)
@@ -241,20 +254,20 @@ def _pro_turning_and_steering(p, tr, r, loads):
     # a fore-aft couple. Add fore-aft and lateral shares, times the design g.
     ld = p.loads
     g0 = 9.81
-    W_r = tr.mass("rear") * g0
-    x_rc = tr.cg("rear")[0]
-    N_r = loads["rear"]
-    M_pitch = abs(W_r * x_rc - N_r * lo.rear_axle_x)                       # N*mm
-    F_couple = ld.vertical_g * M_pitch / lo.pin_spacing
-    F_long = ld.longitudinal_g * W_r / 2
-    F_lat = ld.lateral_g * W_r / 2
-    F_pin = math.hypot(F_couple + F_long, F_lat)
+    M_pitch = F_pin = 0.0
+    for f in CONFIGS:
+        W_r = tr.mass("rear", f) * g0
+        x_rc = tr.cg("rear", fitted=f)[0]
+        N_r = tr.axle_loads_n(fitted=f)["rear"]
+        m = abs(W_r * x_rc - N_r * lo.rear_axle_x)                          # N*mm
+        F = math.hypot(ld.vertical_g * m / lo.pin_spacing + ld.longitudinal_g * W_r / 2, ld.lateral_g * W_r / 2)
+        M_pitch, F_pin = max(M_pitch, m), max(F_pin, F)
     d, t = lo.pin_diameter, lo.ear_thickness
     tau = F_pin / (2 * math.pi * d * d / 4)                                  # double shear
     sig_b = F_pin / (2 * d * t)                                              # two ears per pin
     r.add(
         Check(grp, "pitch moment through the joint (static)", round(M_pitch / 1000), "N*m",
-              note="the pivot locks pitch, so the halves share it; taken by the pin couple"),
+              note="the pivot locks pitch, so the halves share it; taken by the pin couple (worse of bare / deck)"),
         Check(grp, f"load per pin at {ld.vertical_g:g} g + {ld.longitudinal_g:g} g fore-aft + {ld.lateral_g:g} g side",
               round(F_pin / 1000, 1), "kN", note=f"{d:g} mm pins, {lo.pin_spacing:g} mm apart"),
         Check(grp, "pin shear stress (double shear)", round(tau, 1), "MPa",
@@ -267,7 +280,7 @@ def _pro_turning_and_steering(p, tr, r, loads):
     r.values.update(M_steer=M_req)
 
 
-def _home_turning_and_steering(p, tr, r, loads):
+def _home_turning_and_steering(p, tr, r):
     f, st = p.steer_axle, p.steering
     front = tr.axle("front")
     L = front.x - tr.axle("rear").x
@@ -278,19 +291,20 @@ def _home_turning_and_steering(p, tr, r, loads):
                 round(R_outer_front / 1000, 2), "m", note="Ackermann; turn centre on the rear-axle line"))
 
     grp = "Steering"
+    loads = max((tr.axle_loads_n(fitted=f) for f in CONFIGS), key=lambda ld: ld["front"])   # heavier front steers harder
     N_wheel = loads["front"] / 2
     M_king = st.scrub_coefficient * N_wheel * (f.tire_width / 3 + f.scrub_radius) / 1000     # per wheel, standstill
     ratio = f.turns_lock_to_lock * 360 / (2 * f.max_steer_deg)                            # handwheel deg per wheel deg
     T_wheel = 2 * M_king / (ratio * 0.75)
     F_rim = T_wheel / (st.steering_wheel_diameter / 2000)
     r.add(
-        Check(grp, "front axle load (with operator)", round(loads["front"]), "N",
+        Check(grp, "front axle load (with operator, heavier configuration)", round(loads["front"]), "N",
               note="light front = easy steering, but too light loses steering on climbs"),
         Check(grp, "overall steering ratio", round(ratio, 1), ":1", note=f"{f.turns_lock_to_lock:g} turns lock to lock (REF)"),
         Check(grp, "rim force to steer at standstill", round(F_rim), "N",
               note="estimate: tyre scrub over contact patch + scrub radius, 75 % gear efficiency"),
     )
-    climb = tr.axle_loads_n(p.vehicle.max_slope_deg)["front"]
+    share = min(tr.axle_loads_n(p.vehicle.max_slope_deg, f)["front"] / (tr.mass(fitted=f) * 9.81) for f in CONFIGS)
     r.add(Check(grp, f"front axle load climbing {p.vehicle.max_slope_deg:g} deg, share of weight",
-                round(climb / (tr.mass() * 9.81) * 100), "%", 15, ">=", 0.2,
+                round(share * 100), "%", 15, ">=", 0.2,
                 note="below ~15 % the front tyres stop steering (rule of thumb) and the machine can rear up"))

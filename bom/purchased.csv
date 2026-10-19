@@ -22,7 +22,7 @@ powerbox,P20,Hardware,Clamp rods,"M8 A2 stainless threaded rod, 260 mm, + nyloc 
 powerbox,P21,Hardware,Structural rivets,"3/16 in steel structural blind rivet, 4.9 mm hole",8,0.5,0.004,,"Battery stops."
 powerbox,P22,Hardware,Battery pads,"Closed-cell neoprene 6 mm, under pack + top strips",1,15,0.3,,
 powerbox,P23,Labels,Safety labels,"Battery / high current / no-step decals",1,10,0,,
-drive_axle,D01,Drive,Golf-cart rear end,"Post-1986 double-reduction transaxle, stock ~12.4:1 (19-spline input, motor mounts sideways on the gear case), cable drum brakes, 38.5 in track, used",1,250,45,"E-Z-GO TXT, Club Car DS / Precedent, Yamaha G-series","Stock ratio. A drop-in 15:1 gear set is the cheap upgrade for steep ground. Geometry: docs/research/golf-cart.md."
+drive_axle,D01,Drive,Golf-cart rear end,"Post-1986 double-reduction transaxle, stock ~12.4:1 (19-spline input, motor mounts sideways on the gear case), cable drum brakes, 38.5 in track, used",1,250,45,"E-Z-GO TXT, Club Car DS / Precedent, Yamaha G-series","Pro: stock ratio. Home: fitted with the 15:1 gear set (G01). Geometry: docs/research/golf-cart.md."
 drive_axle,D02,Drive,3 HP unit: DC sepex motor,"48 V golf-cart DC sepex motor, ~3 hp continuous, 19-spline to match D01, used or rebuilt",1,250,18,"E-Z-GO TXT PDS / Club Car IQ class","Brushes rebuildable at any golf-cart shop. Never series-wound DC on a blade drive."
 drive_axle,D03,Drive,3 HP unit: motor controller,"48 V sepex controller, >=100 A battery limit, speed limit, regen braking, key/enable input",1,350,2.5,"Curtis 1268 / Alltrax sepex class","Mounted flat on a cross member next to its motor."
 drive_axle,D04,Drive,Wheel + tyre,"18x8.50-8 turf tyre on 8 in golf-cart wheel",2,75,8,,
@@ -47,3 +47,4 @@ steer_axle,S01,Steering,Golf-cart front axle,"E-Z-GO TXT-style beam front axle o
 steer_axle,S02,Steering,Rack and pinion,"Golf-cart rack and pinion with steering shaft and U-joint",1,180,4,,"Manual steering, ~2 turns lock to lock (REF)."
 steer_axle,S03,Drive,Front wheel + tyre,"18x8.50-8 turf tyre on 8 in golf-cart wheel",2,75,8,,"Same tyres as the rear."
 steer_axle,S04,Hardware,Front axle mounts,"Spring hangers / U-bolts / bushings to fix the axle to the chassis",1,40,1.5,,
+gear_set,G01,Drive,15:1 gear set for the rear end,"Aftermarket 15:1 reduction gears for the D01 rear end (replaces the stock ~12.4:1 set), matched to its make and 19-spline input",1,,0,"vintagegolfcartparts.com E-Z-GO axle gears (docs/research/golf-cart.md [8])","Home only: one driven axle carries the deck up 12 deg. Confirm the set fits the rear end you buy; replaces gears, so no added mass."
