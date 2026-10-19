@@ -20,8 +20,11 @@ def drivetrain_efficiency(p) -> float:
 
 
 def steering_pump_w(p) -> float:
-    """Average electrical draw of the hydraulic steering power unit while driving."""
+    """Average electrical draw of the hydraulic steering power unit while driving
+    (zero for manual steering)."""
     s = p.steering
+    if "hydraulic" not in s.type:
+        return 0.0
     hyd = s.pump_flow_lpm / 60000 * s.relief_bar * 1e5
     return hyd / s.pump_efficiency * s.duty
 
@@ -35,7 +38,7 @@ def mode_power(p, tr, mode) -> dict[str, float]:
         wheel_w = F * mode.drive_speed_kmh / 3.6 * p.vehicle.duty_overhead
         out["drive"] = unit_input_w(p, wheel_w / drivetrain_efficiency(p))
         out["steering"] = steering_pump_w(p)
-        out["units"] += 2                                   # AWD: one unit per axle module
+        out["units"] += tr.drive_units                      # one unit per drive-axle module
     if mode.pto_units:
         out["pto"] = unit_input_w(p, mode.pto_power_w)
         out["units"] += mode.pto_units

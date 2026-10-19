@@ -29,24 +29,24 @@
 <line x1="630.0" y1="88.0" x2="630.0" y2="270.0" stroke="#2c2c2a" stroke-width="1" stroke-linecap="butt"/>
 <text x="630.0" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">6 kW</text>
 <text x="100.0" y="111.0" font-size="12" font-weight="400" fill="#f0efec" text-anchor="end">mowing</text>
-<rect x="110.0" y="96" width="75.9" height="22" fill="#3987e5"/>
-<rect x="187.9" y="96" width="155.7" height="22" fill="#d95926"/>
-<rect x="345.6" y="96" width="7.6" height="22" fill="#c98500"/>
-<path d="M355.2,96 H357.9 Q360.7,96 360.7,98.73555555555555 V115.26444444444445 Q360.7,118 357.9,118 H355.2 Z" fill="#d55181"/>
-<text x="368.7" y="111.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">2.9 kW · 1.4 h  (target 1.5 h)</text>
+<rect x="110.0" y="96" width="81.9" height="22" fill="#3987e5"/>
+<rect x="193.9" y="96" width="165.5" height="22" fill="#d95926"/>
+<rect x="361.4" y="96" width="7.6" height="22" fill="#c98500"/>
+<path d="M371.1,96 H373.8 Q376.5,96 376.5,98.73555555555552 V115.26444444444448 Q376.5,118 373.8,118 H371.1 Z" fill="#d55181"/>
+<text x="384.5" y="111.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">3.1 kW · 1.3 h  (target 1.5 h)</text>
 <text x="100.0" y="159.0" font-size="12" font-weight="400" fill="#f0efec" text-anchor="end">slope mowing</text>
-<rect x="110.0" y="144" width="124.5" height="22" fill="#3987e5"/>
-<rect x="236.5" y="144" width="155.7" height="22" fill="#d95926"/>
-<rect x="394.2" y="144" width="7.6" height="22" fill="#c98500"/>
-<path d="M403.8,144 H406.6 Q409.3,144 409.3,146.73555555555558 V163.26444444444442 Q409.3,166 406.6,166 H403.8 Z" fill="#d55181"/>
-<text x="417.3" y="159.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">3.5 kW · 1.2 h</text>
+<rect x="110.0" y="144" width="134.4" height="22" fill="#3987e5"/>
+<rect x="246.4" y="144" width="165.5" height="22" fill="#d95926"/>
+<rect x="413.9" y="144" width="7.6" height="22" fill="#c98500"/>
+<path d="M423.5,144 H426.3 Q429.0,144 429.0,146.73555555555555 V163.26444444444445 Q429.0,166 426.3,166 H423.5 Z" fill="#d55181"/>
+<text x="437.0" y="159.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">3.7 kW · 1.1 h</text>
 <text x="100.0" y="207.0" font-size="12" font-weight="400" fill="#f0efec" text-anchor="end">transport</text>
-<rect x="110.0" y="192" width="122.0" height="22" fill="#3987e5"/>
-<rect x="234.0" y="192" width="7.6" height="22" fill="#c98500"/>
-<path d="M243.6,192 H246.4 Q249.1,192 249.1,194.73555555555555 V211.26444444444445 Q249.1,214 246.4,214 H243.6 Z" fill="#d55181"/>
-<text x="257.1" y="207.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">1.6 kW · 2.6 h  (target 3 h)</text>
+<rect x="110.0" y="192" width="131.7" height="22" fill="#3987e5"/>
+<rect x="243.7" y="192" width="7.6" height="22" fill="#c98500"/>
+<path d="M253.3,192 H256.0 Q258.8,192 258.8,194.73555555555555 V211.26444444444445 Q258.8,214 256.0,214 H253.3 Z" fill="#d55181"/>
+<text x="266.8" y="207.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">1.7 kW · 2.4 h  (target 3 h)</text>
 <text x="100.0" y="255.0" font-size="12" font-weight="400" fill="#f0efec" text-anchor="end">backhoe</text>
-<rect x="110.0" y="240" width="431.8" height="22" fill="#199e70"/>
-<path d="M543.8,240 H546.6 Q549.3,240 549.3,242.73555555555555 V259.26444444444445 Q549.3,262 546.6,262 H543.8 Z" fill="#d55181"/>
-<text x="557.3" y="255.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">5.1 kW · 0.8 h  (target 1 h)</text>
+<rect x="110.0" y="240" width="458.9" height="22" fill="#199e70"/>
+<path d="M570.9,240 H573.6 Q576.3,240 576.3,242.73555555555555 V259.26444444444445 Q576.3,262 573.6,262 H570.9 Z" fill="#d55181"/>
+<text x="584.3" y="255.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">5.4 kW · 0.8 h  (target 1 h)</text>
 </svg>

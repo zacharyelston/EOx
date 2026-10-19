@@ -66,6 +66,18 @@ def test_no_mode_runs_more_units_than_the_bus_carries(pro):
             assert c.value <= p.bus.max_simultaneous_units
 
 
+def test_halves_clear_each_other_at_full_lock(pro):
+    _, _, rep = pro
+    c = next(c for c in rep.checks if c.group == "Pivot" and c.name.startswith("front and rear halves"))
+    assert c.value == 0, c.note
+
+
+def test_controllers_sit_on_the_centreline(pro):
+    _, tr, _ = pro
+    ys = [b.center[1] for _, k, b in tr.bodies if k == "controller"]
+    assert len(ys) == 2 and all(abs(y) < 1e-6 for y in ys)
+
+
 def test_hydraulic_steering_is_strong_and_fast_enough(pro):
     _, _, rep = pro
     assert _check(rep, "lock-to-lock time (4 L/min)").status == "PASS"
@@ -77,3 +89,17 @@ def test_extra_reduction_lowers_motor_torque(pro):
     from eox.calcs.drive import _per_motor
     t1, t2 = _per_motor(p, tr, 10, 1.0), _per_motor(p, tr, 10, 2.0)
     assert t2 < t1 / 1.9
+
+
+@pytest.mark.parametrize("model", ["pro", "home"])
+def test_golf_cart_motors_sit_sideways_and_nothing_overlaps(model):
+    """Golf-cart motors mount parallel to the axle on an off-centre gear case
+    (docs/research/golf-cart.md); every model's parts must clear each other."""
+    from eox.calcs.vehicle import parts_overlap
+    p = load(model)
+    tr = tractor.build(p)
+    motors = [b for _, k, b in tr.bodies if k == "motor"]
+    assert motors and all(b.shape == "cyl_y" for b in motors)
+    gear_cases = [b for _, k, b in tr.bodies if b.name == "rear end"]
+    assert all(abs(b.center[1] - p.axle.diff_offset_y) < 1e-6 for b in gear_cases)
+    assert parts_overlap(tr) == []

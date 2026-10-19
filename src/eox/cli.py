@@ -68,8 +68,13 @@ def _export_scene(items, folder, step_name):
     stl.mkdir(exist_ok=True)
     for old in stl.glob("*.stl"):
         old.unlink()
+    seen: dict[str, int] = {}
     for kind, s in items:
-        export_stl(s, str(stl / f"{kind}__{s.label}.stl"), tolerance=0.3, angular_tolerance=0.3)
+        name = f"{kind}__{s.label}"
+        seen[name] = seen.get(name, 0) + 1
+        if seen[name] > 1:                      # never let two parts share a file
+            name += f" {seen[name]}"
+        export_stl(s, str(stl / f"{name}.stl"), tolerance=0.3, angular_tolerance=0.3)
     return stl
 
 

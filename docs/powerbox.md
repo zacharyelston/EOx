@@ -25,7 +25,7 @@ unit. Every EOX model uses the same box. It is sized from
   attachments, so the A1 motor bay, bulkhead, fan, vents and motor doubler are
   gone.
 - **Sealed and shorter.** The box is sealed again and 44 mm shorter.
-- **Rated for the bus.** It carries the higher bus current: 185 A continuous
+- **Rated for the bus.** It carries the higher bus current: 197 A continuous
   for 3 units at once, against 55 A before.
 
 ## Why a clamshell and not one folded box
@@ -139,11 +139,12 @@ Parked in the sun while charging at 15 A it reaches 43.9 °C, a WARN against the
 ## Known issues (rev B0)
 
 1. **Pack capacity (WARN).**
-   - One 100 Ah pack gives the Pro 1.4 h of mowing; the target is 1.5 h.
+   - One 100 Ah pack gives the Pro 1.3 h of mowing and the Home 1.46 h; the
+     target is 1.5 h.
    - Transport and backhoe runtimes are also below target.
    - 70 mm of flat length is left for a longer pack. Beyond that, the options
      are a second pack or swapping.
-2. **Bus current near the pack rating (WARN).** 185 A against a 200 A
+2. **Bus current near the pack rating (WARN).** 197 A against a 200 A
    continuous BMS when 3 units run at rated power.
 3. **REF ratings.** These are placeholders; confirm each on its datasheet:
    - branch fuse DC voltage and interrupt ratings;

@@ -45,15 +45,15 @@ purchased text before anyone calls EOX compliant.
 
 | ID | Choice | Why / enforced by |
 |---|---|---|
-| D-01 | Power box sealed (target IP54); everything outside it IP65+ (unit controllers, connectors, glands IP67/68) | Golf-cart AC controllers (Curtis 1236 class) are sold as IP65. |
+| D-01 | Power box sealed (target IP54); everything outside it IP65+ (unit controllers, connectors, glands IP67/68) | Golf-cart controllers (e.g. Curtis 1236) are sold as IP65; check the sepex controller chosen, or shield it. |
 | D-02 | Design loads: 3 g vertical, 2 g longitudinal and lateral, SF 2 on yield | Typical off-road practice for a slow machine. `Box structure: ...` |
 | D-03 | Crash: obstacle strike at top speed with 50 mm crush (5 g at 8 km/h); no yield in the battery restraint (SF 1) | ECE R100 road pulses (10–28 g) are for road vehicles; our Δv is much lower. Revisit with test data. |
 | D-04 | Maintenance disconnect fitted even though UL 2271 only requires one above 60 V | Safe servicing. BOM P06. |
 | D-05 | Timed precharge, and a resistor that survives being left on into a short | `Bus: precharge resistor if left on into a short` |
 | D-06 | Pack below its 60 °C discharge / 45 °C charge rating at the end of a full run, starting heat-soaked; WARN within 5 °C | `Box thermal: pack temp ...` |
-| D-07 | Units are AC (or sepex), never series-wound DC, on anything that spins a blade | A series motor over-speeds unloaded: a thrown belt means a runaway blade. |
+| D-07 | Units are DC sepex (default) or AC, never series-wound DC, on anything that spins a blade | A series motor over-speeds unloaded: a thrown belt means a runaway blade. Sepex and AC controllers hold a set speed and brake regeneratively. |
 | D-08 | One enable chain: key → E-stop → BMS enable → seat switch → every unit; PTO enable also needs the deck-latched signal | `docs/architecture.md`; controls module |
-| D-09 | Articulation pinch gap to the footwell ≥ 120 mm at full lock | ISO 13854 minimum gap for a foot (verify against the standard). `Steering: front half to footwell` |
+| D-09 | Articulation pinch gap to the footwell ≥ 120 mm at full lock; ≥ 500 mm (or a guard) wherever a body could be; a frame lock bar for transport and service | ISO 13854 (foot 120, body 500 mm, confirmed in docs/research/articulation.md); ISO 10570 frame lock. `Pivot: front half to footwell` |
 | D-10 | Steering fast enough to avoid things: lock to lock ≤ 4 s at standstill force | `Steering: lock-to-lock time`. This is why steering is hydraulic, not an electric actuator (~17 s). |
 | D-11 | Max working slope = half the lowest static tip angle (each half's stability triangle and the whole machine), ≥ the 15° design slope | Industry practice. `Stability: max working slope` |
 | D-12 | The generator wagon connects to the tractor by DC only, so the tractor stays SELV; mains AC (with ground-fault protection) stays on the wagon | `docs/architecture.md` |
@@ -69,8 +69,10 @@ purchased text before anyone calls EOX compliant.
     17° across.
   - Industry practice is to label half the measured tip angle as the safe
     working slope.
-- **Parking brake.** Golf-cart rear ends have drum brakes; the holding slope
-  and how they're actuated aren't checked yet.
+- **Parking brake.** Golf-cart rear ends have cable-operated mechanical drum
+  brakes with a foot or automatic park brake. The E-Z-GO RXV AC drivetrain
+  instead uses motor braking plus an automatic electromagnetic park brake
+  (docs/research/golf-cart.md). The holding slope isn't checked yet.
 - **Articulated steering failure.** If hydraulic pressure is lost the machine
   can't steer; the fail-safe (drive inhibit on low pressure) isn't designed
   yet.

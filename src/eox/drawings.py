@@ -198,86 +198,97 @@ def flat_svg(part: FlangedPanel, theme: str, qty: int = 1) -> str:
 # Stability plan view
 # ---------------------------------------------------------------------------
 def stability_svg(tr, theme: str) -> str:
+    """Plan view: support polygons, pivot and CGs. Pro: straight + full lock,
+    with each half's triangle. Home: one panel, four wheels."""
     from eox.calcs.vehicle import stability
 
     t = THEMES[theme]
-    lo, a = tr.p.layout, tr.p.axle
-    gmax = lo.articulation_max_deg
+    p = tr.p
+    gammas = [0.0, p.layout.articulation_max_deg] if tr.articulated else [0.0]
     sc = 0.21
-    span_x = (lo.front_axle_x - lo.rear_axle_x) + a.tire_diameter + 500
-    span_y = a.track + a.tire_width + 900
-    pw, ph = span_x * sc, span_y * sc
-    s = Svg(2 * pw + 60, ph + 112, theme)
-    # legend (shared)
-    items = [("rigid", 0, "whole machine on 4 wheels"), ("front", 1, "front half triangle"),
-             ("rear", 2, "rear half triangle")]
+    xs = [ax.x for ax in tr.axles]
+    tire = max(ax.tire_diameter for ax in tr.axles)
+    x_lo, x_hi = min(xs) - tire / 2 - 150, max(xs) + tire / 2 + 250
+    span_y = max(ax.track + ax.tire_width for ax in tr.axles) + (900 if tr.articulated else 300)
+    pw, ph = (x_hi - x_lo) * sc, span_y * sc
+    s = Svg(len(gammas) * (pw + 20) + 40, ph + 112, theme)
+    items = [(0, "whole machine on 4 wheels")]
+    if tr.articulated:
+        items += [(1, "front half triangle"), (2, "rear half triangle")]
+    s.text(16, 26, f"{p.model.name}: static stability, plan view", 16, weight=600)
     lx = 16
-    s.text(16, 26, f"{tr.p.model.name}: static stability, plan view", 16, weight=600)
-    for _, i, label in items:
+    for i, label in items:
         s.add(f'<rect x="{lx}" y="40" width="14" height="10" rx="2" fill="{t["series"][i]}" fill-opacity="0.15" '
               f'stroke="{t["series"][i]}" stroke-width="2"/>')
         s.text(lx + 20, 49, label, 11, t["ink2"])
         lx += 30 + 6.2 * len(label)
     s.add(f'<circle cx="{lx + 6}" cy="45" r="5" fill="{t["ink"]}" stroke="{t["surface"]}" stroke-width="2"/>')
-    s.text(lx + 16, 49, "centre of gravity (machine, front, rear)", 11, t["ink2"])
+    s.text(lx + 16, 49, "centre of gravity" + (" (machine, front, rear)" if tr.articulated else " with operator"), 11, t["ink2"])
 
-    for k, gamma in enumerate((0.0, gmax)):
+    def poly(pts, P, **kw):
+        attrs = " ".join(f'{k.replace("_", "-")}="{v}"' for k, v in kw.items())
+        s.add('<polygon points="' + " ".join(f"{P(q)[0]:.1f},{P(q)[1]:.1f}" for q in pts) + f'" {attrs}/>')
+
+    def rot(pts, g):
+        return [(x * math.cos(g) - y * math.sin(g), x * math.sin(g) + y * math.cos(g)) for x, y in pts]
+
+    for k, gamma in enumerate(gammas):
         ox, oy = 20 + k * (pw + 20), 70
-        cx0 = ox + (-lo.rear_axle_x + a.tire_diameter / 2 + 250) * sc
-        cy0 = oy + 30 + ph / 2
-        P = lambda pt: (cx0 + pt[0] * sc, cy0 - pt[1] * sc)   # noqa: E731
+        cx0, cy0 = ox - x_lo * sc, oy + 30 + ph / 2
+        P = lambda pt, cx0=cx0, cy0=cy0: (cx0 + pt[0] * sc, cy0 - pt[1] * sc)   # noqa: E731
         res = stability(tr, gamma)
-        title = "straight" if not gamma else f"full lock {gamma:g}°"
-        s.text(ox, oy + 6, title, 13, weight=600)
-        s.text(ox, oy + 24, f"tip angles: rigid {res['rigid']:.0f}° · front {res['front']:.0f}° · rear {res['rear']:.0f}°",
-               11, t["ink2"])
+        if tr.articulated:
+            s.text(ox, oy + 6, "straight" if not gamma else f"full lock {gamma:g}°", 13, weight=600)
+            sub = f"tip angles: rigid {res['rigid']:.0f}° · front {res['front']:.0f}° · rear {res['rear']:.0f}°"
+        else:
+            sub = f"tip angle {res['rigid']:.0f}° in the worst direction"
+        s.text(ox, oy + 24, sub, 11, t["ink2"])
         # context: tyres, box and seat outlines
-        for half in ("front", "rear"):
-            for c in tr.contacts(half, gamma):
-                hl, hw = a.tire_diameter / 2, a.tire_width / 2
-                g = math.radians(gamma) if half == "front" else 0.0
-                pts = [(c[0] + dx * math.cos(g) - dy * math.sin(g), c[1] + dx * math.sin(g) + dy * math.cos(g))
-                       for dx, dy in ((-hl, -hw), (hl, -hw), (hl, hw), (-hl, hw))]
-                s.add('<polygon points="' + " ".join(f"{P(q)[0]:.1f},{P(q)[1]:.1f}" for q in pts)
-                      + f'" fill="{t["grid"]}" stroke="{t["base"]}" stroke-width="1"/>')
+        for ax in tr.axles:
+            g = math.radians(gamma) if (tr.articulated and ax.group == "front") else 0.0
+            for c in tr.contacts(ax.name, gamma):
+                hl, hw = ax.tire_diameter / 2, ax.tire_width / 2
+                foot = [(c[0] + dx * math.cos(g) - dy * math.sin(g), c[1] + dx * math.sin(g) + dy * math.cos(g))
+                        for dx, dy in ((-hl, -hw), (hl, -hw), (hl, hw), (-hl, hw))]
+                poly(foot, P, fill=t["grid"], stroke=t["base"], stroke_width=1)
         L, Wb, _ = tr.box.outer
         bx = tr.box_pos[0]
-        g = math.radians(gamma)
-        box = [(bx + sx * L / 2, sy * Wb / 2) for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))]
-        box = [(x * math.cos(g) - y * math.sin(g), x * math.sin(g) + y * math.cos(g)) for x, y in box]
-        s.add('<polygon points="' + " ".join(f"{P(q)[0]:.1f},{P(q)[1]:.1f}" for q in box)
-              + f'" fill="none" stroke="{t["muted"]}" stroke-width="1"/>')
-        sx_, sz = lo.operator_cg[0], 220
-        seat = [(sx_ - sz, -sz), (sx_ + sz, -sz), (sx_ + sz, sz), (sx_ - sz, sz)]
-        s.add('<polygon points="' + " ".join(f"{P(q)[0]:.1f},{P(q)[1]:.1f}" for q in seat)
-              + f'" fill="none" stroke="{t["muted"]}" stroke-width="1"/>')
-        bl = P((bx * math.cos(g) - (Wb / 2 + 40) * math.sin(g), bx * math.sin(g) + (Wb / 2 + 40) * math.cos(g)))
-        s.text(bl[0], bl[1], "power box", 10, t["muted"], "middle")
-        sl = P((sx_, sz + 40))
-        s.text(sl[0], sl[1], "seat", 10, t["muted"], "middle")
+        gb = math.radians(gamma) if (tr.articulated and tr.box_group == "front") else 0.0
+        box = rot([(bx + sx * L / 2, sy * Wb / 2) for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))], gb)
+        poly(box, P, fill="none", stroke=t["muted"], stroke_width=1)
+        bl = P(rot([(bx, Wb / 2 + 40)], gb)[0])
+        s.text(bl[0], bl[1], "power box" + ("" if tr.articulated else " + seat"), 10, t["muted"], "middle")
+        if tr.articulated:
+            sx_, sz = p.layout.operator_cg[0], 220
+            poly([(sx_ - sz, -sz), (sx_ + sz, -sz), (sx_ + sz, sz), (sx_ - sz, sz)], P, fill="none",
+                 stroke=t["muted"], stroke_width=1)
+            sl = P((sx_, sz + 40))
+            s.text(sl[0], sl[1], "seat", 10, t["muted"], "middle")
         # support polygons
         fl, fr = tr.contacts("front", gamma)
         rl, rr = tr.contacts("rear", gamma)
-        j = tr.joint()
-        polys = [([fl, fr, rr, rl], 0), ([fl, fr, j], 1), ([rl, rr, j], 2)]
+        polys = [([fl, fr, rr, rl], 0)]
+        if tr.articulated:
+            j = tr.joint()
+            polys += [([fl, fr, j], 1), ([rl, rr, j], 2)]
         for pts, i in polys:
-            s.add('<polygon points="' + " ".join(f"{P(q)[0]:.1f},{P(q)[1]:.1f}" for q in pts)
-                  + f'" fill="{t["series"][i]}" fill-opacity="0.10" stroke="{t["series"][i]}" stroke-width="2" '
-                  'stroke-linejoin="round"/>')
-        # pivot and CGs (2 px surface ring)
-        jx, jy = P(j)
-        s.add(f'<circle cx="{jx:.1f}" cy="{jy:.1f}" r="4" fill="{t["surface"]}" stroke="{t["ink"]}" stroke-width="1.5"/>')
-        s.text(jx, jy - 9, "pivot", 10, t["ink2"], "middle")
-        for half, fill in ((None, t["ink"]), ("front", t["series"][1]), ("rear", t["series"][2])):
-            x, y = P(tr.cg(half, gamma))
+            poly(pts, P, fill=t["series"][i], fill_opacity="0.10", stroke=t["series"][i], stroke_width=2,
+                 stroke_linejoin="round")
+        dots = [(None, t["ink"])]
+        if tr.articulated:
+            jx, jy = P(tr.joint())
+            s.add(f'<circle cx="{jx:.1f}" cy="{jy:.1f}" r="4" fill="{t["surface"]}" stroke="{t["ink"]}" stroke-width="1.5"/>')
+            s.text(jx, jy - 9, "pivot", 10, t["ink2"], "middle")
+            dots += [("front", t["series"][1]), ("rear", t["series"][2])]
+        for group, fill in dots:              # 2 px surface ring
+            x, y = P(tr.cg(group, gamma))
             s.add(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="5" fill="{fill}" stroke="{t["surface"]}" stroke-width="2"/>')
-        # forward arrow
         ax_, ay_ = ox + pw - 110, oy + ph + 22
         s.line(ax_, ay_, ax_ + 60, ay_, t["muted"], 1.5)
         s.add(f'<path d="M{ax_ + 66},{ay_} l-8,-4 v8 Z" fill="{t["muted"]}"/>')
         s.text(ax_ - 6, ay_ + 4, "forward", 11, t["muted"], "end")
-    return s.render(f"{tr.p.model.name} stability plan view",
-                    "Support polygons, pivot and centres of gravity, straight and at full articulation.")
+    return s.render(f"{p.model.name} stability plan view",
+                    "Support polygons and centres of gravity" + (", straight and at full articulation." if tr.articulated else "."))
 
 
 # ---------------------------------------------------------------------------

@@ -1,0 +1,16 @@
+# EOX steering front axle (shared): a golf-cart front axle with spindles, hubs,
+# tie rod and rack-and-pinion steering. Used by the Home model (2WD).
+# REF values until checked against a real axle (golf-cart geometry research).
+
+[steer_axle]
+name = "Golf-cart front axle, spindles, hubs, rack and pinion"
+track = 860                    # REF: wheel centre to wheel centre
+tire_diameter = 457            # 18x8.50-8, same tyres as the rear
+tire_width = 216
+beam_clearance = 200           # REF: ground to the lowest point of the front axle (no diff here)
+mass_kg = 25                   # REF: axle, spindles, hubs, rack, tie rods
+wheel_tire_mass_kg = 8
+max_steer_deg = 50             # REF: inner wheel at full lock
+turns_lock_to_lock = 2.0       # REF: steering-wheel turns
+scrub_radius = 50              # REF: kingpin axis to tyre centre at the ground
+oscillates = false             # leaf-sprung on a golf cart: treat the support as 4 rigid points

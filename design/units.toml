@@ -9,25 +9,29 @@
 # so the whole golf-cart parts ecosystem -- motors, controllers, rear ends,
 # chargers, contactors, DC-DC converters, 18x8.50-8 wheels -- fits this bus.
 #
-# REF = typical for a 48 V AC golf-cart motor (EZGO RXV / Club Car AC era).
-# Replace with the datasheet of the unit EOX standardises on.
+# Simple and serviceable: the unit is the golf cart's own 48 V DC sepex
+# (separately excited) motor and controller, used or rebuilt. Any golf-cart
+# shop can rebuild one (brushes), and sepex still gives speed control and
+# regen braking. AC units (E-Z-GO RXV, Club Car AC) are an optional upgrade.
+# Series-wound DC is NOT allowed on anything with a blade: it runs away unloaded.
+# Sources: docs/research/golf-cart.md. REF = unconfirmed, replace from the part you buy.
 
 [unit]
-name = "48 V AC golf-cart motor + controller"
-type = "AC induction"          # NOT series DC: a series motor over-speeds unloaded (thrown belt = runaway blade)
-rated_power_w = 2240           # 3 HP continuous (REF)
+name = "48 V golf-cart DC sepex motor + controller (used or rebuilt)"
+type = "DC sepex"              # speed-controlled, regen; never series-wound DC on a blade
+rated_power_w = 2240           # 3 HP continuous: E-Z-GO TXT 48 V DC shunt motor is 3.0 hp continuous
 base_speed_rpm = 3600          # REF
 max_speed_rpm = 5000           # REF
-peak_torque_factor = 3.0       # short-time peak torque / rated torque (REF)
-motor_efficiency = 0.85        # REF, near rated load
+peak_torque_factor = 4.0       # Club Car Carryall 300 DC: 3.3 hp rated, 13 hp peak
+motor_efficiency = 0.80        # REF: brushed DC near rated load
 controller_efficiency = 0.97
 controller_battery_limit_a = 100   # programmed battery-side current limit, per unit
 controller_capacitance_uf = 2000   # REF, for bus precharge
-motor_mass_kg = 15             # REF
+motor_mass_kg = 18             # REF: OEM masses unpublished
 controller_mass_kg = 2.5       # REF
-motor_diameter = 170           # REF envelope
-motor_length = 260
-controller_size = [250, 150, 80]   # REF envelope, mm
+motor_diameter = 185           # REF envelope
+motor_length = 265
+controller_size = [232, 165, 85]   # REF envelope (Curtis 1236 class is 232 x 165 x 85 mm); OEMs mount it under the seat
 
 [bus]
 nominal_v = 51.2

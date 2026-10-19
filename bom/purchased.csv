@@ -22,23 +22,28 @@ powerbox,P20,Hardware,Clamp rods,"M8 A2 stainless threaded rod, 260 mm, + nyloc 
 powerbox,P21,Hardware,Structural rivets,"3/16 in steel structural blind rivet, 4.9 mm hole",8,0.5,0.004,,"Battery stops."
 powerbox,P22,Hardware,Battery pads,"Closed-cell neoprene 6 mm, under pack + top strips",1,15,0.3,,
 powerbox,P23,Labels,Safety labels,"Battery / high current / no-step decals",1,10,0,,
-drive_axle,D01,Drive,Golf-cart rear end,"Transaxle ~12.4:1 with drum brakes, hubs and axle tubes; 8 in wheel bolt pattern",1,350,45,"EZGO / Club Car / Yamaha rear ends, used or new","Gearing is an open decision: stock vs an added ~2:1 stage (see Drive checks)."
-drive_axle,D02,Drive,3 HP unit: AC motor,"48 V AC induction golf-cart motor, ~2.2 kW continuous, spline matched to D01",1,500,15,"EZGO RXV / Club Car AC motors","AC, not series DC: no runaway when unloaded."
-drive_axle,D03,Drive,3 HP unit: motor controller,"48 V AC motor controller, programmable >=100 A battery limit, speed limit, regen, CAN",1,600,2.5,"Curtis 1236/1238 class","Mounted on the subframe next to its motor."
+drive_axle,D01,Drive,Golf-cart rear end,"Post-1986 double-reduction transaxle, stock ~12.4:1 (19-spline input, motor mounts sideways on the gear case), cable drum brakes, 38.5 in track, used",1,250,45,"E-Z-GO TXT, Club Car DS / Precedent, Yamaha G-series","Stock ratio. A drop-in 15:1 gear set is the cheap upgrade for steep ground. Geometry: docs/research/golf-cart.md."
+drive_axle,D02,Drive,3 HP unit: DC sepex motor,"48 V golf-cart DC sepex motor, ~3 hp continuous, 19-spline to match D01, used or rebuilt",1,250,18,"E-Z-GO TXT PDS / Club Car IQ class","Brushes rebuildable at any golf-cart shop. Never series-wound DC on a blade drive."
+drive_axle,D03,Drive,3 HP unit: motor controller,"48 V sepex controller, >=100 A battery limit, speed limit, regen braking, key/enable input",1,350,2.5,"Curtis 1268 / Alltrax sepex class","Mounted flat on a cross member next to its motor."
 drive_axle,D04,Drive,Wheel + tyre,"18x8.50-8 turf tyre on 8 in golf-cart wheel",2,75,8,,
 drive_axle,D05,Wiring,Branch cable,"2-core 6 AWG flexible, 105 C, oil/UV resistant, 5 m",1,40,1.0,,"Box to unit; strain-relieved where it crosses the pivot."
 drive_axle,D06,Wiring,Unit connectors,"Anderson SB120 pair (power) + Deutsch DT 6-pin pair (enable, interlock, CAN)",1,45,0.3,,"The standard 3 HP unit interface."
 drive_axle,D07,Hardware,Axle U-bolts,"U-bolts to clamp the axle tubes to the subframe rails, grade 8 + nyloc",4,6,0.2,,
 drive_axle,D08,Sheet metal,Subframe (design pending),"Half-frame rails + cross members, sheet steel, SendCutSend",1,,12,,"Mass is the estimate used in the vehicle calc until the frame is designed."
-articulation,A01,Steering,Pivot pins + bearings,"Vertical articulation pin with 2 flanged bearings; fore-aft oscillation pin with bushings; stops at +-35 deg yaw, +-10 deg roll",1,120,10,,
-articulation,A02,Steering,Steering cylinder,"Double-acting, 40 mm bore, 20 mm rod, ~180 mm stroke",1,150,4,,"Calc: 1,158 N*m at full lock vs 902 needed; 2.8 s lock to lock."
+articulation,A01,Steering,Pivot pins + bearings,"2x 25 mm hardened pins, 2x GE25ES-class greasable spherical plain bearings; 40 mm roll trunnion in 2 bushings; rubber stops at +-40 deg yaw, +-10 deg roll",1,140,10,,"See docs/research/articulation.md. Clevis ears are laser-cut 1/2 in plate (fabricated, issue 5)."
+articulation,A02,Steering,Steering cylinder,"Double-acting, 45 mm bore, 20 mm rod, ~160 mm stroke, clevis ends",1,150,4,,"Front frame to the knuckle arm. Calc: 1,173 N*m at full lock vs 871 needed; 3.3 s lock to lock."
 articulation,A03,Steering,Orbital steering valve,"Hand-metering steering unit (orbitrol), ~50 cc/rev",1,250,2,"Danfoss OSPB/OSPC class",
 articulation,A04,Steering,Hydraulic power unit,"48 V DC, 4 L/min @ 100 bar, on-demand (pressure switch + 0.5 L accumulator)",1,450,8,,"Average draw ~110 W while driving (10% duty)."
 articulation,A05,Steering,Hoses + fittings,"Hoses, fittings, return filter, reservoir if not on the power unit",1,90,1.5,,
-articulation,A06,Wiring,Pivot cable management,"Flexible conduit + strain reliefs for power and signal crossing the pivot",1,30,0.5,,
+articulation,A06,Wiring,Pivot cable management,"Flexible conduit + strain reliefs for power and signal crossing the pivot",1,30,0.5,,"Route close to the hinge axis."
+articulation,A07,Safety,Frame lock bar,"Laser-cut 10 mm steel bar, painted red, pins between lugs on both halves; stowage clip",1,25,1.5,,"Locks articulation for transport and service (ISO 10570 practice)."
 controls,C01,Controls,Emergency stop,"Red mushroom, latching, 2x NC, DC rated",1,30,0.15,,"Breaks contactor coil and every unit's enable line."
 controls,C02,Controls,Key switch,"2-position, DC rated, removable key",1,15,0.05,,
 controls,C03,Controls,Seat switch,"Operator presence switch under the seat",1,20,0.1,,"Operator presence control (ANSI/OPEI B71.1): drive and PTO stop when the seat is empty."
 controls,C04,Controls,Throttle + direction,"Hall throttle pedal, fwd/neutral/rev switch",1,60,0.6,,
 controls,C05,Controls,Steering wheel,"Steering wheel on the orbital valve",1,40,1.0,,
 controls,C06,Wiring,Control harness,"18 AWG TXL + Deutsch DT connectors, CAN backbone",1,80,0.6,,
+steer_axle,S01,Steering,Golf-cart front axle,"E-Z-GO TXT-style beam front axle on two leaf springs + shocks, rack bolted to the axle, kingpins, 34 in track",1,250,25,"E-Z-GO TXT front end (the only self-contained beam axle found)","Club Car / RXV / Yamaha front ends are independent and tied into their frames."
+steer_axle,S02,Steering,Rack and pinion,"Golf-cart rack and pinion with steering shaft and U-joint",1,180,4,,"Manual steering, ~2 turns lock to lock (REF)."
+steer_axle,S03,Drive,Front wheel + tyre,"18x8.50-8 turf tyre on 8 in golf-cart wheel",2,75,8,,"Same tyres as the rear."
+steer_axle,S04,Hardware,Front axle mounts,"Spring hangers / U-bolts / bushings to fix the axle to the chassis",1,40,1.5,,
