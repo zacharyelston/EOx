@@ -1,0 +1,62 @@
+# EOX Home: conventional 2WD
+#
+# A golf-cart front steering axle (design/steer_axle.toml) and ONE drive-axle
+# module (design/axle.toml) at the rear. As on a golf cart, the battery &
+# distribution box hangs low between the axles under the seat; a mid-mount
+# deck fits under it.
+#
+# Frame: origin on the ground under the rear axle, x forward, y left, z up. mm, kg.
+
+[model]
+name = "EOX Home"
+layout = "steer_axle"
+revision = "H0"
+modes = ["mowing", "slope_mowing", "transport"]   # no 3-unit hydraulics on Home
+
+[overrides]                    # shared values Home changes (the box keeps all 4 branches; one is spare)
+"bus.max_simultaneous_units" = 2   # drive + PTO
+"bus.branch_conductor_length_m" = 3.0
+
+[vehicle]
+mass_operator_kg = 100
+mass_payload_kg = 0
+rolling_resistance = 0.10
+traction_coefficient = 0.5     # turf
+top_speed_kmh = 8.0
+design_slope_deg = 10
+max_slope_deg = 15
+duty_overhead = 1.25
+
+[layout]
+wheelbase = 1600               # rear axle (x = 0) to front axle (golf carts: 1,664-1,676)
+rear_overhang = 340            # frame behind the rear axle (controller, hitch)
+front_overhang = 250           # frame ahead of the front axle
+frame_half_width = 310         # rails clear the sideways motor and sit inside the rear tyres
+nose_x = 1200                  # from here forward the rails neck in ...
+nose_half_width = 100          # ... clear of the steered front wheels' sweep (inner edge ~130 mm at full lock)
+frame_mass_kg = 22             # sheet-steel chassis rails + cross members, estimate
+powerbox_x = 510               # box centre: just ahead of the rear axle and its motor, under the seat
+powerbox_z = 230               # box underside, slung between the rails; a deck top at min cut is 150
+seat_and_controls_mass_kg = 30
+seat_and_controls_cg = [700, 0, 600]
+operator_cg = [520, 0, 790]    # seated on the box
+floor_x = 1080                 # floor pan centre, ahead of the box
+floor_length = 360
+steering_wheel_at = [1060, 0, 840]  # wheel centre: ahead of the seat, at chest height
+
+[steering]
+type = "rack and pinion"       # manual, golf-cart parts
+scrub_coefficient = 0.6        # standstill steering on turf
+steering_wheel_diameter = 330
+
+[deck]                         # mid-mount between the axles (front-mount vs drive-over: issue 7)
+mount = "mid (drive-over)"
+width = 1070
+top_height_min_cut = 150       # REF
+mass_kg = 45
+
+[bom]
+powerbox = 1
+drive_axle = 1
+steer_axle = 1
+controls = 1

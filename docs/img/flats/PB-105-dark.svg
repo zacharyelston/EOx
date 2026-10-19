@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 620 300" width="620" height="300" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="t">PB-105 flat pattern</title>
+<desc id="d">Cut diagram for Battery stop angle: outline, holes and bend lines, flat size 250 by 59 mm.</desc>
+<rect width="100%" height="100%" rx="8" fill="#1a1a19"/>
+<text x="16.0" y="26.0" font-size="16" font-weight="600" fill="#f0efec" text-anchor="start">PB-105 · Battery stop angle</text>
+<text x="16.0" y="46.0" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="start">Aluminum 5052-H32 0.125 in (3.17 mm) · 1 bend · qty 2 · 0.13 kg each</text>
+<text x="16.0" y="64.0" font-size="11" font-weight="400" fill="#898781" text-anchor="start">SendCutSend K 0.44, inside radius 0.125 in. Order the STEP; this flat is the reference cut.</text>
+<path d="M56.00,160.80 H536.00 V206.20 H56.00 Z M56.00,92.00 H536.00 V160.80 H56.00 Z" fill="#3987e5" fill-opacity="0.10"/>
+<line x1="56.0" y1="206.2" x2="56.0" y2="92.0" stroke="#f0efec" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="536.0" y1="206.2" x2="536.0" y2="92.0" stroke="#f0efec" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="56.0" y1="206.2" x2="536.0" y2="206.2" stroke="#f0efec" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="56.0" y1="92.0" x2="536.0" y2="92.0" stroke="#f0efec" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="56.0" y1="153.9" x2="536.0" y2="153.9" stroke="#3987e5" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="9 5"/>
+<text x="296.0" y="147.9" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="middle">fold up 90°</text>
+<circle cx="94.4" cy="189.3" r="4.7" fill="#1a1a19" stroke="#f0efec" stroke-width="1"/>
+<circle cx="228.8" cy="189.3" r="4.7" fill="#1a1a19" stroke="#f0efec" stroke-width="1"/>
+<circle cx="363.2" cy="189.3" r="4.7" fill="#1a1a19" stroke="#f0efec" stroke-width="1"/>
+<circle cx="497.6" cy="189.3" r="4.7" fill="#1a1a19" stroke="#f0efec" stroke-width="1"/>
+<line x1="56.0" y1="210.2" x2="56.0" y2="232.2" stroke="#383835" stroke-width="1" stroke-linecap="butt"/>
+<line x1="536.0" y1="210.2" x2="536.0" y2="232.2" stroke="#383835" stroke-width="1" stroke-linecap="butt"/>
+<line x1="56.0" y1="228.2" x2="536.0" y2="228.2" stroke="#898781" stroke-width="1" stroke-linecap="butt"/>
+<path d="M56.0,228.2 L62.6,230.6 L62.6,225.8 Z" fill="#898781"/>
+<path d="M536.0,228.2 L529.4,225.8 L529.4,230.6 Z" fill="#898781"/>
+<text x="296.0" y="222.2" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="middle">250 mm (9.84 in)</text>
+<line x1="52.0" y1="92.0" x2="30.0" y2="92.0" stroke="#383835" stroke-width="1" stroke-linecap="butt"/>
+<line x1="52.0" y1="206.2" x2="30.0" y2="206.2" stroke="#383835" stroke-width="1" stroke-linecap="butt"/>
+<line x1="34.0" y1="92.0" x2="34.0" y2="206.2" stroke="#898781" stroke-width="1" stroke-linecap="butt"/>
+<path d="M34.0,92.0 L31.6,98.6 L36.4,98.6 Z" fill="#898781"/>
+<path d="M34.0,206.2 L36.4,199.6 L31.6,199.6 Z" fill="#898781"/>
+<text x="26.0" y="149.1" font-size="12" font-weight="400" fill="#c3c2b7" text-anchor="middle" transform="rotate(-90 26.0 149.1)">59 mm</text>
+<line x1="16.0" y1="256.2" x2="44.0" y2="256.2" stroke="#3987e5" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="9 5"/>
+<text x="52.0" y="260.2" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">bend line: fold up 90°, toward you</text>
+<circle cx="30" cy="276.2" r="5" fill="#1a1a19" stroke="#f0efec"/>
+<text x="52.0" y="280.2" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">Ø4.9 mm × 4   rivet</text>
+</svg>

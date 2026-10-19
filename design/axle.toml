@@ -1,0 +1,35 @@
+# EOX drive-axle module (shared): a salvaged/new golf-cart rear end with one
+# 3 HP unit bolted to it, on a sheet-steel subframe.
+#   Pro model:  two of these, one per half of the articulated frame (AWD)
+#   Home model: one of these at the rear, plus a golf-cart front steering axle
+#
+# Geometry from factory manuals and spec sheets: docs/research/golf-cart.md.
+# Post-1986 golf-cart transaxles are double-reduction helical units. The motor
+# axis is PARALLEL to the axle: the motor slides onto a splined input on the
+# side of an off-centre gear case, sits above the axle centreline, and runs
+# out over the longer axle tube.
+
+[axle]
+name = "Golf-cart rear end (transaxle) with drum brakes"
+ratio = 12.4                   # stock: E-Z-GO TXT 12.44:1, Club Car Precedent 12.3:1
+extra_reduction = 1.0          # 1 = motor bolted direct (stock). >1 = added chain stage (issue 2)
+efficiency = 0.93
+track = 978                    # rear, wheel centre to wheel centre: TXT / DS / Precedent 38.5 in
+tire_diameter = 457            # 18x8.50-8
+tire_width = 216
+diff_clearance = 114           # ground to the gear case with 18x8.50-8 tyres: 4.5 in (TXT, Precedent, RXV)
+diff_size = [240, 220]         # gear case length (x) and width (y): REF envelope, unconfirmed
+diff_offset_y = -90            # gear case off-centre: TXT ~3.6 in to the right (derived from axle shaft lengths)
+motor_offset_x = 0             # motor axis fore/aft of the axle centre: UNCONFIRMED, measure a real unit
+motor_offset_z = 60            # motor axis above the axle centre: REF (manual figure shows it above)
+rear_end_mass_kg = 45          # rear end + brakes + hubs: UNCONFIRMED
+wheel_tire_mass_kg = 8         # each
+subframe_mass_kg = 12          # sheet-steel half-frame, estimate until it is designed
+cg_height = 240                # module CG above ground
+# Cheap, serviceable ways to more reduction, if slopes demand it (issue 2).
+# EOX uses the stock rear end: a loaded golf cart climbs harder than this.
+gearing_options = [
+  { label = "stock rear end", ratio = 12.4 },
+  { label = "stock + aftermarket 15:1 gear set", ratio = 15.0 },
+  { label = "stock + 2:1 chain stage", ratio = 24.8 },
+]

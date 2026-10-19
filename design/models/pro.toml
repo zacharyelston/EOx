@@ -1,0 +1,85 @@
+# EOX Pro: articulated AWD
+#
+# Two identical drive-axle modules (design/axle.toml) joined by a centre pivot:
+# a vertical pin for steering and a fore-aft pin so the halves can roll
+# relative to each other, keeping all four wheels on uneven ground.
+# Front half: front axle module + battery & distribution box + implement face.
+# Rear half:  rear axle module + operator station.
+#
+# Frame: origin on the ground under the pivot, x forward, y left, z up. mm, kg.
+
+[model]
+name = "EOX Pro"
+layout = "articulated"
+revision = "P0"
+
+[vehicle]
+mass_operator_kg = 100
+mass_payload_kg = 0
+rolling_resistance = 0.10      # ~0.06 firm lawn, 0.10 typical turf, 0.15+ soft/wet
+traction_coefficient = 0.5     # turf, for the traction-limit check
+top_speed_kmh = 8.0            # controller speed limit
+design_slope_deg = 10          # sustained climb the drive must handle (mowing on a slope)
+max_slope_deg = 15             # short climbs on peak torque
+duty_overhead = 1.25           # turns, accel and small slopes on top of steady driving
+
+[layout]
+front_axle_x = 650
+rear_axle_x = -650
+motor_points = "inward"        # golf-cart motors face the pivot from each axle
+pivot_height = 300             # articulation + oscillation joint
+articulation_max_deg = 40       # to bump stops, before the cylinder bottoms (peers: 39-45 deg)
+oscillation_max_deg = 10
+frame_half_width = 310         # rails clear the sideways motor and sit 50 mm inside the tyres
+frame_end_x = 160              # each half-frame ends here: the hinge zone is +-160 mm around the pivot
+neck_x = 420                   # rails neck in from here to the hinge zone ...
+neck_half_width = 170          # ... to this half-width, so the halves swing past each other
+frame_overhang = 300           # rails run this far outboard of each axle (controllers live there)
+# centre joint (docs/research/articulation.md): front-half clevis, upper + lower
+# pins into a knuckle that carries the fore-aft roll trunnion into the rear half
+pin_diameter = 25              # hardened pins (est.)
+pin_spacing = 220              # upper to lower pin
+ear_thickness = 12.7           # clevis ears laser-cut flat from 1/2 in steel (SCS bends steel only to 0.25 in)
+knuckle_width = 80
+pin_yield_mpa = 600            # REF: hardened 4140-class pin
+ear_yield_mpa = 250            # A36-class plate
+bearing_static_kn = 334        # GE25ES-class spherical plain bearing C0
+cylinder_anchor_x = 320        # steering cylinder: front-frame bracket ...
+knuckle_anchor_x = -60         # ... to a steering arm on the knuckle, so roll can't steer
+powerbox_x = 590               # box centre, on the front half, clear of the hinge zone
+powerbox_z = 390               # box underside: clears the sideways front motor (top ~381 mm)
+implement_face_x = 1010        # front implement plate (deck coupling, loader...)
+implement_mass_kg = 6
+seat_and_controls_mass_kg = 35
+seat_and_controls_cg = [-480, 0, 500]
+joint_mass_kg = 10             # pivot pins, bearings, plates
+steering_mass_kg = 8           # cylinder + 48 V hydraulic power unit
+steering_cg = [-200, -120, 300]
+operator_cg = [-560, 0, 760]   # seated operator
+footrest_front_x = -300        # front edge of the footwell (rear half), clear of the rear gear case
+
+[steering]                     # hydraulic: articulated steering needs a lot of force at standstill
+type = "hydraulic cylinder"
+scrub_coefficient = 0.6        # tyre sideways slip on turf, standstill steering
+lever_arm = 120                # cylinder line of action to the pivot axis (between the rails)
+bore = 45
+rod = 20
+relief_bar = 100
+pump_flow_lpm = 4.0
+pump_efficiency = 0.6          # small 48 V DC power unit, wire to hydraulic
+duty = 0.10                    # fraction of the time the pump runs while working
+lock_to_lock_target_s = 4.0
+electric_actuator_force_n = 8000   # comparison: heavy-duty electric linear actuator (REF)
+electric_actuator_speed_mm_s = 10  # its speed near full load (REF)
+
+[deck]                         # placeholder until the deck module exists (front-mount vs drive-over is open)
+mount = "undecided"
+width = 1070                   # 42 in
+top_height_min_cut = 150       # deck housing top at the lowest cut height (REF)
+mass_kg = 45
+
+[bom]                          # how many of each module this model uses (bom/purchased.csv `module` column)
+powerbox = 1
+drive_axle = 2
+articulation = 1
+controls = 1

@@ -1,0 +1,141 @@
+# EOX battery & distribution box (shared module) -- design parameters
+#
+# The hub of the 48 V bus: the pack, main protection, and one fused branch per
+# 3 HP unit (design/units.toml). Motors live on the axle modules and
+# attachments, not in here, so the box is sealed.
+# Rev history: A0/A1 carried the motor inside (A1 needed a ventilated bay).
+#
+# Units: mm, kg, N, W, V, A, degC unless the key says otherwise.
+# REF = reference value for a class of part; replace from the datasheet.
+
+[meta]
+module = "powerbox"
+revision = "B0"
+
+# ---------------------------------------------------------------------------
+# REF: 16S LiFePO4 golf-cart pack, 51.2 V nominal, integrated BMS. Buy a listed
+# pack (UL 2271 or IEC 62619); do not build one from cells.
+# ---------------------------------------------------------------------------
+[battery]
+chemistry = "LiFePO4"
+cells_series = 16
+cell_nominal_v = 3.2
+cell_max_v = 3.65              # full charge
+cell_min_v = 2.75              # BMS low-voltage cutoff (check pack datasheet)
+capacity_ah = 100
+usable_dod = 0.80
+internal_resistance_mohm = 15  # whole pack incl. BMS FETs
+max_continuous_a = 200         # BMS continuous: must carry max_simultaneous_units at rated
+max_peak_a = 400               # BMS short-duration rating
+max_temp_discharge_c = 60
+max_temp_charge_c = 45
+specific_heat_j_kgk = 1000     # LiFePO4 cells ~1000-1100; the pack's thermal mass matters on a 1-2 h run
+bms_cell_ovp_v = 3.70          # BMS cell over-voltage cutoff: the single-fault ceiling for SELV
+mass_kg = 45
+length = 520                   # along box x
+width = 270                    # along box y
+height = 220
+terminal_clearance = 35        # above the pack, for lugs and the bend radius of 1/0 cable
+
+[aux]
+dcdc_output_w = 60             # average 12 V load: lights, dash, contactor coil
+dcdc_efficiency = 0.90
+quiescent_w = 8                # BMS + controllers idle + contactor economizer hold
+
+# ---------------------------------------------------------------------------
+# Protection: one main fuse + contactor for the pack, one fuse per unit branch.
+# ---------------------------------------------------------------------------
+[protection]
+main_fuse_family = "Class T"
+main_fuse_voltage_rating_v = 125
+main_fuse_interrupt_rating_a = 20000
+main_fuse_steps_a = [100, 110, 125, 150, 175, 200, 225, 250, 300, 350, 400]
+branch_fuse_family = "ANL-type, >= 80 V DC rated"
+branch_fuse_voltage_rating_v = 80     # REF: confirm on the fuse datasheet
+branch_fuse_interrupt_rating_a = 6000 # REF: confirm; must exceed pack short-circuit current
+branch_fuse_steps_a = [60, 70, 80, 100, 125, 150]
+fuse_continuous_factor = 1.25  # fuse >= 1.25 x continuous current
+conductor_in_engine_space = false   # no motor in the box any more
+main_conductor_length_m = 0.6  # pack to bus bar, + and -, inside the box
+distribution_resistance_mohm = 1.0  # contactor + main fuse + bus bars, for heat in the box (REF)
+max_voltage_drop_pct = 3.0
+contactor_continuous_a = 250   # REF
+contactor_voltage_rating_v = 72  # REF
+precharge_resistor_ohm = 47
+precharge_resistor_w = 100     # aluminium-clad; survives being left on into a short
+precharge_max_time_s = 2.0
+selv_limit_v = 60.0            # DC, dry -- see docs/safety-requirements.md
+
+# ---------------------------------------------------------------------------
+# Enclosure: two shallow shells (tray + cover) because SCS can't bend one deep
+# box: flat blank <= 30x44 in and U-channel base >= 2x flange.
+# ---------------------------------------------------------------------------
+[enclosure]
+material = "al_5052_h32"
+thickness = 3.175              # 0.125" (SCS gauge)
+finish = "powder_white"        # local powder coater: SCS caps powder coat at 30x36 in flats
+wall_clearance = 30            # battery side to wall (y); clamp rods run in this gap
+battery_end_clearance = 35     # battery -x end to wall; holds a battery stop
+bay_gap = 35                   # battery +x end to distribution bay; holds a battery stop
+bay_end_clearance = 10         # distribution bay to +x wall (gland nuts live here)
+battery_pad = 6                # closed-cell foam/rubber under the pack
+tray_height = 150              # OML, floor underside to tray rim
+cover_overlap = 30             # cover skirt overlaps the tray walls by this much
+cover_fit_clearance = 1.0      # per side, cover inner face to tray outer face (gasket tape)
+corner_gap = 0.5               # between butted flanges at a box corner (SCS min 0.38)
+lid_screw_hole = 5.5           # M5 clearance in cover skirt
+lid_screws_per_long_side = 3
+lid_screws_per_short_side = 1
+rivnut_hole_m5 = 7.0
+rivnut_hole_m8 = 11.1
+rivet_hole = 4.9               # 3/16" structural blind rivet
+branch_gland_hole = 32.5       # M32 gland per unit branch (2-core 6 AWG)
+gland_holes = [25.5, 20.5, 20.5]  # M25 charge inlet, M20 control harness, M20 12 V aux
+breather_hole = 12.5           # M12 pressure-equalisation vent (cover end wall, high)
+mount_bolt_count = 4           # box to tractor frame
+mount_inset = 40               # mount hole centre from the outer floor edges
+
+[distribution]                 # main fuse, contactor, precharge, disconnect, branch fuses, DC-DC
+length = 150
+width = 290
+height = 130
+mass_kg = 4.0
+
+[battery_clamp]
+count = 2
+web = 50                       # U-channel base must be >= 2 x flange (SCS)
+flange = 20
+end_inset = 70                 # bar centreline from each x-end of the battery (keep clear of terminals)
+end_clearance = 2              # bar end to tray wall
+rod_preload_n = 800            # per rod; friction from this holds the pack laterally
+pad_friction = 0.4             # rubber pad on pack top/bottom
+rod_diameter = 8               # M8 threaded rod into floor rivnuts
+rivnut_pullout_n = 3000        # REF: steel M8 rivnut in 3 mm Al; verify with supplier data
+
+[battery_stop]                 # L-angles riveted to the floor at both ends of the pack
+count = 2
+length = 250
+leg = 30                       # floor leg, points away from the pack
+height = 35                    # upright the pack bears on
+rivets = 4
+rivet_shear_n = 2500           # REF: 3/16" steel structural blind rivet; verify with supplier
+
+# ---------------------------------------------------------------------------
+# Design loads: engineering-practice choices for an off-road garden machine,
+# not numbers from a standard -- see docs/safety-requirements.md.
+# ---------------------------------------------------------------------------
+[loads]
+vertical_g = 3.0
+longitudinal_g = 2.0
+lateral_g = 2.0
+safety_factor = 2.0            # on yield
+crash_safety_factor = 1.0      # on yield: no permanent set at the crash load
+crash_stop_distance = 50       # obstacle strike at top speed: crush/compliance distance
+
+[thermal]
+ambient_c = 35
+solar_w_m2 = 1000
+h_outside_w_m2k = 5.0          # still air (parked / slow) -- conservative
+h_inside_w_m2k = 4.0           # still internal air
+battery_margin_c = 5           # WARN when within this of a temperature rating
+charge_current_a = 15          # off-board charger, for the parked-charging case
