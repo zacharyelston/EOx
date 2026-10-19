@@ -4,12 +4,16 @@
     B=/Applications/Blender.app/Contents/MacOS/Blender
     $B -b -P tools/render_preview.py -- out/cad/powerbox/stl docs/img/powerbox-exploded.png --lift PB-102
     $B -b -P tools/render_preview.py -- out/cad/pro/stl docs/img/pro-layout.png
+    $B -b -P tools/render_preview.py -- out/cad/pro/stl docs/img/pro-side.png --view side
+    $B -b -P tools/render_preview.py -- out/cad/pro-articulated/stl docs/img/pro-top-articulated.png --view top
 
 STL names are <kind>__<label>.stl; colour comes from the label, then the kind.
 --lift raises every object whose label contains one of the given names (an
-exploded view). Blender is only the viewer; geometry comes from build123d.
+exploded view). --view iso (default, perspective) | side | top (orthographic).
+Blender is only the viewer; geometry comes from build123d.
 """
 
+import math
 import sys
 from pathlib import Path
 
@@ -19,6 +23,7 @@ from mathutils import Vector
 argv = sys.argv[sys.argv.index("--") + 1:] if "--" in sys.argv else []
 stl_dir, out_png = Path(argv[0]), Path(argv[1])
 lift = argv[argv.index("--lift") + 1].split(",") if "--lift" in argv else []
+view = argv[argv.index("--view") + 1] if "--view" in argv else "iso"
 out_png.parent.mkdir(parents=True, exist_ok=True)
 
 COLORS = {  # RGBA, linear. Matched against the label first, then the kind.
@@ -64,7 +69,8 @@ sh.cavity_type = "BOTH"
 sh.show_shadows = True
 sh.show_object_outline = True
 scene.display.shadow_focus = 0.8
-scene.render.resolution_x, scene.render.resolution_y = 1600, 1000
+scene.render.resolution_x, scene.render.resolution_y = 1400, 875
+scene.render.image_settings.compression = 90
 scene.world = bpy.data.worlds.new("w")
 scene.world.color = (0.96, 0.96, 0.95)
 
@@ -81,8 +87,22 @@ cam_data.lens = 50
 cam = bpy.data.objects.new("cam", cam_data)
 scene.collection.objects.link(cam)
 scene.camera = cam
-cam.location = target + Vector((1.0, 1.15, 0.85)).normalized() * size * 1.9
-cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
+ext = hi - lo
+aspect = scene.render.resolution_x / scene.render.resolution_y
+if view == "iso":
+    cam.location = target + Vector((1.0, 1.15, 0.85)).normalized() * size * 1.9
+    cam.rotation_euler = (target - cam.location).to_track_quat("-Z", "Y").to_euler()
+else:
+    cam_data.type = "ORTHO"
+    if view == "side":                      # from the right-hand side: forward points right
+        cam.location = target - Vector((0, size * 3, 0))
+        cam.rotation_euler = (math.radians(90), 0, 0)
+        cam_data.ortho_scale = max(ext.x, ext.z * aspect) * 1.12
+    else:                                   # top: forward points right
+        cam.location = target + Vector((0, 0, size * 3))
+        cam.rotation_euler = (0, 0, 0)
+        cam_data.ortho_scale = max(ext.x, ext.y * aspect) * 1.12
+    cam_data.clip_end = size * 10
 scene.render.filepath = str(out_png)
 bpy.ops.render.render(write_still=True)
 print("rendered", out_png)

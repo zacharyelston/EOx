@@ -57,7 +57,21 @@ also a natural crease line for the low-poly look.
 
 `uv run eox build` writes `out/cad/powerbox/PB-xxx.step` (order these from SCS)
 and `PB-xxx_flat.dxf` (reference flat with a `BEND` layer), plus an assembly
-STEP.
+STEP. `uv run eox drawings` regenerates the cut diagrams below.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="img/flats/PB-101-dark.svg">
+  <img alt="Cut diagram for PB-101, the tray" src="img/flats/PB-101-light.svg" width="100%">
+</picture>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="img/flats/PB-102-dark.svg">
+  <img alt="Cut diagram for PB-102, the cover" src="img/flats/PB-102-light.svg" width="100%">
+</picture>
+
+| | |
+|---|---|
+| <picture><source media="(prefers-color-scheme: dark)" srcset="img/flats/PB-104-dark.svg"><img alt="Cut diagram for PB-104, battery clamp bar" src="img/flats/PB-104-light.svg"></picture> | <picture><source media="(prefers-color-scheme: dark)" srcset="img/flats/PB-105-dark.svg"><img alt="Cut diagram for PB-105, battery stop angle" src="img/flats/PB-105-light.svg"></picture> |
 
 ## Electrical single-line
 

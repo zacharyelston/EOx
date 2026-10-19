@@ -80,15 +80,19 @@ class Tractor:
         return {"front": nf, "rear": W - nf}
 
     # ---- preview -------------------------------------------------------------
-    def assembly(self):
-        from build123d import Pos
+    def assembly(self, gamma_deg: float = 0.0):
+        """Labelled solids for the preview; the front half articulated by gamma."""
+        from build123d import Pos, Rot
+        yaw = Rot(0, 0, gamma_deg)
         items = []
         for half, kind, b in self.bodies:
             s = b.solid()
+            if half == "front":
+                s = yaw * s
             s.label = f"{half}-{b.name}"
             items.append((kind, s))
         for kind, s in powerbox.assembly(self.box):
-            s = Pos(*self.box_pos) * s
+            s = yaw * (Pos(*self.box_pos) * s)
             s.label = f"box-{s.label}"
             items.append((kind, s))
         return items
@@ -129,7 +133,7 @@ def build_pro(p, box: powerbox.Layout | None = None) -> Tractor:
     add("rear", "pivot", "articulation pin", "cyl_z", (0, 0, lo.pivot_height), (70, 180), lo.joint_mass_kg)
     add("rear", "pivot", "oscillation pin", "cyl_x", (0, 0, lo.pivot_height), (50, 2 * lo.frame_end_x + 60))
     sx, sy, sz = lo.steering_cg
-    add("rear", "steering", "steering cylinder", "cyl_x", (sx + 150, -p.steering.lever_arm, sz), (55, 500))
+    add("rear", "steering", "steering cylinder", "cyl_x", (sx + 100, -p.steering.lever_arm, sz), (55, 380))
     tr.masses.append(Mass("steering", lo.steering_mass_kg, tuple(lo.steering_cg), "rear"))
 
     # front half: power box + implement face

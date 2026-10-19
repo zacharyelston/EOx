@@ -1,4 +1,4 @@
-"""`uv run eox calc | build | bom | all [--model pro]`"""
+"""`uv run eox calc | build | bom | drawings | all [--model pro]`"""
 
 from __future__ import annotations
 
@@ -6,8 +6,10 @@ import argparse
 import sys
 from datetime import date
 
-from eox import bom, calcs, powerbox, tractor
-from eox.params import MODELS, OUT, load
+from pathlib import Path
+
+from eox import bom, calcs, drawings, powerbox, tractor
+from eox.params import MODELS, OUT, ROOT, load
 
 COLS = ("status", "group", "check", "value", "limit", "note")
 
@@ -80,6 +82,17 @@ def cmd_build(p, tr, args) -> int:
     print(f"power box assembly + preview STLs: {stl.parent.relative_to(OUT.parent)}")
     stl = _export_scene(tr.assembly(), OUT / "cad" / args.model, f"{args.model}-layout.step")
     print(f"{p.model.name} layout + preview STLs: {stl.parent.relative_to(OUT.parent)}")
+    if p.model.layout == "articulated":
+        gamma = p.layout.articulation_max_deg
+        stl = _export_scene(tr.assembly(gamma), OUT / "cad" / f"{args.model}-articulated",
+                            f"{args.model}-articulated.step")
+        print(f"{p.model.name} at full lock ({gamma:g} deg): {stl.parent.relative_to(OUT.parent)}")
+    return 0
+
+
+def cmd_drawings(p, tr, args) -> int:
+    paths = drawings.write_all(p, tr, args.out)
+    print(f"{len(paths)} figures (light + dark) in {args.out}")
     return 0
 
 
@@ -105,13 +118,15 @@ def cmd_bom(p, tr, args) -> int:
 
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="eox", description="EOX: calcs, CAD and BOM for a tractor model")
-    ap.add_argument("command", choices=["calc", "build", "bom", "all"])
+    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "all"])
     ap.add_argument("--model", default="pro", choices=MODELS, help="design/models/<model>.toml (default: pro)")
     ap.add_argument("--all", action="store_true", help="calc: also list passing SCS checks")
+    ap.add_argument("--out", type=Path, default=ROOT / "docs" / "img", help="drawings: output folder (default docs/img)")
     args = ap.parse_args(argv)
     p = load(args.model)
     tr = tractor.build(p)
-    cmds = {"calc": [cmd_calc], "build": [cmd_build], "bom": [cmd_bom], "all": [cmd_calc, cmd_bom, cmd_build]}
+    cmds = {"calc": [cmd_calc], "build": [cmd_build], "bom": [cmd_bom], "drawings": [cmd_drawings],
+            "all": [cmd_calc, cmd_bom, cmd_build, cmd_drawings]}
     rc = 0
     for fn in cmds[args.command]:
         rc |= fn(p, tr, args)

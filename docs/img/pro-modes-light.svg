@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 780 326" width="780" height="326" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="t">EOX Pro operating modes</title>
+<desc id="d">Stacked bars of average battery power per operating mode, split by consumer, with runtime on one pack.</desc>
+<rect width="100%" height="100%" rx="8" fill="#fcfcfb"/>
+<text x="16.0" y="26.0" font-size="16" font-weight="600" fill="#0b0b0b" text-anchor="start">EOX Pro: average battery power by operating mode</text>
+<text x="16.0" y="44.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">one 51.2 V 100 Ah pack, 4.1 kWh usable · label = total power · runtime</text>
+<rect x="16" y="58" width="12" height="12" rx="2" fill="#2a78d6"/>
+<text x="34.0" y="68.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">drive units</text>
+<rect x="118.2" y="58" width="12" height="12" rx="2" fill="#eb6834"/>
+<text x="136.2" y="68.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">PTO unit</text>
+<rect x="201.8" y="58" width="12" height="12" rx="2" fill="#1baf7a"/>
+<text x="219.8" y="68.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">hydraulic units</text>
+<rect x="328.8" y="58" width="12" height="12" rx="2" fill="#eda100"/>
+<text x="346.8" y="68.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">steering pump</text>
+<rect x="443.40000000000003" y="58" width="12" height="12" rx="2" fill="#e87ba4"/>
+<text x="461.4" y="68.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">12 V + idle</text>
+<line x1="110.0" y1="88.0" x2="110.0" y2="270.0" stroke="#c3c2b7" stroke-width="1" stroke-linecap="butt"/>
+<text x="110.0" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">0 kW</text>
+<line x1="196.7" y1="88.0" x2="196.7" y2="270.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="196.7" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">1 kW</text>
+<line x1="283.3" y1="88.0" x2="283.3" y2="270.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="283.3" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">2 kW</text>
+<line x1="370.0" y1="88.0" x2="370.0" y2="270.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="370.0" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">3 kW</text>
+<line x1="456.7" y1="88.0" x2="456.7" y2="270.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="456.7" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">4 kW</text>
+<line x1="543.3" y1="88.0" x2="543.3" y2="270.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="543.3" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">5 kW</text>
+<line x1="630.0" y1="88.0" x2="630.0" y2="270.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="630.0" y="286.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">6 kW</text>
+<text x="100.0" y="111.0" font-size="12" font-weight="400" fill="#0b0b0b" text-anchor="end">mowing</text>
+<rect x="110.0" y="96" width="75.9" height="22" fill="#2a78d6"/>
+<rect x="187.9" y="96" width="155.7" height="22" fill="#eb6834"/>
+<rect x="345.6" y="96" width="7.6" height="22" fill="#eda100"/>
+<path d="M355.2,96 H357.9 Q360.7,96 360.7,98.73555555555555 V115.26444444444445 Q360.7,118 357.9,118 H355.2 Z" fill="#e87ba4"/>
+<text x="368.7" y="111.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">2.9 kW · 1.4 h  (target 1.5 h)</text>
+<text x="100.0" y="159.0" font-size="12" font-weight="400" fill="#0b0b0b" text-anchor="end">slope mowing</text>
+<rect x="110.0" y="144" width="124.5" height="22" fill="#2a78d6"/>
+<rect x="236.5" y="144" width="155.7" height="22" fill="#eb6834"/>
+<rect x="394.2" y="144" width="7.6" height="22" fill="#eda100"/>
+<path d="M403.8,144 H406.6 Q409.3,144 409.3,146.73555555555558 V163.26444444444442 Q409.3,166 406.6,166 H403.8 Z" fill="#e87ba4"/>
+<text x="417.3" y="159.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">3.5 kW · 1.2 h</text>
+<text x="100.0" y="207.0" font-size="12" font-weight="400" fill="#0b0b0b" text-anchor="end">transport</text>
+<rect x="110.0" y="192" width="122.0" height="22" fill="#2a78d6"/>
+<rect x="234.0" y="192" width="7.6" height="22" fill="#eda100"/>
+<path d="M243.6,192 H246.4 Q249.1,192 249.1,194.73555555555555 V211.26444444444445 Q249.1,214 246.4,214 H243.6 Z" fill="#e87ba4"/>
+<text x="257.1" y="207.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">1.6 kW · 2.6 h  (target 3 h)</text>
+<text x="100.0" y="255.0" font-size="12" font-weight="400" fill="#0b0b0b" text-anchor="end">backhoe</text>
+<rect x="110.0" y="240" width="431.8" height="22" fill="#1baf7a"/>
+<path d="M543.8,240 H546.6 Q549.3,240 549.3,242.73555555555555 V259.26444444444445 Q549.3,262 546.6,262 H543.8 Z" fill="#e87ba4"/>
+<text x="557.3" y="255.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">5.1 kW · 0.8 h  (target 1 h)</text>
+</svg>

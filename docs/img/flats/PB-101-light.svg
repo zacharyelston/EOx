@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 837 756" width="837" height="756" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="t">PB-101 flat pattern</title>
+<desc id="d">Cut diagram for Tray (lower shell): outline, holes and bend lines, flat size 1045 by 625 mm.</desc>
+<rect width="100%" height="100%" rx="8" fill="#fcfcfb"/>
+<text x="16.0" y="26.0" font-size="16" font-weight="600" fill="#0b0b0b" text-anchor="start">PB-101 · Tray (lower shell)</text>
+<text x="16.0" y="46.0" font-size="12" font-weight="400" fill="#52514e" text-anchor="start">Aluminum 5052-H32 0.125 in (3.17 mm) · 4 bends · qty 1 · 4.78 kg each</text>
+<text x="16.0" y="64.0" font-size="11" font-weight="400" fill="#898781" text-anchor="start">SendCutSend K 0.44, inside radius 0.125 in. Order the STEP; this flat is the reference cut.</text>
+<path d="M164.60,200.60 H700.03 V433.63 H164.60 Z M164.60,92.00 H700.03 V200.60 H164.60 Z M160.03,92.00 H164.60 V193.08 H160.03 Z M700.03,92.00 H704.60 V193.08 H700.03 Z M164.60,433.63 H700.03 V542.23 H164.60 Z M160.03,441.15 H164.60 V542.23 H160.03 Z M700.03,441.15 H704.60 V542.23 H700.03 Z M700.03,200.60 H808.63 V433.63 H700.03 Z M707.55,433.63 H808.63 V435.55 H707.55 Z M707.55,198.67 H808.63 V200.60 H707.55 Z M56.00,200.60 H164.60 V433.63 H56.00 Z M56.00,433.63 H157.08 V435.55 H56.00 Z M56.00,198.67 H157.08 V200.60 H56.00 Z" fill="#2a78d6" fill-opacity="0.10"/>
+<line x1="56.0" y1="435.6" x2="56.0" y2="198.7" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="157.1" y1="435.6" x2="157.1" y2="433.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="157.1" y1="200.6" x2="157.1" y2="198.7" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="160.0" y1="542.2" x2="160.0" y2="441.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="160.0" y1="193.1" x2="160.0" y2="92.0" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="164.6" y1="441.1" x2="164.6" y2="433.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="164.6" y1="200.6" x2="164.6" y2="193.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="700.0" y1="441.1" x2="700.0" y2="433.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="700.0" y1="200.6" x2="700.0" y2="193.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="704.6" y1="542.2" x2="704.6" y2="441.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="704.6" y1="193.1" x2="704.6" y2="92.0" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="707.5" y1="435.6" x2="707.5" y2="433.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="707.5" y1="200.6" x2="707.5" y2="198.7" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="808.6" y1="435.6" x2="808.6" y2="198.7" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="56.0" y1="435.6" x2="157.1" y2="435.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="707.5" y1="435.6" x2="808.6" y2="435.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="56.0" y1="198.7" x2="157.1" y2="198.7" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="707.5" y1="198.7" x2="808.6" y2="198.7" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="157.1" y1="433.6" x2="164.6" y2="433.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="700.0" y1="433.6" x2="707.5" y2="433.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="157.1" y1="200.6" x2="164.6" y2="200.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="700.0" y1="200.6" x2="707.5" y2="200.6" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="160.0" y1="542.2" x2="704.6" y2="542.2" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="160.0" y1="441.1" x2="164.6" y2="441.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="700.0" y1="441.1" x2="704.6" y2="441.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="160.0" y1="193.1" x2="164.6" y2="193.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="700.0" y1="193.1" x2="704.6" y2="193.1" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="160.0" y1="92.0" x2="704.6" y2="92.0" stroke="#0b0b0b" stroke-width="1.5" stroke-linecap="square"/>
+<line x1="164.6" y1="198.0" x2="700.0" y2="198.0" stroke="#2a78d6" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="9 5"/>
+<text x="432.3" y="192.0" font-size="10" font-weight="400" fill="#52514e" text-anchor="middle">fold up 90°</text>
+<line x1="164.6" y1="436.2" x2="700.0" y2="436.2" stroke="#2a78d6" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="9 5"/>
+<text x="432.3" y="450.2" font-size="10" font-weight="400" fill="#52514e" text-anchor="middle">fold up 90°</text>
+<line x1="702.6" y1="433.6" x2="702.6" y2="200.6" stroke="#2a78d6" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="9 5"/>
+<text x="720.6" y="242.5" font-size="10" font-weight="400" fill="#52514e" text-anchor="middle" transform="rotate(-90 720.6 242.5)">fold up 90°</text>
+<line x1="162.0" y1="433.6" x2="162.0" y2="200.6" stroke="#2a78d6" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="9 5"/>
+<text x="148.0" y="242.5" font-size="10" font-weight="400" fill="#52514e" text-anchor="middle" transform="rotate(-90 148.0 242.5)">fold up 90°</text>
+<circle cx="210.4" cy="102.8" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="210.4" cy="531.4" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="432.3" cy="102.8" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="432.3" cy="531.4" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="654.2" cy="102.8" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="654.2" cy="531.4" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="797.8" cy="317.1" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="66.8" cy="317.1" r="2.5" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="728.1" cy="399.9" r="11.7" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="728.1" cy="344.7" r="11.7" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="728.1" cy="289.5" r="11.7" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="728.1" cy="234.3" r="11.7" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="762.0" cy="367.5" r="9.2" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="762.0" cy="317.1" r="7.4" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="762.0" cy="266.7" r="7.4" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="188.8" cy="409.4" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="188.8" cy="224.8" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="675.8" cy="409.4" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="675.8" cy="224.8" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="237.9" cy="425.1" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="237.9" cy="209.1" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="511.5" cy="425.1" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="511.5" cy="209.1" r="4.0" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="577.2" cy="392.7" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="577.2" cy="342.3" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="577.2" cy="291.9" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="577.2" cy="241.5" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="172.2" cy="392.7" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="172.2" cy="342.3" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="172.2" cy="291.9" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<circle cx="172.2" cy="241.5" r="1.8" fill="#fcfcfb" stroke="#0b0b0b" stroke-width="1"/>
+<line x1="56.0" y1="546.2" x2="56.0" y2="568.2" stroke="#c3c2b7" stroke-width="1" stroke-linecap="butt"/>
+<line x1="808.6" y1="546.2" x2="808.6" y2="568.2" stroke="#c3c2b7" stroke-width="1" stroke-linecap="butt"/>
+<line x1="56.0" y1="564.2" x2="808.6" y2="564.2" stroke="#898781" stroke-width="1" stroke-linecap="butt"/>
+<path d="M56.0,564.2 L62.6,566.6 L62.6,561.8 Z" fill="#898781"/>
+<path d="M808.6,564.2 L802.1,561.8 L802.1,566.6 Z" fill="#898781"/>
+<text x="432.3" y="558.2" font-size="12" font-weight="400" fill="#52514e" text-anchor="middle">1,045 mm (41.15 in)</text>
+<line x1="52.0" y1="92.0" x2="30.0" y2="92.0" stroke="#c3c2b7" stroke-width="1" stroke-linecap="butt"/>
+<line x1="52.0" y1="542.2" x2="30.0" y2="542.2" stroke="#c3c2b7" stroke-width="1" stroke-linecap="butt"/>
+<line x1="34.0" y1="92.0" x2="34.0" y2="542.2" stroke="#898781" stroke-width="1" stroke-linecap="butt"/>
+<path d="M34.0,92.0 L31.6,98.6 L36.4,98.6 Z" fill="#898781"/>
+<path d="M34.0,542.2 L36.4,535.7 L31.6,535.7 Z" fill="#898781"/>
+<text x="26.0" y="317.1" font-size="12" font-weight="400" fill="#52514e" text-anchor="middle" transform="rotate(-90 26.0 317.1)">625 mm</text>
+<line x1="16.0" y1="592.2" x2="44.0" y2="592.2" stroke="#2a78d6" stroke-width="1.5" stroke-linecap="butt" stroke-dasharray="9 5"/>
+<text x="52.0" y="596.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">bend line: fold up 90°, toward you</text>
+<circle cx="30" cy="612.2" r="5" fill="#fcfcfb" stroke="#0b0b0b"/>
+<text x="52.0" y="616.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">Ø32.5 mm × 4   unit branch gland</text>
+<circle cx="30" cy="632.2" r="5" fill="#fcfcfb" stroke="#0b0b0b"/>
+<text x="52.0" y="636.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">Ø25.5 mm × 1   gland</text>
+<circle cx="30" cy="652.2" r="5" fill="#fcfcfb" stroke="#0b0b0b"/>
+<text x="52.0" y="656.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">Ø20.5 mm × 2   gland</text>
+<circle cx="30" cy="672.2" r="5" fill="#fcfcfb" stroke="#0b0b0b"/>
+<text x="52.0" y="676.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">Ø11.1 mm × 4   M8 rivnut, clamp rod</text>
+<circle cx="30" cy="692.2" r="5" fill="#fcfcfb" stroke="#0b0b0b"/>
+<text x="52.0" y="696.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">Ø11.1 mm × 4   M8 rivnut, frame mount</text>
+<circle cx="30" cy="712.2" r="5" fill="#fcfcfb" stroke="#0b0b0b"/>
+<text x="52.0" y="716.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">Ø7 mm × 8   M5 rivnut, cover screw</text>
+<circle cx="30" cy="732.2" r="5" fill="#fcfcfb" stroke="#0b0b0b"/>
+<text x="52.0" y="736.2" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">Ø4.9 mm × 8   rivet, battery stop</text>
+</svg>
