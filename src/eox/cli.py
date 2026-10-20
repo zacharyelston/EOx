@@ -10,6 +10,7 @@ from pathlib import Path
 
 from eox import bom, calcs, drawings, powerbox, tractor
 from eox.params import MODELS, OUT, ROOT, load
+from eox.tractor import DECK
 
 COLS = ("status", "group", "check", "value", "limit", "note")
 
@@ -42,10 +43,12 @@ def cmd_calc(p, tr, args) -> int:
 
 def _markdown(p, tr, rep, counts) -> str:
     L, W, H = tr.box.outer
+    people = p.vehicle.mass_operator_kg + p.vehicle.mass_payload_kg
     lines = [f"# {p.model.name} check report: model rev {p.model.revision}, power box rev {p.meta.revision}", "",
              f"Generated {date.today().isoformat()} by `uv run eox calc --model {p.model.name.split()[-1].lower()}` "
              "from the files in `design/`. Screening-level hand calcs; each model is documented in `src/eox/calcs/`.", "",
-             f"**Machine:** {tr.mass() - p.vehicle.mass_operator_kg - p.vehicle.mass_payload_kg:.0f} kg without operator  ",
+             f"**Machine:** {tr.mass() - people:.0f} kg without operator, "
+             f"{tr.mass(fitted=DECK) - people:.0f} kg with the mower deck fitted  ",
              f"**Power box (outer):** {L:.0f} x {W:.0f} x {H:.0f} mm  ",
              f"**Result:** {counts['FAIL']} FAIL, {counts['WARN']} WARN, {counts['PASS']} PASS", ""]
     group = None
@@ -115,8 +118,8 @@ def cmd_bom(p, tr, args) -> int:
         cost = f'${float(r["est_unit_usd"]) * r["qty_total"]:>7,.0f}' if r["est_unit_usd"] else "   quote"
         print(f'  {r["id"]:<7} {r["item"]:<{w}}  x{r["qty_total"]:<3} {cost}')
     t = tot["total"]
-    print(f"\n{p.model.name}: purchased parts ~${t['usd']:,.0f} (budgetary) + quotes for {t['quote']} fabricated "
-          f"parts; parts mass ~{t['kg']:.0f} kg")
+    print(f"\n{p.model.name}: purchased parts ~${t['usd']:,.0f} (budgetary) + quotes for {t['quote']} parts "
+          f"still to price; parts mass ~{t['kg']:.0f} kg")
     print(f"bom: {path.relative_to(OUT.parent)}")
     return 0
 

@@ -46,8 +46,22 @@ def test_climbing_keeps_load_on_the_front_axle(home):
     assert c.status in ("PASS", "WARN")
 
 
+def test_home_is_geared_and_rated_for_the_deck(home):
+    """Review P1 resolution: the 15:1 gear set is standard on Home (BOM G01)
+    and its short-climb rating is 12 deg with the deck fitted, inside the
+    rear-tyre grip limit. The Pro keeps the stock rear end."""
+    p, tr, rep = home
+    assert p.axle.ratio == 15.0 and load("pro").axle.ratio == 12.4
+    assert p.vehicle.max_slope_deg == 12
+    grip = next(c for c in rep.checks if c.name.startswith("steepest climb on grip"))
+    assert grip.status == "PASS" and grip.value > p.vehicle.max_slope_deg
+    rows, _ = bom.rollup(p, tr.box)
+    assert next(r for r in rows if r["id"] == "G01")["qty_total"] == 1
+
+
 def test_bom_uses_front_axle_not_articulation(home):
     p, tr, _ = home
     rows, tot = bom.rollup(p, tr.box)
     assert "steer_axle" in tot["modules"] and "articulation" not in tot["modules"]
+    assert "gear_set" not in bom.rollup(load("pro"), tractor.build(load("pro")).box)[1]["modules"]
     assert next(r for r in rows if r["id"] == "D01")["qty_total"] == 1

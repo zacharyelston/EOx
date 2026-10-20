@@ -55,7 +55,7 @@ purchased text before anyone calls EOX compliant.
 | D-08 | One enable chain: key → E-stop → BMS enable → seat switch → every unit; PTO enable also needs the deck-latched signal | `docs/architecture.md`; controls module |
 | D-09 | Articulation pinch gap to the footwell ≥ 120 mm at full lock; ≥ 500 mm (or a guard) wherever a body could be; a frame lock bar for transport and service | ISO 13854 (foot 120, body 500 mm, confirmed in docs/research/articulation.md); ISO 10570 frame lock. `Pivot: front half to footwell` |
 | D-10 | Steering fast enough to avoid things: lock to lock ≤ 4 s at standstill force | `Steering: lock-to-lock time`. This is why steering is hydraulic, not an electric actuator (~17 s). |
-| D-11 | Max working slope = half the lowest static tip angle (each half's stability triangle and the whole machine), ≥ the 15° design slope | Industry practice. `Stability: max working slope` |
+| D-11 | Max working slope = half the lowest static tip angle (each half's stability triangle and the whole machine), ≥ the model's rated slope (Home 12°, Pro 15°) | Industry practice. `Stability: max working slope` |
 | D-12 | The generator wagon connects to the tractor by DC only, so the tractor stays SELV; mains AC (with ground-fault protection) stays on the wagon | `docs/architecture.md` |
 
 ## Open items (unverified or not yet designed)

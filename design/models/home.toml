@@ -16,6 +16,8 @@ modes = ["mowing", "slope_mowing", "transport"]   # no 3-unit hydraulics on Home
 [overrides]                    # shared values Home changes (the box keeps all 4 branches; one is spare)
 "bus.max_simultaneous_units" = 2   # drive + PTO
 "bus.branch_conductor_length_m" = 3.0
+"axle.ratio" = 15.0            # aftermarket 15:1 gear set in the stock rear end (BOM G01): one driven axle
+                               # carrying the deck needs it on a 12 deg climb (review P1, issue 2)
 
 [vehicle]
 mass_operator_kg = 100
@@ -24,7 +26,7 @@ rolling_resistance = 0.10
 traction_coefficient = 0.5     # turf
 top_speed_kmh = 8.0
 design_slope_deg = 10
-max_slope_deg = 15
+max_slope_deg = 12             # short climbs with the deck fitted: rear-tyre grip on turf runs out near 14 deg
 duty_overhead = 1.25
 
 [layout]
@@ -38,6 +40,7 @@ frame_mass_kg = 22             # sheet-steel chassis rails + cross members, esti
 powerbox_x = 510               # box centre: just ahead of the rear axle and its motor, under the seat
 powerbox_z = 230               # box underside, slung between the rails; a deck top at min cut is 150
 seat_and_controls_mass_kg = 30
+hitch_mass_kg = 3              # rear hitch plate, estimate
 seat_and_controls_cg = [700, 0, 600]
 operator_cg = [520, 0, 790]    # seated on the box
 floor_x = 1080                 # floor pan centre, ahead of the box
@@ -51,12 +54,18 @@ steering_wheel_diameter = 330
 
 [deck]                         # mid-mount between the axles (front-mount vs drive-over: issue 7)
 mount = "mid (drive-over)"
-width = 1070
+x_center = 800                 # between the rear tyres and the front tyres' swing, under the box
+length = 600
+width = 1070                   # 42 in
+housing_height = 110
+bottom_clearance = 40          # housing underside at the lowest cut
 top_height_min_cut = 150       # REF
-mass_kg = 45
+mass_kg = 45                   # deck shell, spindles, blades, belt (REF); the PTO unit is counted separately
+pto_unit_y = 430               # PTO unit stands on the deck, shaft down, outboard of the frame rail
 
 [bom]
 powerbox = 1
 drive_axle = 1
 steer_axle = 1
+gear_set = 1
 controls = 1

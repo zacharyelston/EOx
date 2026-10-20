@@ -41,6 +41,7 @@ COLORS = {  # RGBA, linear. Matched against the label first, then the kind.
     "steering": (0.80, 0.65, 0.10, 1),
     "implement": (0.62, 0.15, 0.12, 1),
     "seat": (0.10, 0.10, 0.10, 1),
+    "deck": (0.45, 0.11, 0.09, 1),     # mower deck: darker than the frame
 }
 LIFT = 0.26  # m
 

@@ -26,6 +26,10 @@ class Mass:
     kg: float
     cg: tuple[float, float, float]
     group: str
+    tag: str = ""            # "" = always on the machine; otherwise an attachment ("deck") counted only when fitted
+
+
+DECK = ("deck",)             # pass as `fitted` for the mowing configuration
 
 
 @dataclass
@@ -88,24 +92,28 @@ class Tractor:
         return (x * math.cos(g) - y * math.sin(g), x * math.sin(g) + y * math.cos(g), z)
 
     # ---- mass properties -----------------------------------------------------
-    def mass(self, group: str | None = None) -> float:
-        return sum(m.kg for m in self.masses if group in (None, m.group))
+    # `fitted` lists the attachments on the machine (e.g. DECK); untagged masses
+    # are always counted.
+    def _counted(self, group, fitted):
+        return [m for m in self.masses if group in (None, m.group) and (not m.tag or m.tag in fitted)]
 
-    def cg(self, group: str | None = None, gamma_deg: float = 0.0) -> tuple[float, float, float]:
+    def mass(self, group: str | None = None, fitted: tuple = ()) -> float:
+        return sum(m.kg for m in self._counted(group, fitted))
+
+    def cg(self, group: str | None = None, gamma_deg: float = 0.0, fitted: tuple = ()) -> tuple[float, float, float]:
         tot, acc = 0.0, [0.0, 0.0, 0.0]
-        for m in self.masses:
-            if group in (None, m.group):
-                c = self._yaw(m.cg, m.group, gamma_deg)
-                tot += m.kg
-                acc = [a + m.kg * ci for a, ci in zip(acc, c)]
+        for m in self._counted(group, fitted):
+            c = self._yaw(m.cg, m.group, gamma_deg)
+            tot += m.kg
+            acc = [a + m.kg * ci for a, ci in zip(acc, c)]
         return tuple(a / tot for a in acc)
 
-    def axle_loads_n(self, slope_deg: float = 0.0) -> dict[str, float]:
+    def axle_loads_n(self, slope_deg: float = 0.0, fitted: tuple = ()) -> dict[str, float]:
         """Static axle loads, straight; on a fore-aft slope (climbing, positive)
         load moves to the rear axle by W sin(th) h / L. Pitch is rigid on both
         models (the Pro pivot locks pitch)."""
-        W = self.mass() * 9.81
-        xc, _, zc = self.cg()
+        W = self.mass(fitted=fitted) * 9.81
+        xc, _, zc = self.cg(fitted=fitted)
         f, r = self.axle("front"), self.axle("rear")
         L = f.x - r.x
         th = math.radians(slope_deg)
@@ -147,15 +155,28 @@ class _Builder:
     def __init__(self, tr: Tractor):
         self.tr = tr
 
-    def add(self, group, kind, name, shape, center, size, kg=0.0):
+    def add(self, group, kind, name, shape, center, size, kg=0.0, tag=""):
         body = Body(name, shape, tuple(center), tuple(size), kg)
         self.tr.bodies.append((group, kind, body))
         if kg:
-            self.tr.masses.append(Mass(name, kg, body.center, group))
+            self.tr.masses.append(Mass(name, kg, body.center, group, tag))
         return body
 
     def mass(self, group, name, kg, cg):
         self.tr.masses.append(Mass(name, kg, tuple(cg), group))
+
+    def deck(self, group):
+        """Mower deck + its PTO unit (a 3 HP unit standing on the deck, shaft
+        down), tagged so the checks count them only when the deck is fitted."""
+        d, u = self.tr.p.deck, self.tr.p.unit
+        z0 = d.bottom_clearance
+        self.add(group, "deck", "mower deck", "box", (d.x_center, 0, z0 + d.housing_height / 2),
+                 (d.length, d.width, d.housing_height), d.mass_kg, tag="deck")
+        top = z0 + d.housing_height
+        self.add(group, "pto", "PTO unit motor", "cyl_z", (d.x_center, d.pto_unit_y, top + u.motor_length / 2),
+                 (u.motor_diameter, u.motor_length), u.motor_mass_kg, tag="deck")
+        self.tr.masses.append(Mass("PTO unit controller", u.controller_mass_kg,
+                                   (d.x_center - 200, d.pto_unit_y, top + 50), group, "deck"))
 
     def drive_axle(self, group: str, name: str, x: float, outward: int, rail_z: float):
         """Golf-cart rear end + 3 HP unit. The gear case sits off-centre; the
@@ -240,9 +261,10 @@ def build_pro(p, box: powerbox.Layout | None = None) -> Tractor:
                          (lo.cylinder_anchor_x, ay, rail_z), "front", st.bore + 15))
     B.mass("rear", "steering", lo.steering_mass_kg, lo.steering_cg)
 
-    # front half: power box + implement face
+    # front half: power box + implement face, and the front-mount deck when fitted
     B.box_masses("front")
     B.add("front", "implement", "implement face", "box", (lo.implement_face_x, 0, 320), (12, 640, 260), lo.implement_mass_kg)
+    B.deck("front")
 
     # rear half: operator station
     oc = lo.operator_cg
@@ -299,7 +321,8 @@ def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     wheel = tuple(lo.steering_wheel_at)
     tr.links.append(Link("steering column", "seat", (xf - 110, 0, f.beam_clearance + 30), "chassis", wheel, "chassis", 32))
     B.add("chassis", "seat", "steering wheel", "cyl_z", wheel, (p.steering.steering_wheel_diameter, 25))
-    B.add("chassis", "implement", "rear hitch", "box", (xr - lo.rear_overhang - 30, 0, rail_z - 60), (60, 80, 40), 3.0)
+    B.add("chassis", "implement", "rear hitch", "box", (xr - lo.rear_overhang - 30, 0, rail_z - 60), (60, 80, 40), lo.hitch_mass_kg)
+    B.deck("chassis")                                           # mid-mount, between the axles
     B.mass("chassis", "seat & controls", lo.seat_and_controls_mass_kg, lo.seat_and_controls_cg)
     B.mass("chassis", "operator", p.vehicle.mass_operator_kg, oc)
     if p.vehicle.mass_payload_kg:

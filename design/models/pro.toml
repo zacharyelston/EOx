@@ -72,11 +72,16 @@ lock_to_lock_target_s = 4.0
 electric_actuator_force_n = 8000   # comparison: heavy-duty electric linear actuator (REF)
 electric_actuator_speed_mm_s = 10  # its speed near full load (REF)
 
-[deck]                         # placeholder until the deck module exists (front-mount vs drive-over is open)
-mount = "undecided"
+[deck]                         # front-mount: the front diff (114 mm) can't roll over a deck, so Pro pushes it
+mount = "front"
+x_center = 1330                # ahead of the implement face it couples to
+length = 600
 width = 1070                   # 42 in
+housing_height = 110
+bottom_clearance = 40          # housing underside at the lowest cut
 top_height_min_cut = 150       # deck housing top at the lowest cut height (REF)
-mass_kg = 45
+mass_kg = 45                   # deck shell, spindles, blades, belt (REF); the PTO unit is counted separately
+pto_unit_y = 0                 # PTO unit stands on the deck, shaft down, on the centreline
 
 [bom]                          # how many of each module this model uses (bom/purchased.csv `module` column)
 powerbox = 1

@@ -34,7 +34,8 @@ def mode_power(p, tr, mode) -> dict[str, float]:
     aux = p.aux.dcdc_output_w / p.aux.dcdc_efficiency + p.aux.quiescent_w
     out = {"drive": 0.0, "pto": 0.0, "hydraulic": 0.0, "steering": 0.0, "aux": aux, "units": 0}
     if mode.drive_speed_kmh > 0:
-        F = tractive_force(tr.mass(), mode.drive_slope_deg, p.vehicle.rolling_resistance)
+        fitted = ("deck",) if mode.pto_units else ()
+        F = tractive_force(tr.mass(fitted=fitted), mode.drive_slope_deg, p.vehicle.rolling_resistance)
         wheel_w = F * mode.drive_speed_kmh / 3.6 * p.vehicle.duty_overhead
         out["drive"] = unit_input_w(p, wheel_w / drivetrain_efficiency(p))
         out["steering"] = steering_pump_w(p)

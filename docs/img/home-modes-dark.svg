@@ -25,15 +25,15 @@
 <line x1="630.0" y1="88.0" x2="630.0" y2="222.0" stroke="#2c2c2a" stroke-width="1" stroke-linecap="butt"/>
 <text x="630.0" y="238.0" font-size="11" font-weight="400" fill="#898781" text-anchor="middle">4 kW</text>
 <text x="100.0" y="111.0" font-size="12" font-weight="400" fill="#f0efec" text-anchor="end">mowing</text>
-<rect x="110.0" y="96" width="102.4" height="22" fill="#3987e5"/>
-<rect x="214.4" y="96" width="249.3" height="22" fill="#d95926"/>
-<path d="M465.6,96 H470.3 Q474.3,96 474.3,100 V114 Q474.3,118 470.3,118 H465.6 Z" fill="#d55181"/>
-<text x="482.3" y="111.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">2.8 kW · 1.5 h  (target 1.5 h)</text>
+<rect x="110.0" y="96" width="122.4" height="22" fill="#3987e5"/>
+<rect x="234.4" y="96" width="249.3" height="22" fill="#d95926"/>
+<path d="M485.7,96 H490.4 Q494.4,96 494.4,100 V114 Q494.4,118 490.4,118 H485.7 Z" fill="#d55181"/>
+<text x="502.4" y="111.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">3.0 kW · 1.4 h  (target 1.5 h)</text>
 <text x="100.0" y="159.0" font-size="12" font-weight="400" fill="#f0efec" text-anchor="end">slope mowing</text>
-<rect x="110.0" y="144" width="167.8" height="22" fill="#3987e5"/>
-<rect x="279.8" y="144" width="249.3" height="22" fill="#d95926"/>
-<path d="M531.0,144 H535.7 Q539.7,144 539.7,148 V162 Q539.7,166 535.7,166 H531.0 Z" fill="#d55181"/>
-<text x="547.7" y="159.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">3.3 kW · 1.2 h</text>
+<rect x="110.0" y="144" width="200.6" height="22" fill="#3987e5"/>
+<rect x="312.6" y="144" width="249.3" height="22" fill="#d95926"/>
+<path d="M563.8,144 H568.6 Q572.6,144 572.6,148 V162 Q572.6,166 568.6,166 H563.8 Z" fill="#d55181"/>
+<text x="580.6" y="159.0" font-size="11" font-weight="400" fill="#c3c2b7" text-anchor="start">3.6 kW · 1.2 h</text>
 <text x="100.0" y="207.0" font-size="12" font-weight="400" fill="#f0efec" text-anchor="end">transport</text>
 <rect x="110.0" y="192" width="164.4" height="22" fill="#3987e5"/>
 <path d="M276.4,192 H281.1 Q285.1,192 285.1,196 V210 Q285.1,214 281.1,214 H276.4 Z" fill="#d55181"/>
