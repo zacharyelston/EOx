@@ -25,7 +25,7 @@ CAD use (`src/eox/sim/mjcf.py`). It carries exactly the reconciled masses
 | Bodies | Chassis, leaf-sprung front beam axle, two steering knuckles, four wheels | Rear half, knuckle on the roll trunnion (±10°), front half on the yaw pins, four wheels |
 | Drive | One rear axle, open diff | Both axles, open diffs |
 | Steering | Ackermann, rack and pinion | Hydraulic cylinder: torque-limited to the calc's 1,173 N·m, rate-limited to its 3.3 s lock to lock |
-| Springs | Front leaf springs, 20 N/mm each, ±40 mm travel (REF): bounce plus ±7.6° of axle roll | None: the trunnion lets the halves roll |
+| Springs | Front leaf springs, 20 N/mm each, ±40 mm travel (REF): bounce plus ±7.6° of axle roll. With `steer_axle.oscillates = true`, the axle rolls freely on a centre pivot to ±`oscillation_max_deg` (10°) | None: the trunnion lets the halves roll |
 
 - **Drive units:** each axle has a velocity-controlled drive, torque-limited at
   the motor's peak (4 × rated) through the axle ratio. The open diff splits

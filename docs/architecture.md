@@ -111,6 +111,10 @@ The Home is a golf cart turned into a tractor. The geometry follows
   ±100 mm at the nose so the steered wheels can sweep. On the terrain course
   its leaf springs run out of roll travel on twisting ground, and a front wheel
   lifts ([simulation.md](simulation.md)). A pivoting front axle would fix it.
+- **Operator station:** the seat, floor, steering wheel and controls are
+  placed from the operator's position, so a design trial can move them. With
+  the box elsewhere, the seat stands on a bridge over the rear axle. The
+  [front-battery trial](../trials/home-front-battery/report.md) explored this.
 - **Mid-mount deck:** fits under the box, with its PTO unit standing on it
   outboard of the left rail. The front axle has no diff, so it clears the deck
   by +50 mm (REF) and the tractor can drive over it to hitch up.

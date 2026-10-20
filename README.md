@@ -332,6 +332,38 @@ What the course found that the static checks can't:
 
 ---
 
+## Design trials
+
+A trial asks one design question and evolves an answer. It declares which
+design values may change, what to push up or down, and what must stay true.
+A seeded genetic algorithm then breeds designs, and every candidate runs the
+full engineering checks and the terrain course. See
+[docs/trials.md](docs/trials.md).
+
+```bash
+uv run eox evolve --trial home-front-battery
+```
+
+**The first trial asks:** can the Home carry its battery at the front, like a
+tractor's engine? ([report](trials/home-front-battery/report.md))
+
+**Answer:** yes, as a near tie with today's layout.
+
+- **The layout:** the box goes high over the front axle, clear of the steered
+  tyres. The operator moves back over the rear axle, and the deck moves back.
+- **Gains:** grip goes up from 14.1° to 14.9°.
+- **Costs:** working slope goes down from 22.7° to 20.6°, and the machine
+  gains 10 kg.
+- **Why:** the gain comes from moving the operator onto the driven wheels,
+  not from moving the battery.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="trials/home-front-battery/progress-dark.svg">
+  <img alt="Trial home-front-battery: the score of every design by generation, converging just short of today's design" src="trials/home-front-battery/progress-light.svg" width="100%">
+</picture>
+
+---
+
 ## How the design works
 
 Each model's numbers live in a few TOML files. Change one, re-run, and the
@@ -346,6 +378,9 @@ flowchart LR
   L --> O["eox bom<br/>by module, cost + mass"]
   L --> D["eox drawings<br/>cut diagrams + figures"]
   L --> S["eox course<br/>MuJoCo terrain course"]
+  TR["design/trials/*.toml<br/>genes, objectives,<br/>constraints"] --> EV["eox evolve<br/>calcs + course per design<br/>→ trials/&lt;name&gt;/"]
+  C --> EV
+  S --> EV
   B --> R["Blender<br/>preview renders"]
 ```
 
@@ -356,6 +391,7 @@ flowchart LR
 | `design/steer_axle.toml`: golf-cart front steering axle | |
 | `design/powerbox.toml`: battery & distribution box | |
 | `design/course.toml`: the terrain test course | |
+| `design/trials/*.toml`: design trials | |
 | `design/materials.toml`: SendCutSend bend data | |
 
 ## Quick start
@@ -392,6 +428,10 @@ uv run eox course --model pro --view
 ```
 
 ```bash
+uv run eox evolve --trial home-front-battery
+```
+
+```bash
 /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/render_preview.py -- out/cad/pro/stl docs/img/pro-side.png --view side
 ```
 
@@ -402,6 +442,8 @@ uv run eox course --model pro --view
 - `course` drives the terrain course in MuJoCo and writes
   `out/<model>-course.md` and the course figures. `--view` opens MuJoCo's
   live viewer, `--render` writes the frames, and `--video` records the run.
+- `evolve` runs a design trial and writes `trials/<name>/`. Cached designs
+  replay instantly; `--generations N` extends a run and `--fresh` starts over.
 - The Blender command renders one view; `tools/render_preview.py` lists the
   rest.
 
@@ -417,11 +459,15 @@ uv run eox course --model pro --view
 | `src/eox/calcs/` | Engineering checks: `bus`, `drive`, `vehicle`, `powerbox` |
 | `src/eox/drawings.py` | Cut diagrams and figures (SVG, light + dark) |
 | `src/eox/sim/` | Terrain course: heightfield, MuJoCo model generator, driver and scoring, renders |
+| `src/eox/evolve/` | Design trials: evaluator, genetic algorithm, reports |
+| `trials/` | Trial results: report, `best.toml`, progress figure, evaluation history |
 | `bom/purchased.csv` | Purchased parts by module; each model sets its module counts |
-| `docs/` | [Architecture](docs/architecture.md), [power box](docs/powerbox.md), [safety requirements](docs/safety-requirements.md), [simulation](docs/simulation.md), [tooling decision](docs/tooling.md), [component candidates](docs/component-candidates.md) |
+| `docs/` | [Architecture](docs/architecture.md), [power box](docs/powerbox.md), [safety requirements](docs/safety-requirements.md), [design log](docs/design-log.md), [simulation](docs/simulation.md), [design trials](docs/trials.md), [tooling decision](docs/tooling.md), [component candidates](docs/component-candidates.md) |
 | `tools/` | Blender preview renderer |
 
 ## Status and open work
+
+What changed and why, newest first: [docs/design-log.md](docs/design-log.md).
 
 | Model | Checks | What's open |
 |---|---|---|
