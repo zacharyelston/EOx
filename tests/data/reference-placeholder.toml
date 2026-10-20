@@ -1,4 +1,5 @@
 [model]
+sources = ["test"]
 name = "Placeholder lawn tractor"
 layout = "lawn_tractor"
 kind = "gas lawn tractor"
@@ -23,6 +24,8 @@ ground_clearance = 100
 price_usd = 3000
 
 [estimate]
+nose_clearance = 200
+tail_clearance = 160
 front_share = 0.40
 cg_height = 450
 front_wheel_kg = 3
@@ -59,4 +62,4 @@ spring_spacing = 600
 spring_travel = 5
 
 [drive]
-axle_torque_nm = 230
+rated_axle_torque_nm = 230

@@ -1,0 +1,82 @@
+# Cub Cadet XT1 LT42 IntelliPOWER (13A6A9TS010): a reference machine.
+# Published values carry their source; REF = estimated (not published), basis given.
+# Researched 2026-10-19. Sources:
+#   C1  cubcadet.com product page ($2,399)
+#   C2  tractorsupply.com listing (520 lb product weight)
+#   C5  tractordata.com (47 in wheelbase, earlier generation)
+#   C6  2016 operator's manual 769-11537 (15 deg slope limit)
+#   TT  tufftorq.com/product/tl-200/ (TL-200 axle torque)
+
+[model]
+name = "Cub Cadet XT1 LT42"
+layout = "lawn_tractor"
+kind = "gas lawn tractor, 547 cc, hydrostatic, 2WD"
+sources = [
+  "https://www.cubcadet.com/en_US/riding-lawn-mowers/xt1-lt42-intellipower/13A6A9TS010.html",
+  "https://www.tractorsupply.com/tsc/product/cub-cadet-xt1-lt42-intellipower-42-riding-mower-2060311",
+  "https://www.tractordata.com/lawn-tractors/002/0/9/2092-cub-cadet-xt1-lt42-dimensions.html",
+  "https://manualsfile.com/product/k5g20jetrg1.html",
+  "https://www.tufftorq.com/product/tl-200/",
+]
+
+[vehicle]
+mass_operator_kg = 100
+mass_payload_kg = 0
+rolling_resistance = 0.10
+traction_coefficient = 0.5
+max_slope_deg = 15             # C6: do not operate on slopes over 15 deg (2016 manual)
+max_cross_slope_deg = 15
+design_slope_deg = 10
+
+[spec]
+mass_kg = 236                  # C2: 520 lb "product weight"; taken as with deck (unclear, see C5: 410 lb older model)
+wheelbase = 1194               # C5: 47 in
+front_track = 700              # REF: not published
+rear_track = 720               # REF: not published
+front_tire = [381, 152]        # C1: 15x6-6
+rear_tire = [508, 203]         # C1: 20x8-8
+deck_width = 1067              # C1: 42 in stamped, mid-mount
+ground_clearance = 110         # REF
+price_usd = 2399               # C1: cubcadet.com, 2026-10-19
+
+[estimate]
+nose_clearance = 200           # REF: front frame / bumper underside, raised over the front axle
+tail_clearance = 160           # REF: rear frame / hitch underside
+front_share = 0.45
+cg_height = 420
+front_wheel_kg = 3
+rear_wheel_kg = 6
+front_axle_kg = 7              # cast-iron pivot bar (C1)
+transaxle_clearance = 85
+front_overhang = 430
+rear_overhang = 280
+frame_half_width = 190
+hood_width = 440
+hood_top = 780
+seat_x = 150
+seat_height = 590
+deck_x = 540
+deck_length = 600
+deck_height = 110
+deck_bottom_clearance = 40
+deck_mass_kg = 30              # REF: 42 in 13-gauge stamped deck, not published
+engine_x_from_front_axle = -150
+rear_lump_x = 50
+
+[steer_axle]
+track = 700
+tire_diameter = 381
+tire_width = 152
+beam_clearance = 140
+wheel_tire_mass_kg = 3
+max_steer_deg = 55             # REF: 16 in turning radius (C1)
+scrub_radius = 30
+oscillates = true
+oscillation_max_deg = 10       # REF
+spring_rate_n_per_mm = 200
+spring_spacing = 600
+spring_travel = 5
+
+[drive]
+rated_axle_torque_nm = 176     # TT: Tuff Torq TL-200, 28.04:1 (20 in tyres), open bevel diff, no lock (C1)
+# Peak (relief-limited) torque isn't published: the model gets at least enough to climb the rated slope (+20 %).

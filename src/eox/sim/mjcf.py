@@ -219,13 +219,13 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
                                  wheel_mass[(group, nm)], ax.driven))
         return "".join(out)
 
-    T_rated, T_peak, ratio, eta = drive_limits(p)
-    per_wheel = T_peak * ratio * eta / 2                 # open diff: equal torque each side
     drives = {}
     tendons, actuators = [], []
     for ax in tr.axles:
         if not ax.driven:
             continue
+        T_rated, T_peak, ratio, eta = drive_limits(p, ax.name)
+        per_wheel = T_peak * ratio * eta / 2             # open diff: equal torque each side
         nm = f"drive_{ax.name}"
         drives[nm] = dict(axle=ax.name, wheel_torque_max=per_wheel, ratio=ratio, eta=eta, T_rated=T_rated, T_peak=T_peak)
         tendons.append(f'<fixed name="{nm}"><joint joint="{ax.name}_L:spin" coef="1"/><joint joint="{ax.name}_R:spin" coef="1"/></fixed>')
@@ -352,13 +352,15 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
     return spec
 
 
-def drive_limits(p) -> tuple[float, float, float, float]:
+def drive_limits(p, axle: str = "rear") -> tuple[float, float, float, float]:
     """(T_rated, T_peak, overall ratio, efficiency) of one drive unit. EOX: a
     golf-cart motor through its rear end. A reference machine gives its
-    transaxle's rated axle torque instead ([drive] axle_torque_nm), modelled
-    as 'peak' with the same 4x headroom over 'rated' so the scores compare."""
+    transaxle's rated axle torque instead ([drive] axle_torque_nm, or
+    front_axle_torque_nm for a different front unit), modelled as 'peak' with
+    the same 4x headroom over 'rated' so the scores compare."""
     if hasattr(p, "drive"):
-        return p.drive.axle_torque_nm / 4, p.drive.axle_torque_nm, 1.0, 1.0
+        T = getattr(p.drive, f"{axle}_axle_torque_nm", p.drive.axle_torque_nm)
+        return T / 4, T, 1.0, 1.0
     u, a = p.unit, p.axle
     T_rated = u.rated_power_w / (2 * math.pi * u.base_speed_rpm / 60)
     return T_rated, T_rated * u.peak_torque_factor, a.ratio * a.extra_reduction, a.efficiency

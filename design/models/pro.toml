@@ -21,6 +21,7 @@ traction_coefficient = 0.5     # turf, for the traction-limit check
 top_speed_kmh = 8.0            # controller speed limit
 design_slope_deg = 10          # sustained climb the drive must handle (mowing on a slope)
 max_slope_deg = 15             # short climbs on peak torque
+max_cross_slope_deg = 17       # across a slope: the label value (MIOSHA 5443, docs/architecture.md)
 duty_overhead = 1.25           # turns, accel and small slopes on top of steady driving
 
 [layout]

@@ -12,7 +12,7 @@ MODELS = ("home", "pro")
 
 
 def _eox(model: str) -> dict:
-    from eox import bom, tractor
+    from eox import bom, calcs, tractor
     from eox.calcs.drive import grip_limit
     from eox.calcs.vehicle import stability
     from eox.params import load
@@ -23,9 +23,12 @@ def _eox(model: str) -> dict:
     tr = tractor.build(p)
     v = p.vehicle
     angles = [0.0] + ([p.layout.articulation_max_deg] if tr.articulated else [])
-    worst = min(x for g in angles for f in ((), DECK) for x in stability(tr, g, f).values())
+    worst = min(x for g in angles for x in stability(tr, g, DECK).values())      # mowing: deck fitted, like the references
     _, tot = bom.rollup(p, tr.box)
-    m = {"mass_kg": tr.mass(fitted=DECK) - v.mass_operator_kg - v.mass_payload_kg,
+    rep = calcs.run(p, tr)
+    runtime = next(c.value for c in rep.checks if c.group == "Mode mowing" and c.name.startswith("runtime"))
+    m = {"mass_kg": tr.mass(fitted=DECK) - v.mass_operator_kg - v.mass_payload_kg, "runtime_h": float(runtime),
+         "cross_slope_deg": float(getattr(v, "max_cross_slope_deg", v.max_slope_deg)),
          "working_slope_deg": worst / 2, "grip_limit_deg": grip_limit(p, tr, DECK),
          "rated_slope_deg": float(v.max_slope_deg), "cost_usd": tot["total"]["usd"],
          "front_share_pct": 100 * tr.axle_loads_n(fitted=DECK)["front"] / (tr.mass(fitted=DECK) * 9.81)}
@@ -37,6 +40,9 @@ def _eox(model: str) -> dict:
 def _ref(name: str) -> dict:
     from eox import reference
     out = reference.evaluate(name)
+    p, v = out["p"], out["p"].vehicle
+    out["metrics"]["runtime_h"] = getattr(p.spec, "runtime_h", None)
+    out["metrics"]["cross_slope_deg"] = float(getattr(v, "max_cross_slope_deg", v.max_slope_deg))
     return {"name": out["name"], "kind": out["kind"], "metrics": out["metrics"], "run": _slim(out["runs"][0]),
             "source": f"design/reference/{name}.toml"}
 
@@ -70,16 +76,19 @@ def markdown(rows: list[dict], course) -> str:
          f"{len(course.segments)} obstacles, deck fitted, turf). Real machines are modelled from their published "
          "specs in `design/reference/`; what the makers don't publish (weight split, CG height) is estimated "
          "and marked REF there. Each machine is scored against its own rated slope.", "",
-         "| Machine | Type | Mass (kg) | Price ($) | Rated slope | Grip limit | Working slope | Front axle share (with operator) | Course |",
-         "|---|---|---|---|---|---|---|---|---|"]
+         "| Machine | Type | Mass (kg) | Price ($) | Rated climb / across | Grip limit | Working slope | Front axle share (with operator) | Mowing runtime | Course |",
+         "|---|---|---|---|---|---|---|---|---|---|"]
     for r in rows:
         m, c = r["metrics"], counts(r["run"])
-        L.append(f"| {r['name']} | {r['kind']} | {m['mass_kg']:.0f} | {m['cost_usd']:,.0f} | {m['rated_slope_deg']:g} deg | "
-                 f"{m['grip_limit_deg']:.1f} deg | {m['working_slope_deg']:.1f} deg | {m['front_share_pct']:.0f} % | "
+        rt = f"{m['runtime_h']:.1f} h" if m.get("runtime_h") else "gas"
+        L.append(f"| {r['name']} | {r['kind']} | {m['mass_kg']:.0f} | {m['cost_usd']:,.0f} | "
+                 f"{m['rated_slope_deg']:g} / {m['cross_slope_deg']:g} deg | "
+                 f"{m['grip_limit_deg']:.1f} deg | {m['working_slope_deg']:.1f} deg | {m['front_share_pct']:.0f} % | {rt} | "
                  f"{c['FAIL']} FAIL, {c['WARN']} WARN, {c['PASS']} PASS" + (f", {c['INFO']} INFO" if c["INFO"] else "") + " |")
     L += ["", "Mass is with the deck, without the operator. Price: EOX = purchased parts (budgetary); real machines = "
           "list price when checked. Grip limit: the steepest climb the driven tyres hold on turf (traction 0.5), "
-          "deck fitted, as `eox calc` computes it. Working slope: half the lowest static tip angle.", "",
+          "deck fitted, as `eox calc` computes it. Working slope: half the lowest static tip angle, deck fitted "
+          "(`eox calc` also checks EOX without its deck, which can be lower).", "",
           "## Course, obstacle by obstacle", "",
           "| Machine | " + " | ".join(s.name for s in course.segments) + " |",
           "|---" * (len(course.segments) + 1) + "|"]

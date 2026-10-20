@@ -82,16 +82,21 @@ def build_lawn_tractor(p) -> Tractor:
     tr.axles.append(Axle("front", L, f.track, fd, fw, "chassis", False, f.beam_clearance))
     # body envelopes: frame, hood over the engine, rear body / fenders under the seat
     rail_z = clr + 40
-    for side in (1, -1):
-        B.add("chassis", "frame", f"rail {'L' if side > 0 else 'R'}", "box",
-              ((L + e.front_overhang - e.rear_overhang) / 2, side * e.frame_half_width, rail_z),
-              (L + e.front_overhang + e.rear_overhang, 40, 80))
+    for side in (1, -1):              # low between the axles; the nose and tail sit higher, as real frames do
+        sd = "L" if side > 0 else "R"
+        B.add("chassis", "frame", f"rail {sd}", "box", (L / 2 - 100, side * e.frame_half_width, rail_z), (L - 200, 40, 80))
+        B.add("chassis", "frame", f"nose {sd}", "box", (L - 100 + (e.front_overhang + 100) / 2, side * e.frame_half_width,
+                                                        e.nose_clearance + 40), (e.front_overhang + 100, 40, 80))
+        B.add("chassis", "frame", f"tail {sd}", "box", (-100 - (e.rear_overhang - 100) / 2, side * e.frame_half_width,
+                                                        e.tail_clearance + 40), (e.rear_overhang - 100, 40, 80))
     hood_x0, hood_x1 = L - 450, L + e.front_overhang                       # hood: from the dash to the nose
-    B.add("chassis", "frame", "hood", "box", ((hood_x0 + hood_x1) / 2, 0, (rail_z + 40 + e.hood_top) / 2),
-          (hood_x1 - hood_x0, e.hood_width, e.hood_top - rail_z - 40))
+    hz = e.nose_clearance + 80
+    B.add("chassis", "frame", "hood", "box", ((hood_x0 + hood_x1) / 2, 0, (hz + e.hood_top) / 2),
+          (hood_x1 - hood_x0, e.hood_width, e.hood_top - hz))
     body_x0, body_x1 = -e.rear_overhang, e.seat_x + 200                     # rear body: tail to under the seat
-    B.add("chassis", "frame", "rear body", "box", ((body_x0 + body_x1) / 2, 0, (rail_z + 40 + e.seat_height) / 2),
-          (body_x1 - body_x0, e.frame_half_width * 2 + 120, e.seat_height - rail_z - 40))
+    bz = e.tail_clearance + 80
+    B.add("chassis", "frame", "rear body", "box", ((body_x0 + body_x1) / 2, 0, (bz + e.seat_height) / 2),
+          (body_x1 - body_x0, e.frame_half_width * 2 + 120, e.seat_height - bz))
     B.add("chassis", "seat", "seat", "box", (e.seat_x, 0, e.seat_height + 60), (420, 440, 120))
     # deck: mid-mount, tagged so "bare" leaves it off
     dz = e.deck_bottom_clearance + e.deck_height / 2
@@ -128,14 +133,18 @@ def build_articulated_rider(p) -> Tractor:
         B.add(group, "axle", "rear end", "box", (x, 0, d / 2), (200, 240, 2 * (d / 2 - e.axle_clearance)))
         tr.axles.append(Axle(group, x, track, d, w, group, driven, e.axle_clearance))
         sgn = 1 if group == "front" else -1
+        end_z = (e.nose_clearance if group == "front" else e.tail_clearance) + 40
         for side in (1, -1):
-            B.add(group, "frame", f"rail {'L' if side > 0 else 'R'}", "box",
-                  ((sgn * 120 + x + sgn * e.overhang) / 2, side * e.frame_half_width, rail_z),
-                  (abs(x + sgn * e.overhang - sgn * 120), 40, 80))
+            sd = "L" if side > 0 else "R"
+            B.add(group, "frame", f"rail {sd}", "box", ((sgn * 120 + x) / 2, side * e.frame_half_width, rail_z),
+                  (abs(x - sgn * 120), 40, 80))
+            B.add(group, "frame", f"end {sd}", "box", (x + sgn * e.overhang / 2, side * e.frame_half_width, end_z),
+                  (e.overhang, 40, 80))
     ph = lo.pivot_height
     B.add("rear", "pivot", "knuckle", "box", (-40, 0, ph), (80, 80, 120), e.knuckle_kg)
-    B.add("rear", "frame", "engine hood", "box", (lo.rear_axle_x - e.overhang / 2, 0, (rail_z + 40 + e.hood_top) / 2),
-          (e.overhang + 200, e.hood_width, e.hood_top - rail_z - 40))
+    hz = e.tail_clearance + 80
+    B.add("rear", "frame", "engine hood", "box", (lo.rear_axle_x - e.overhang / 2, 0, (hz + e.hood_top) / 2),
+          (e.overhang + 200, e.hood_width, e.hood_top - hz))
     B.add("rear", "seat", "seat", "box", (e.seat_x, 0, e.seat_height + 60), (420, 440, 120))
     # front-mount deck ahead of the front axle
     dz = e.deck_bottom_clearance + e.deck_height / 2
@@ -153,10 +162,27 @@ def build_articulated_rider(p) -> Tractor:
 
 
 BUILDERS = {"lawn_tractor": build_lawn_tractor, "articulated_rider": build_articulated_rider}
+MARGIN = 1.2
 
 
 def build(p) -> Tractor:
-    return BUILDERS[p.model.layout](p)
+    """The machine, and its drive's peak axle torque. Transaxle makers publish a
+    rated (continuous) axle torque; the hydrostatic relief allows more. The
+    maker rates the machine for its slope, so the model gets at least the
+    torque to climb that slope with the operator and deck, plus 20 %."""
+    from eox.calcs.common import tractive_force
+    from eox.tractor import DECK
+
+    tr = BUILDERS[p.model.layout](p)
+    d = p.drive
+    driven = [ax for ax in tr.axles if ax.driven]
+    r = driven[0].tire_diameter / 2000
+    need = tractive_force(tr.mass(fitted=DECK), p.vehicle.max_slope_deg, p.vehicle.rolling_resistance) * r / len(driven)
+    d.axle_torque_nm = max(getattr(d, "rated_axle_torque_nm", 0.0), MARGIN * need)
+    if hasattr(d, "front_rated_axle_torque_nm"):
+        d.front_axle_torque_nm = max(d.front_rated_axle_torque_nm, MARGIN * need)
+    d.from_rating = d.axle_torque_nm > getattr(d, "rated_axle_torque_nm", 0.0)
+    return tr
 
 
 def evaluate(name: str, configs: tuple = ("deck",)) -> dict:
@@ -171,7 +197,7 @@ def evaluate(name: str, configs: tuple = ("deck",)) -> dict:
     tr = build(p)
     v = p.vehicle
     angles = [0.0] + ([p.layout.articulation_max_deg] if tr.articulated else [])
-    worst = min(x for g in angles for f in ((), DECK) for x in stability(tr, g, f).values())
+    worst = min(x for g in angles for x in stability(tr, g, DECK).values())   # as sold for mowing: deck fitted
     m = {"mass_kg": tr.mass(fitted=DECK) - v.mass_operator_kg - v.mass_payload_kg,
          "working_slope_deg": worst / 2, "grip_limit_deg": grip_limit(p, tr, DECK),
          "rated_slope_deg": float(v.max_slope_deg), "cost_usd": float(p.spec.price_usd),

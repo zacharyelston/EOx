@@ -259,8 +259,9 @@ def run(p, tr, fitted: tuple = (), config: str | None = None, keep_trajectory: b
     n_sub = max(1, int(round(1.0 / (sim.control_hz * sim.timestep))))
     dt = n_sub * sim.timestep
 
-    rated_slope = p.vehicle.max_slope_deg
-    obs = [ObstacleResult(s.name, s.kind, not (s.kind == "ramp" and s.spec.slope_deg > rated_slope), lim)
+    veh = p.vehicle
+    beyond = {"ramp": veh.max_slope_deg, "side_slope": getattr(veh, "max_cross_slope_deg", veh.max_slope_deg)}
+    obs = [ObstacleResult(s.name, s.kind, not (s.kind in beyond and s.spec.slope_deg > beyond[s.kind]), lim)
            for s in course.segments]
     r_max = max(w.radius for w in spec.wheels)
 
