@@ -6,36 +6,69 @@ pages each entry links to.
 
 ---
 
-## 2026-10-19: Baselines against real machines (in progress)
+## 2026-10-19: Baselines against real machines
 
-**Why:** a test score means little until we know what a real product scores on
-the same test. So real machines get modelled from their published specs and
-run through the same checks and course as EOX.
+**Why:** a test score means little until we know what a real product scores
+on the same test.
 
 **What changed:**
 
-- **`src/eox/reference.py`:** builds a machine from a spec file in
-  `design/reference/<name>.toml`.
-  - It holds the published numbers: mass, wheelbase, tracks, tyres, rated
-    slope and transaxle axle torque.
-  - What makers don't publish (weight split, CG height) is estimated and
-    marked REF.
-  - Two mass lumps (engine and transaxle) are placed to match the published
-    mass and the estimated weight split and CG height.
-  - Two layouts: `lawn_tractor` (engine in front, open-diff rear transaxle,
-    pivoting front axle, mid deck) and `articulated_rider` (front deck,
-    centre pivot, optional AWD).
-- **The simulation:** the MuJoCo model no longer needs an EOX power box. Drive
-  limits can come from an axle-torque rating, and steering from a published
-  moment.
-- **`uv run eox baseline`:** runs EOX Home and Pro and every reference, and
-  writes [baselines.md](baselines.md) and a status-grid figure.
-- **Shared grip calc:** the grip-limit calc is now one function
-  (`calcs.drive.grip_limit`), used by EOX and the references alike.
+- **`design/reference/`:** four machines with their sources. The research
+  covered spec pages, operator's manuals and Tuff Torq transaxle sheets.
+  - **John Deere X350:** K46, rated 15°.
+  - **Cub Cadet XT1 LT42:** TL-200, rated 15°.
+  - **Ryobi 80V 42″ RYRM8060:** electric. Discontinued; Ryobi's last 42″
+    lawn tractor. Rated 15°.
+  - **Husqvarna R 316TX AWD:** articulated, front Combi 103 deck, rated 10°.
+    Not sold in the US.
+- **`src/eox/reference.py`:** builds each machine with its published mass,
+  wheelbase, tracks, tyres and rating. Two mass lumps are placed to match the
+  estimated weight split and CG height (REF).
+- **`uv run eox baseline`:** writes [baselines.md](baselines.md) and a
+  status-grid figure.
+- **Ratings:** each machine is scored against its own climb and cross-slope
+  ratings. The EOX models now state their cross-slope rating, 17°, the label
+  value they already used.
+- **Per-axle drive torque:** for AWD machines with two different transaxles.
 
-**Status:** specs are being gathered for the John Deere X350, Cub Cadet XT1
-LT42, Ryobi 80V 42″ electric and Husqvarna R 316TX AWD. The machinery and its
-tests are in; the reference files and results come next.
+**Modelling choices the first run forced:**
+
+- **Drive torque:** transaxle makers publish a continuous axle-torque rating,
+  and the hydrostatic relief allows more. With the rating as a hard ceiling,
+  a Deere couldn't climb the 15° it is rated for. So each reference gets at
+  least the torque to climb its rated slope with the operator, plus 20 %.
+- **Frame ends:** real frames rise at the nose and tail. Rails modelled at
+  ground clearance all the way out made every lawn tractor dig into the
+  ditch.
+- **Configuration:** all machines are compared deck-fitted, the way they
+  mow. A reference calibrated with its deck turns tail-heavy if the deck
+  comes off.
+
+**Findings** (deck fitted):
+
+- **Wheel lift:** the lawn tractors' pivoting front axles keep every wheel
+  down on the twist and the side slope. Home's leaf-sprung axle lifts a
+  wheel on both: more evidence for a pivoting axle (a trial gene now exists).
+- **Stability:** Home's working slope is 24°, against 13–14° for the lawn
+  tractors (half the static tip angle).
+- **Grip:** the lawn tractors climb on grip to about 16°, against Home's 14°.
+  Their higher CG loads the driven wheels more on a climb, and costs them
+  stability.
+- **Pro vs Husqvarna:** both grip to 22° with AWD. The Pro is rated higher
+  (15° vs 10°) and is more stable (20° vs 14°).
+- **Front decks:** both front-deck machines need a pivoting deck.
+- **Deck float:** every mid-deck machine, real or EOX, needs about 105 mm of
+  float on the twist. The 75 mm allowance (REF) is probably too strict; worth
+  revisiting.
+- **Weight and runtime:** EOX is 50–85 kg heavier, and runs 1.3–1.4 h on a
+  charge against the Ryobi's 1.0–1.25 h.
+
+**Caveats:**
+
+- Weight split and CG height are estimated for every reference.
+- The track widths of the three US tractors are estimated.
+- Prices: dealer price for the Deere; launch MSRP for the discontinued Ryobi;
+  EU price, converted and without its deck, for the Husqvarna.
 
 ---
 

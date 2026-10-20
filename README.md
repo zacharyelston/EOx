@@ -364,6 +364,45 @@ tractor's engine? ([report](trials/home-front-battery/report.md))
 
 ---
 
+## Baselines: real machines
+
+Four real machines are modelled from their published specs (`design/reference/`)
+and run through the same checks and the same course: the John Deere X350, Cub
+Cadet XT1 LT42 and Ryobi 80V 42″ lawn tractors, and the Husqvarna R 316TX AWD
+articulated rider. What makers don't publish (weight split, CG height) is
+estimated and marked REF. Full table: [docs/baselines.md](docs/baselines.md).
+
+```bash
+uv run eox baseline
+```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/img/baselines-dark.svg">
+  <img alt="EOX Home and Pro and four real machines on each course obstacle: PASS, WARN or INFO" src="docs/img/baselines-light.svg" width="100%">
+</picture>
+
+- **The real lawn tractors don't lift a wheel on the twist or the side slope.**
+  Their front axles pivot. Home's leaf-sprung axle lifts a wheel on both. That
+  is the clearest case yet for a pivoting front axle on the Home.
+- **Home is more stable but grips less.** Its working slope is 24° against the
+  lawn tractors' 13–14°: the battery sits low and all four wheels carry it.
+  But they climb on grip to about 16° against Home's 14°, partly because
+  their higher CG puts more load on the driven wheels on a climb, the same
+  height that costs them stability.
+- **Pro and the Husqvarna grip the same with AWD (22°).** The Pro is rated
+  15° against the Husqvarna's 10°, and its working slope is 20° against 14°.
+  Both front decks would dig in on the ditch if mounted rigidly: Pro 307 mm,
+  Husqvarna 357 mm. So both need a pivoting deck, which is how the
+  Husqvarna's actually works.
+- **Weight, runtime and price:**
+  - EOX is heavier: Home 302 kg against 236–253 kg, and Pro 371 kg against
+    287 kg.
+  - EOX runs longer on a charge: 1.3–1.4 h against the Ryobi's 1.0–1.25 h.
+  - EOX parts cost about $3.7k (Home) and $5.3k (Pro). The rivals retail at
+    $2.4k–5k, and about $10k for the Husqvarna (EU price, without its deck).
+
+---
+
 ## How the design works
 
 Each model's numbers live in a few TOML files. Change one, re-run, and the
@@ -432,6 +471,10 @@ uv run eox evolve --trial home-front-battery
 ```
 
 ```bash
+uv run eox baseline
+```
+
+```bash
 /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/render_preview.py -- out/cad/pro/stl docs/img/pro-side.png --view side
 ```
 
@@ -460,6 +503,7 @@ uv run eox evolve --trial home-front-battery
 | `src/eox/drawings.py` | Cut diagrams and figures (SVG, light + dark) |
 | `src/eox/sim/` | Terrain course: heightfield, MuJoCo model generator, driver and scoring, renders |
 | `src/eox/evolve/` | Design trials: evaluator, genetic algorithm, reports |
+| `src/eox/reference.py`, `baseline.py`, `design/reference/` | Real machines from published specs, and the EOX-vs-real comparison |
 | `trials/` | Trial results: report, `best.toml`, progress figure, evaluation history |
 | `bom/purchased.csv` | Purchased parts by module; each model sets its module counts |
 | `docs/` | [Architecture](docs/architecture.md), [power box](docs/powerbox.md), [safety requirements](docs/safety-requirements.md), [design log](docs/design-log.md), [simulation](docs/simulation.md), [design trials](docs/trials.md), [tooling decision](docs/tooling.md), [component candidates](docs/component-candidates.md) |
