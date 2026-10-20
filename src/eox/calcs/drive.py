@@ -28,6 +28,23 @@ def _per_motor(p, tr, slope_deg: float, extra: float | None = None, ratio: float
     return F / tr.drive_units * (a.tire_diameter / 2000) / (overall * eta)
 
 
+def grip_limit(p, tr, fitted: tuple = DECK) -> float:
+    """Steepest climb the driven tyres can grip (deg): traction x driven-axle
+    load against slope + rolling resistance, with the load moving rearward as
+    the slope steepens."""
+    v = p.vehicle
+    driven = [ax.name for ax in tr.axles if ax.driven]
+    lo_, hi_ = 0.0, 45.0
+    for _ in range(50):
+        mid = (lo_ + hi_) / 2
+        grip = v.traction_coefficient * sum(tr.axle_loads_n(mid, fitted=fitted)[n] for n in driven)
+        if grip >= tractive_force(tr.mass(fitted=fitted), mid, v.rolling_resistance):
+            lo_ = mid
+        else:
+            hi_ = mid
+    return lo_
+
+
 def _motor_rpm(p, kmh: float, extra: float | None = None) -> float:
     a = p.axle
     extra = a.extra_reduction if extra is None else extra
@@ -68,13 +85,7 @@ def run(p, tr, r: Report):
         return v.traction_coefficient * sum(loads[n] for n in driven)
 
     F_motors = tr.drive_units * T_peak * a.ratio * a.extra_reduction * drivetrain_efficiency(p) / (a.tire_diameter / 2000)
-    lo_, hi_ = 0.0, 45.0
-    for _ in range(50):                                   # steepest climb the driven tyres can grip
-        mid = (lo_ + hi_) / 2
-        if grip(mid) >= tractive_force(tr.mass(fitted=DECK), mid, v.rolling_resistance):
-            lo_ = mid
-        else:
-            hi_ = mid
+    lo_ = grip_limit(p, tr, DECK)
     layout = "AWD" if tr.drive_units == len(tr.axles) else "rear-drive"
     r.add(
         Check(grp, "peak tractive force on the flat: motors / tyre grip", f"{F_motors:,.0f} / {grip(0):,.0f}", "N",

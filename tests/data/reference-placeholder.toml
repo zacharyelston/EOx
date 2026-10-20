@@ -1,0 +1,62 @@
+[model]
+name = "Placeholder lawn tractor"
+layout = "lawn_tractor"
+kind = "gas lawn tractor"
+
+[vehicle]
+mass_operator_kg = 100
+mass_payload_kg = 0
+rolling_resistance = 0.10
+traction_coefficient = 0.5
+max_slope_deg = 15
+design_slope_deg = 10
+
+[spec]
+mass_kg = 220
+wheelbase = 1200
+front_track = 750
+rear_track = 800
+front_tire = [381, 152]
+rear_tire = [508, 254]
+deck_width = 1070
+ground_clearance = 100
+price_usd = 3000
+
+[estimate]
+front_share = 0.40
+cg_height = 450
+front_wheel_kg = 3
+rear_wheel_kg = 7
+front_axle_kg = 8
+transaxle_clearance = 100
+front_overhang = 450
+rear_overhang = 250
+frame_half_width = 200
+hood_width = 500
+hood_top = 750
+seat_x = 150
+seat_height = 600
+deck_x = 550
+deck_length = 600
+deck_height = 110
+deck_bottom_clearance = 40
+deck_mass_kg = 35
+engine_x_from_front_axle = -100
+rear_lump_x = 50
+
+[steer_axle]
+track = 750
+tire_diameter = 381
+tire_width = 152
+beam_clearance = 150
+wheel_tire_mass_kg = 3
+max_steer_deg = 50
+scrub_radius = 30
+oscillates = true
+oscillation_max_deg = 10
+spring_rate_n_per_mm = 200
+spring_spacing = 600
+spring_travel = 5
+
+[drive]
+axle_torque_nm = 230
