@@ -27,6 +27,20 @@ could be ordered. Blender stays useful for:
 - **The low-poly body later on.** A cyber-truck shell is a polyhedral mesh, so
   Blender is a good place to sketch facets before they become bent panels.
 
+## Simulation: MuJoCo
+
+The terrain course (`uv run eox course`) uses [MuJoCo](https://mujoco.org),
+an open-source physics engine written in C, through its Python bindings.
+
+- The model is generated from the same layout objects as the CAD and the
+  calcs, so the simulated machine can't drift from the design.
+- The physics runs in C. Python only steers at 50 Hz, so a 100 s run takes
+  about 5 s.
+- MuJoCo also renders offscreen for the README frames, and its viewer drives
+  the course live.
+
+See [simulation.md](simulation.md).
+
 ## Why code-CAD (build123d) over GUI CAD
 
 | Need | How the code approach covers it |

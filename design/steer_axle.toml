@@ -14,3 +14,7 @@ max_steer_deg = 50             # REF: inner wheel at full lock
 turns_lock_to_lock = 2.0       # REF: steering-wheel turns
 scrub_radius = 50              # REF: kingpin axis to tyre centre at the ground
 oscillates = false             # leaf-sprung on a golf cart: treat the support as 4 rigid points
+# Leaf springs, for the terrain-course simulation only (the static checks use 4 rigid points)
+spring_rate_n_per_mm = 20      # REF: each front leaf spring, golf-cart class (~115 lb/in)
+spring_spacing = 600           # REF: leaf-spring centres across the axle
+spring_travel = 40             # REF: bump and rebound each way from static, mm

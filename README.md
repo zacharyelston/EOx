@@ -290,6 +290,48 @@ Both models run on one 51.2 V 100 Ah pack (4.1 kWh usable).
 
 ---
 
+## Terrain course
+
+Both models drive a standard test course in a [MuJoCo](https://mujoco.org)
+rigid-body simulation, bare and with the deck fitted. The simulated machine is
+generated from the same masses and part envelopes the calcs use. Parked, its
+axle loads match the hand calc within 2 %. Details:
+[docs/simulation.md](docs/simulation.md).
+
+The course has seven obstacles: a bump, a kerb, a ditch, a twist, 12° and 15°
+climbs, and a 17° side slope.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/img/home-course-dark.svg">
+  <img alt="EOX Home on the test course: elevation profile, and per-obstacle results bare and with the deck fitted" src="docs/img/home-course-light.svg" width="100%">
+</picture>
+
+![EOX Home with the deck fitted on the twist, the 12 degree climb and the 17 degree side slope](docs/img/home-course.png)
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/img/pro-course-dark.svg">
+  <img alt="EOX Pro on the test course: elevation profile, and per-obstacle results bare and with the deck fitted" src="docs/img/pro-course-light.svg" width="100%">
+</picture>
+
+![EOX Pro with the deck fitted on the twist, the 15 degree climb and the 17 degree side slope](docs/img/pro-course.png)
+
+What the course found that the static checks can't:
+
+- **Home's leaf-sprung front axle runs out of roll travel.** On the twist, and
+  where the side slope tilts in and out, a front wheel lifts for 1–3 s. On
+  the steady 17° slope all four wheels stay loaded. A pivoting front axle
+  would fix it.
+- **Home's 12° rating has little margin.** With the deck, it climbs 12° at
+  3.9× rated motor torque and starts spinning out near 13°. That is a degree
+  below the calc's 14.1° grip limit: the open diff lets the lighter rear wheel
+  set the limit.
+- **Pro clears everything bare.** The trunnion takes the twist (9° of its
+  ±10°), and the 17° side slope leaves about 540 N on the lightest wheel.
+- **The Pro's front deck has to pivot.** Mounted rigidly, it would dig
+  130–310 mm into the climbs, the twist and the ditch.
+
+---
+
 ## How the design works
 
 Each model's numbers live in a few TOML files. Change one, re-run, and the
@@ -303,6 +345,7 @@ flowchart LR
   L --> B["eox build<br/>STEP + DXF per part<br/>layout STEP + STLs"]
   L --> O["eox bom<br/>by module, cost + mass"]
   L --> D["eox drawings<br/>cut diagrams + figures"]
+  L --> S["eox course<br/>MuJoCo terrain course"]
   B --> R["Blender<br/>preview renders"]
 ```
 
@@ -312,6 +355,7 @@ flowchart LR
 | `design/axle.toml`: golf-cart drive-axle module | `design/models/pro.toml`: articulated layout, pivot, hydraulic steering |
 | `design/steer_axle.toml`: golf-cart front steering axle | |
 | `design/powerbox.toml`: battery & distribution box | |
+| `design/course.toml`: the terrain test course | |
 | `design/materials.toml`: SendCutSend bend data | |
 
 ## Quick start
@@ -340,6 +384,14 @@ uv run eox drawings --model pro
 ```
 
 ```bash
+uv run eox course --model pro
+```
+
+```bash
+uv run eox course --model pro --view
+```
+
+```bash
 /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/render_preview.py -- out/cad/pro/stl docs/img/pro-side.png --view side
 ```
 
@@ -347,6 +399,9 @@ uv run eox drawings --model pro
 - `build` writes the STEP files to order, the flat DXFs, and the layout scenes.
 - `bom` writes `out/<model>-bom.csv`.
 - `drawings` regenerates the SVG figures in `docs/img/`.
+- `course` drives the terrain course in MuJoCo and writes
+  `out/<model>-course.md` and the course figures. `--view` opens MuJoCo's
+  live viewer, `--render` writes the frames, and `--video` records the run.
 - The Blender command renders one view; `tools/render_preview.py` lists the
   rest.
 
@@ -361,8 +416,9 @@ uv run eox drawings --model pro
 | `src/eox/powerbox.py`, `tractor.py` | Box and whole-machine layouts |
 | `src/eox/calcs/` | Engineering checks: `bus`, `drive`, `vehicle`, `powerbox` |
 | `src/eox/drawings.py` | Cut diagrams and figures (SVG, light + dark) |
+| `src/eox/sim/` | Terrain course: heightfield, MuJoCo model generator, driver and scoring, renders |
 | `bom/purchased.csv` | Purchased parts by module; each model sets its module counts |
-| `docs/` | [Architecture](docs/architecture.md), [power box](docs/powerbox.md), [safety requirements](docs/safety-requirements.md), [tooling decision](docs/tooling.md), [component candidates](docs/component-candidates.md) |
+| `docs/` | [Architecture](docs/architecture.md), [power box](docs/powerbox.md), [safety requirements](docs/safety-requirements.md), [simulation](docs/simulation.md), [tooling decision](docs/tooling.md), [component candidates](docs/component-candidates.md) |
 | `tools/` | Blender preview renderer |
 
 ## Status and open work

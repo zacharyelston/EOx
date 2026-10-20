@@ -1,4 +1,4 @@
-"""`uv run eox calc | build | bom | drawings | all [--model pro]`"""
+"""`uv run eox calc | build | bom | drawings | course | all [--model pro]`"""
 
 from __future__ import annotations
 
@@ -124,17 +124,99 @@ def cmd_bom(p, tr, args) -> int:
     return 0
 
 
+def cmd_course(p, tr, args) -> int:
+    """Drive the terrain course in MuJoCo, bare and with the deck fitted."""
+    from eox.sim import mjcf, render, report, terrain
+    from eox.sim import run as sim
+
+    configs = {"bare": [()], "deck": [DECK], "both": [(), DECK]}[args.config]
+    if args.view:
+        return _view(p, tr, configs[-1])
+    course = terrain.build(p.course)
+    model = args.model
+    results = []
+    for fitted in configs:
+        r = sim.run(p, tr, fitted)
+        results.append(r)
+        c = report.counts(r)
+        print(f"{p.model.name}, {r.config}: {'finished' if r.completed else 'did not finish'} in {r.time_s:.0f} s; "
+              f"{c['FAIL']} FAIL  {c['WARN']} WARN  {c['PASS']} PASS  {c['INFO']} INFO")
+        for o in r.obstacles:
+            print(f"  {o.status:<5} {o.name:<18} {report.headline(o)}")
+        spec = mjcf.build(p, tr, course, fitted)
+        mjcf.export(spec, OUT / "sim" / f"{model}-{'deck' if fitted else 'bare'}.xml")
+    path = OUT / f"{model}-course.md"
+    path.write_text(report.markdown(p, results, course))
+    print(f"report: {path.relative_to(OUT.parent)}")
+    args.out.mkdir(parents=True, exist_ok=True)
+    drawings.write_course(p, course, results, args.out)
+    print(f"figure: {(args.out / f'{model}-course-light.svg').relative_to(ROOT)} (+ dark)")
+    print(f"MuJoCo models: out/sim/{model}-*.xml (open in MuJoCo's simulate app)")
+    shown = results[-1]
+    if args.render:
+        ramps = [o for o in shown.obstacles if o.kind == "ramp" and o.rated]
+        pick = [o.name for o in shown.obstacles if o.kind == "twist"][:1] + [o.name for o in ramps[-1:]] \
+            + [o.name for o in shown.obstacles if o.kind == "side_slope"][:1]
+        f = render.panels(p, tr, configs[-1], shown, pick, args.out / f"{model}-course.png")
+        print(f"render: {f.relative_to(ROOT)}")
+    if args.video:
+        f = render.video(p, tr, configs[-1], shown, OUT / "sim" / f"{model}-{'deck' if configs[-1] else 'bare'}")
+        print(f"video: {f.relative_to(ROOT)}")
+    return 1 if any(o.status == "FAIL" for r in results for o in r.obstacles) else 0
+
+
+def _view(p, tr, fitted) -> int:
+    """MuJoCo's interactive viewer, driving live with the course driver."""
+    import mujoco
+    import mujoco.viewer
+    from eox.sim import mjcf, terrain
+    from eox.sim import run as sim
+
+    c = p.course
+    course = terrain.build(c)
+    spec = mjcf.build(p, tr, course, fitted)
+    spec.start_rear_x = c.start_x
+    m = mjcf.load(spec)
+    d = mujoco.MjData(m)
+    rig = sim._Rig(spec, m, course)
+    drv = sim.Driver(spec, c.speed_kmh / 3.6, lookahead=max(2.0, 1.5 * spec.wheelbase))
+    dt = 1.0 / c.sim.control_hz
+    state = {"next": 0.0}
+
+    def control(m_, d_):
+        if d_.time < state["next"] - dt:          # the viewer was reset
+            state["next"] = 0.0
+            drv.restart(0.0)
+        if d_.time < c.sim.settle_s or d_.time < state["next"]:
+            return
+        loads, _ = rig.wheel_loads(d_)
+        rig.rolling_resistance(d_, loads)
+        drv(d_, d_.time - c.sim.settle_s, dt, rig.ground_speed(d_))
+        state["next"] = d_.time + dt
+
+    mujoco.set_mjcb_control(control)
+    try:
+        mujoco.viewer.launch(m, d)
+    finally:
+        mujoco.set_mjcb_control(None)
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="eox", description="EOX: calcs, CAD and BOM for a tractor model")
-    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "all"])
+    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "course", "all"])
     ap.add_argument("--model", default="pro", choices=MODELS, help="design/models/<model>.toml (default: pro)")
     ap.add_argument("--all", action="store_true", help="calc: also list passing SCS checks")
     ap.add_argument("--out", type=Path, default=ROOT / "docs" / "img", help="drawings: output folder (default docs/img)")
+    ap.add_argument("--config", default="both", choices=["bare", "deck", "both"], help="course: deck off, on, or both")
+    ap.add_argument("--render", action="store_true", help="course: render obstacle frames to <out>/<model>-course.png")
+    ap.add_argument("--video", action="store_true", help="course: render the run to out/sim (MP4 with ffmpeg, else GIF)")
+    ap.add_argument("--view", action="store_true", help="course: drive it live in MuJoCo's interactive viewer")
     args = ap.parse_args(argv)
     p = load(args.model)
     tr = tractor.build(p)
     cmds = {"calc": [cmd_calc], "build": [cmd_build], "bom": [cmd_bom], "drawings": [cmd_drawings],
-            "all": [cmd_calc, cmd_bom, cmd_build, cmd_drawings]}
+            "course": [cmd_course], "all": [cmd_calc, cmd_bom, cmd_build, cmd_drawings, cmd_course]}
     rc = 0
     for fn in cmds[args.command]:
         rc |= fn(p, tr, args)
