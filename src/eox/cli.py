@@ -1,4 +1,6 @@
-"""`uv run eox calc | build | bom | drawings | course | all [--model pro]`"""
+"""`uv run eox calc | build | bom | drawings | course | all [--model pro]`
+`uv run eox evolve --trial <name>`
+`uv run eox baseline`"""
 
 from __future__ import annotations
 
@@ -202,9 +204,42 @@ def _view(p, tr, fitted) -> int:
     return 0
 
 
+def cmd_evolve(args) -> int:
+    """Evolve a design trial (design/trials/<name>.toml) and write its results."""
+    from eox.evolve import engine, report
+
+    trial = engine.load_trial(args.trial)
+    for k in ("population", "generations", "seed"):
+        if getattr(args, k) is not None:
+            setattr(trial, k, getattr(args, k))
+    print(f"trial {trial.name}: {trial.question}")
+    individuals, reference = engine.run(trial, workers=args.workers, fresh=args.fresh)
+    files = report.write(trial, individuals, reference)
+    top = report.best(trial, individuals)
+    print(f"\nbest: score {engine.score(trial, top):.2f} (today {engine.score(trial, reference):.2f}); "
+          + ("feasible" if engine.violation(trial, top) == 0 else "breaks a constraint"))
+    for f in files:
+        print(f"  {f.relative_to(ROOT)}")
+    return 0 if engine.violation(trial, top) == 0 else 1
+
+
+def cmd_baseline(args) -> int:
+    """EOX models and the reference machines (design/reference/) on the same checks and course."""
+    from eox import baseline
+
+    rows = baseline.run(workers=args.workers)
+    for r in rows:
+        m = r["metrics"]
+        print(f"{r['name']:<34} {m['mass_kg']:5.0f} kg  rated {m['rated_slope_deg']:4.1f}  grip {m['grip_limit_deg']:4.1f}  "
+              f"working slope {m['working_slope_deg']:4.1f}  " + " ".join(o.status for o in r["run"].obstacles))
+    for f in baseline.write(rows):
+        print(f"  {f.relative_to(ROOT)}")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="eox", description="EOX: calcs, CAD and BOM for a tractor model")
-    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "course", "all"])
+    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "course", "evolve", "baseline", "all"])
     ap.add_argument("--model", default="pro", choices=MODELS, help="design/models/<model>.toml (default: pro)")
     ap.add_argument("--all", action="store_true", help="calc: also list passing SCS checks")
     ap.add_argument("--out", type=Path, default=ROOT / "docs" / "img", help="drawings: output folder (default docs/img)")
@@ -212,7 +247,19 @@ def main(argv=None) -> int:
     ap.add_argument("--render", action="store_true", help="course: render obstacle frames to <out>/<model>-course.png")
     ap.add_argument("--video", action="store_true", help="course: render the run to out/sim (MP4 with ffmpeg, else GIF)")
     ap.add_argument("--view", action="store_true", help="course: drive it live in MuJoCo's interactive viewer")
+    ap.add_argument("--trial", help="evolve: design/trials/<name>.toml")
+    ap.add_argument("--population", type=int, help="evolve: designs per generation (default: the trial's)")
+    ap.add_argument("--generations", type=int, help="evolve: generations (default: the trial's)")
+    ap.add_argument("--seed", type=int, help="evolve: random seed (default: the trial's)")
+    ap.add_argument("--workers", type=int, help="evolve: parallel evaluations (default: CPUs - 1)")
+    ap.add_argument("--fresh", action="store_true", help="evolve: forget cached evaluations and start over")
     args = ap.parse_args(argv)
+    if args.command == "baseline":
+        return cmd_baseline(args)
+    if args.command == "evolve":
+        if not args.trial:
+            ap.error("evolve needs --trial <name> (design/trials/<name>.toml)")
+        return cmd_evolve(args)
     p = load(args.model)
     tr = tractor.build(p)
     cmds = {"calc": [cmd_calc], "build": [cmd_build], "bom": [cmd_bom], "drawings": [cmd_drawings],
