@@ -36,16 +36,20 @@ front_overhang = 250           # frame ahead of the front axle
 frame_half_width = 310         # rails clear the sideways motor and sit inside the rear tyres
 nose_x = 1200                  # from here forward the rails neck in ...
 nose_half_width = 100          # ... clear of the steered front wheels' sweep (inner edge ~130 mm at full lock)
-frame_mass_kg = 22             # sheet-steel chassis rails + cross members, estimate
+rail_mass_kg_per_m = 5.0       # sheet-steel chassis rails + cross members, estimate (22 kg at the H0 layout)
 powerbox_x = 510               # box centre: just ahead of the rear axle and its motor, under the seat
 powerbox_z = 230               # box underside, slung between the rails; a deck top at min cut is 150
+box_stand_mass_kg = 5          # REF: a frame lifting the box clear of the rails, if it sits above them
 seat_and_controls_mass_kg = 30
 hitch_mass_kg = 3              # rear hitch plate, estimate
-seat_and_controls_cg = [700, 0, 600]
-operator_cg = [520, 0, 790]    # seated on the box
-floor_x = 1080                 # floor pan centre, ahead of the box
+operator_cg = [520, 0, 790]    # seated; the seat, floor, wheel and controls are placed from here
+seat_height = 538              # seat pan underside: on the box when the box is under it, else on a pedestal
+seat_pedestal_mass_kg = 4      # REF: seat bridge (posts on the rails + plate), only when the box isn't under the seat
+seat_and_controls_offset = [180, 0, -190]   # their CG, from the operator CG
+floor_reach = 560              # floor pan centre, ahead of the operator CG
 floor_length = 360
-steering_wheel_at = [1060, 0, 840]  # wheel centre: ahead of the seat, at chest height
+steering_wheel_reach = 540     # wheel centre, ahead of the operator CG ...
+steering_wheel_height = 840    # ... at chest height
 
 [steering]
 type = "rack and pinion"       # manual, golf-cart parts

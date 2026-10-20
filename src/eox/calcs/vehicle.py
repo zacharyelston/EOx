@@ -115,6 +115,48 @@ _JOINED = {frozenset(k) for k in (("wheel", "axle"), ("axle", "motor"), ("frame"
                                    ("deck", "pto"), ("deck", "implement"))}
 
 
+def steer_sweep_hits(tr, step_deg: float = 2.5) -> list[str]:
+    """Home: parts inside the volume the steered front tyres sweep, lock to
+    lock. Each tyre's plan footprint turns about its kingpin (inboard of the
+    tyre centre by the scrub radius) and stands one tyre diameter tall. The
+    axle, its rack and the wheels themselves are meant to be there."""
+    from eox.powerbox import Body
+
+    f = tr.p.steer_axle
+    ax = tr.axle("front")
+    hl, hw = ax.tire_diameter / 2, ax.tire_width / 2
+    L, W, H = tr.box.outer
+    bx, _, bz = tr.box_pos
+    items = [b for g, k, b in tr.bodies if k not in ("wheel", "axle", "steering", "deck", "pto")]
+    items.append(Body("power box", "box", (bx, 0, bz + H / 2), (L, W, H)))
+    feet = []
+    n = int(2 * f.max_steer_deg / step_deg) + 1
+    for side in (1, -1):
+        ky = side * (ax.track / 2 - f.scrub_radius)
+        for i in range(n):
+            g = math.radians(-f.max_steer_deg + i * step_deg)
+            pts = [(dx, side * f.scrub_radius + dy) for dx, dy in ((-hl, -hw), (hl, -hw), (hl, hw), (-hl, hw))]
+            feet.append([(ax.x + x * math.cos(g) - y * math.sin(g), ky + x * math.sin(g) + y * math.cos(g)) for x, y in pts])
+    hits = []
+    for b in items:
+        z0 = b.bounds()[4]
+        if z0 >= ax.tire_diameter + 20:
+            continue
+        rect = _plan_rect(b)
+        if any(_overlap(rect, foot) for foot in feet):
+            hits.append(b.name)
+    # the steering column runs from the rack up to the wheel: it must pass clear of the box
+    x0, x1, y0, y1, z0, z1 = items[-1].bounds()
+    for ln in tr.links:
+        r_ = ln.diameter / 2
+        for i in range(21):
+            q = [ln.a[k] + (ln.b[k] - ln.a[k]) * i / 20 for k in range(3)]
+            if x0 - r_ < q[0] < x1 + r_ and y0 - r_ < q[1] < y1 + r_ and z0 - r_ < q[2] < z1 + r_:
+                hits.append(f"{ln.name} / power box")
+                break
+    return hits
+
+
 def parts_overlap(tr) -> list[str]:
     """Overlapping bounding boxes within each rigid group, plus the power box,
     ignoring pairs that are joined by design."""
@@ -164,6 +206,12 @@ def run(p, tr, r: Report):
     hits = parts_overlap(tr)
     r.add(Check(grp, "major parts clear each other (power box, units, axles, seat, frame)", len(hits), "overlaps", 0, "<=",
                 note="; ".join(hits) if hits else "box outlines within each rigid group"))
+    L, _, _ = tr.box.outer
+    rails = [b.bounds() for g, k, b in tr.bodies if g == tr.box_group and k == "frame"
+             and b.name not in ("floor pan", "footrest", "seat pedestal", "seat post L", "seat post R", "box stand")]
+    past = max(min(r_[0] for r_ in rails) - (tr.box_pos[0] - L / 2), (tr.box_pos[0] + L / 2) - max(r_[1] for r_ in rails), 0)
+    r.add(Check(grp, "power box sits within the frame (fore-aft)", round(past), "mm past the frame", 50, "<=",
+                note="the box (or its stand) must bear on the rails, not hang off the end"))
 
     # ---- stability ------------------------------------------------------------------
     grp = "Stability"
@@ -289,6 +337,10 @@ def _home_turning_and_steering(p, tr, r):
     R_outer_front = math.hypot(R_in + f.track, L) + f.tire_width / 2
     r.add(Check("Vehicle", f"turning radius, outer front tyre ({f.max_steer_deg:g} deg inner lock)",
                 round(R_outer_front / 1000, 2), "m", note="Ackermann; turn centre on the rear-axle line"))
+
+    hits = steer_sweep_hits(tr)
+    r.add(Check("Vehicle", f"steered front tyres clear every part, lock to lock (+-{f.max_steer_deg:g} deg)", len(hits),
+                "hits", 0, "<=", note=", ".join(hits) or "plan sweep about the kingpins, one tyre diameter tall"))
 
     grp = "Steering"
     loads = max((tr.axle_loads_n(fitted=f) for f in CONFIGS), key=lambda ld: ld["front"])   # heavier front steers harder

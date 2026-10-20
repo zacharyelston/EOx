@@ -4,7 +4,8 @@ Built from the same Tractor object the calcs and CAD use, so the simulated
 machine carries exactly the reconciled masses (tests/test_mass.py) and the
 same part envelopes:
 
-  Home  chassis (free) -> leaf-sprung front beam axle (bounce + roll springs)
+  Home  chassis (free) -> front beam axle on leaf springs (bounce + roll), or on a
+        centre pivot if steer_axle.oscillates
         -> two steering knuckles (kingpins) -> front wheels; rear wheels on
         the chassis, driven through an open diff.
   Pro   rear half (free) -> knuckle on the roll trunnion (+-oscillation)
@@ -136,7 +137,7 @@ def _look(pos, target=(0, 0, 0.5)) -> str:
 # the model
 # ---------------------------------------------------------------------------
 def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
-    c, u, a = p.course, p.unit, p.axle
+    c = p.course
     sim = c.sim
     mu, crr = p.vehicle.traction_coefficient, p.vehicle.rolling_resistance
     rear = tr.axle("rear")
@@ -174,12 +175,14 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
         if seen[name] > 1:
             name += f" {seen[name]}"
         geoms[mjb].append(_geom(name, b, origins[mjb], kind, collide=kind not in VISUAL_ONLY))
-    L, W, H = tr.box.outer
-    bx, _, bz = tr.box_pos
-    box = Body("power box", "box", (bx, 0, bz + H / 2), (L, W, H))
-    gb = body_of_group[tr.box_group]
-    geoms[gb].append(_geom(f"{tr.box_group}:power box", box, origins[gb], "powerbox"))
-    box_dims = {f"box {b.name}": _dims(b) for b in tr.box.bodies}
+    box_dims = {}
+    if tr.box is not None:                                # EOX models; reference tractors have none
+        L, W, H = tr.box.outer
+        bx, _, bz = tr.box_pos
+        box = Body("power box", "box", (bx, 0, bz + H / 2), (L, W, H))
+        gb = body_of_group[tr.box_group]
+        geoms[gb].append(_geom(f"{tr.box_group}:power box", box, origins[gb], "powerbox"))
+        box_dims = {f"box {b.name}": _dims(b) for b in tr.box.bodies}
 
     wheel_mass = {}
     for m in tr._counted(None, fitted):
@@ -216,9 +219,7 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
                                  wheel_mass[(group, nm)], ax.driven))
         return "".join(out)
 
-    T_rated = u.rated_power_w / (2 * math.pi * u.base_speed_rpm / 60)
-    T_peak = T_rated * u.peak_torque_factor
-    ratio, eta = a.ratio * a.extra_reduction, a.efficiency
+    T_rated, T_peak, ratio, eta = drive_limits(p)
     per_wheel = T_peak * ratio * eta / 2                 # open diff: equal torque each side
     drives = {}
     tendons, actuators = [], []
@@ -239,8 +240,11 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
         ph = lo.pivot_height * MM
         gmax = math.radians(lo.articulation_max_deg)
         ra = math.radians(lo.oscillation_max_deg)
-        A_rod = math.pi / 4 * (st.bore ** 2 - st.rod ** 2)
-        M_cyl = st.relief_bar * 0.1 * A_rod * st.lever_arm / 1000 * math.cos(gmax)   # N*m at full lock, as the calc
+        if hasattr(st, "moment_nm"):                    # a reference machine: published or estimated directly
+            M_cyl = st.moment_nm
+        else:
+            A_rod = math.pi / 4 * (st.bore ** 2 - st.rod ** 2)
+            M_cyl = st.relief_bar * 0.1 * A_rod * st.lever_arm / 1000 * math.cos(gmax)   # N*m at full lock, as the calc
         body_xml = (
             f'<body name="rear" pos="{_v(start)}"><freejoint name="root"/>{inert["rear"].xml(origins["rear"])}'
             + "".join(geoms["rear"]) + drive_wheels("rear", tr.axle("rear"), origins["rear"])
@@ -270,6 +274,9 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
         s = f.spring_spacing * MM
         trav = f.spring_travel * MM
         k_bounce, k_roll = 2 * k, k * s * s / 2
+        roll_max = math.atan(2 * trav / s)                          # leaf springs alone
+        if f.oscillates:                                            # centre pivot: rolls freely to its stops
+            k_roll, roll_max = 0.0, math.radians(f.oscillation_max_deg)
         unsprung = inert["front_axle"].mass + 2 * f.wheel_tire_mass_kg
         sprung_load = tr.axle_loads_n(fitted=fitted)["front"] - unsprung * G
         mmax = math.radians(f.max_steer_deg)
@@ -290,8 +297,8 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
             + f'<body name="front_axle" pos="{_v(origins["front_axle"])}">'
             f'<joint name="bounce" type="slide" axis="0 0 1" range="{-trav:.4g} {trav:.4g}" stiffness="{k_bounce:.5g}" '
             f'springref="{-sprung_load / k_bounce:.5g}" damping="{0.3 * 2 * math.sqrt(k_bounce * 60):.4g}"/>'
-            f'<joint name="axle_roll" type="hinge" axis="1 0 0" range="{-math.atan(2 * trav / s):.4g} {math.atan(2 * trav / s):.4g}" '
-            f'stiffness="{k_roll:.5g}" damping="{0.3 * 2 * math.sqrt(k_roll * 3):.4g}"/>'
+            f'<joint name="axle_roll" type="hinge" axis="1 0 0" range="{-roll_max:.4g} {roll_max:.4g}" '
+            f'stiffness="{k_roll:.5g}" damping="{max(0.3 * 2 * math.sqrt(k_roll * 3), 60):.4g}"/>'
             + inert["front_axle"].xml(origins["front_axle"]) + "".join(geoms["front_axle"]) + knuckles
             + "</body></body>")
         for sd in ("L", "R"):
@@ -345,7 +352,21 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
     return spec
 
 
+def drive_limits(p) -> tuple[float, float, float, float]:
+    """(T_rated, T_peak, overall ratio, efficiency) of one drive unit. EOX: a
+    golf-cart motor through its rear end. A reference machine gives its
+    transaxle's rated axle torque instead ([drive] axle_torque_nm), modelled
+    as 'peak' with the same 4x headroom over 'rated' so the scores compare."""
+    if hasattr(p, "drive"):
+        return p.drive.axle_torque_nm / 4, p.drive.axle_torque_nm, 1.0, 1.0
+    u, a = p.unit, p.axle
+    T_rated = u.rated_power_w / (2 * math.pi * u.base_speed_rpm / 60)
+    return T_rated, T_rated * u.peak_torque_factor, a.ratio * a.extra_reduction, a.efficiency
+
+
 def _lock_to_lock_s(st, gmax) -> float:
+    if hasattr(st, "lock_to_lock_s"):
+        return st.lock_to_lock_s
     A_full = math.pi / 4 * st.bore ** 2
     A_rod = math.pi / 4 * (st.bore ** 2 - st.rod ** 2)
     stroke = 2 * st.lever_arm * math.sin(gmax)

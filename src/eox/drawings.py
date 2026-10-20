@@ -259,8 +259,9 @@ def stability_svg(tr, theme: str) -> str:
         box = rot([(bx + sx * L / 2, sy * Wb / 2) for sx, sy in ((-1, -1), (1, -1), (1, 1), (-1, 1))], gb)
         poly(box, P, fill="none", stroke=t["muted"], stroke_width=1)
         bl = P(rot([(bx, Wb / 2 + 40)], gb)[0])
-        s.text(bl[0], bl[1], "power box" + ("" if tr.articulated else " + seat"), 10, t["muted"], "middle")
-        if tr.articulated:
+        seat_apart = tr.articulated or any(b.name == "seat pedestal" for _, _, b in tr.bodies)
+        s.text(bl[0], bl[1], "power box" + ("" if seat_apart else " + seat"), 10, t["muted"], "middle")
+        if seat_apart:
             sx_, sz = p.layout.operator_cg[0], 220
             poly([(sx_ - sz, -sz), (sx_ + sz, -sz), (sx_ + sz, sz), (sx_ - sz, sz)], P, fill="none",
                  stroke=t["muted"], stroke_width=1)

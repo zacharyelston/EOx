@@ -38,7 +38,10 @@ def _expected_bare_kg(p, tr) -> float:
                 + lo.implement_mass_kg)
     else:
         s = p.steer_axle
-        rest = drive_module + lo.frame_mass_kg + s.mass_kg + 2 * s.wheel_tire_mass_kg + lo.hitch_mass_kg
+        rails_m = 2 * (lo.nose_x + lo.rear_overhang + lo.wheelbase + lo.front_overhang - lo.nose_x) / 1000
+        rest = drive_module + rails_m * lo.rail_mass_kg_per_m + s.mass_kg + 2 * s.wheel_tire_mass_kg + lo.hitch_mass_kg
+        parts = {b.name for _, _, b in tr.bodies}
+        rest += lo.box_stand_mass_kg * ("box stand" in parts) + lo.seat_pedestal_mass_kg * ("seat pedestal" in parts)
     return rest + box + lo.seat_and_controls_mass_kg + people
 
 
@@ -50,6 +53,15 @@ def test_machine_mass_reconciles_to_configured_components(model):
     p, tr, _ = model
     assert tr.mass() == pytest.approx(_expected_bare_kg(p, tr))
     assert tr.mass(fitted=DECK) - tr.mass() == pytest.approx(_deck_kg(p))
+
+
+def test_a_front_mounted_box_still_reconciles():
+    """Moving Home's box over the front axle adds a stand under it and a pedestal under the seat."""
+    p = load("home", {"layout.powerbox_x": 1600, "layout.powerbox_z": 500})
+    tr = tractor.build(p)
+    parts = {b.name for _, _, b in tr.bodies}
+    assert {"box stand", "seat pedestal"} <= parts
+    assert tr.mass() == pytest.approx(_expected_bare_kg(p, tr))
 
 
 def test_reported_machine_mass_is_bare_and_deck_fitted(model):

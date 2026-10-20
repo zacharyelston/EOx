@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 344" width="980" height="344" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 980 402" width="980" height="402" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
 <title id="t">EOX Pro terrain course results</title>
-<desc id="d">Course elevation profile with numbered obstacles, and per-configuration results: deck fitted: bump PASS, kerb PASS, ditch WARN, twist WARN, climb 12 deg WARN, climb 15 deg WARN, side slope 17 deg PASS</desc>
+<desc id="d">Course elevation profile with numbered obstacles, and per-configuration results: bare: bump PASS, kerb PASS, ditch PASS, twist PASS, climb 12 deg PASS, climb 15 deg PASS, side slope 17 deg PASS; deck fitted: bump PASS, kerb PASS, ditch WARN, twist WARN, climb 12 deg WARN, climb 15 deg WARN, side slope 17 deg PASS</desc>
 <rect width="100%" height="100%" rx="8" fill="#fcfcfb"/>
 <text x="16.0" y="26.0" font-size="16" font-weight="600" fill="#0b0b0b" text-anchor="start">EOX Pro on the test course (MuJoCo), 85 m at 3 km/h</text>
 <text x="16.0" y="44.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">elevation along the centreline, vertical x5 · rated climb 15 deg; steeper ramps are scored INFO</text>
@@ -35,7 +35,7 @@
 <text x="780.3" y="235.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="middle">6 climb 15 deg</text>
 <text x="897.4" y="235.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="middle">7 side slope 17 deg</text>
 <line x1="40.0" y1="245.7" x2="956.0" y2="245.7" stroke="#c3c2b7" stroke-width="1" stroke-linecap="butt"/>
-<text x="40.0" y="271.7" font-size="12" font-weight="600" fill="#0b0b0b" text-anchor="start">deck fitted</text>
+<text x="40.0" y="271.7" font-size="12" font-weight="600" fill="#0b0b0b" text-anchor="start">bare</text>
 <circle cx="153.0" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="153.0" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="165.0" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
@@ -44,28 +44,58 @@
 <text x="270.1" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="282.1" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
 <text x="263.1" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">pitch 4 deg</text>
-<circle cx="387.3" cy="266.7" r="7" fill="#fab219"/>
-<text x="387.3" y="270.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
-<text x="399.3" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
-<text x="380.3" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 307 mm of</text>
-<text x="380.3" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
-<circle cx="504.4" cy="266.7" r="7" fill="#fab219"/>
-<text x="504.4" y="270.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
-<text x="516.4" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
-<text x="497.4" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 148 mm of</text>
-<text x="497.4" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
-<circle cx="621.6" cy="266.7" r="7" fill="#fab219"/>
-<text x="621.6" y="270.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
-<text x="633.6" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
-<text x="614.6" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 129 mm of</text>
-<text x="614.6" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
-<circle cx="738.7" cy="266.7" r="7" fill="#fab219"/>
-<text x="738.7" y="270.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
-<text x="750.7" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
-<text x="731.7" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 161 mm of</text>
-<text x="731.7" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
+<circle cx="387.3" cy="266.7" r="7" fill="#0ca30c"/>
+<text x="387.3" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="399.3" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
+<text x="380.3" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">pitch 9 deg</text>
+<circle cx="504.4" cy="266.7" r="7" fill="#0ca30c"/>
+<text x="504.4" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="516.4" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
+<text x="497.4" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">trunnion 9 deg</text>
+<circle cx="621.6" cy="266.7" r="7" fill="#0ca30c"/>
+<text x="621.6" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="633.6" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
+<text x="614.6" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 2.5x rated</text>
+<circle cx="738.7" cy="266.7" r="7" fill="#0ca30c"/>
+<text x="738.7" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="750.7" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
+<text x="731.7" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 3.3x rated</text>
 <circle cx="855.9" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="855.9" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="867.9" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
-<text x="848.9" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">lightest wheel 594 N</text>
+<text x="848.9" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">lightest wheel 537 N</text>
+<text x="40.0" y="329.7" font-size="12" font-weight="600" fill="#0b0b0b" text-anchor="start">deck fitted</text>
+<line x1="40.0" y1="306.7" x2="956.0" y2="306.7" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<circle cx="153.0" cy="324.7" r="7" fill="#0ca30c"/>
+<text x="153.0" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="165.0" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
+<text x="146.0" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">pitch 3 deg</text>
+<circle cx="270.1" cy="324.7" r="7" fill="#0ca30c"/>
+<text x="270.1" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="282.1" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
+<text x="263.1" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">pitch 4 deg</text>
+<circle cx="387.3" cy="324.7" r="7" fill="#fab219"/>
+<text x="387.3" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
+<text x="399.3" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
+<text x="380.3" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 307 mm of</text>
+<text x="380.3" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
+<circle cx="504.4" cy="324.7" r="7" fill="#fab219"/>
+<text x="504.4" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
+<text x="516.4" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
+<text x="497.4" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 148 mm of</text>
+<text x="497.4" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
+<circle cx="621.6" cy="324.7" r="7" fill="#fab219"/>
+<text x="621.6" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
+<text x="633.6" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
+<text x="614.6" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 129 mm of</text>
+<text x="614.6" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
+<circle cx="738.7" cy="324.7" r="7" fill="#fab219"/>
+<text x="738.7" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
+<text x="750.7" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
+<text x="731.7" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">deck needs 161 mm of</text>
+<text x="731.7" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">float (has 75)</text>
+<circle cx="855.9" cy="324.7" r="7" fill="#0ca30c"/>
+<text x="855.9" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
+<text x="867.9" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
+<text x="848.9" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">lightest wheel 594 N</text>
 </svg>
