@@ -120,3 +120,17 @@ def test_the_committed_front_battery_result_still_holds():
     assert "error" not in r
     assert r["metrics"]["calc_fails"] == 0 and r["metrics"]["course_fails"] == 0, r["fails"]
     assert r["metrics"]["grip_limit_deg"] >= load("home").vehicle.max_slope_deg
+
+
+def test_an_objective_stops_paying_past_its_cap():
+    o = engine.Objective("grip_limit_deg", "max", cap=15.0)
+    assert o.value({"grip_limit_deg": 18.0}) == 15.0 and o.value({"grip_limit_deg": 12.0}) == 12.0
+    o = engine.Objective("lock_to_lock_s", "min", cap=3.0)
+    assert o.value({"lock_to_lock_s": 2.0}) == 3.0 and o.value({"lock_to_lock_s": 4.0}) == 4.0
+
+
+def test_a_trial_stops_once_it_stops_improving(synthetic):
+    synthetic.generations, synthetic.patience = 40, 3
+    inds, _ = engine.run(synthetic, evaluator=_fake, log=lambda *a: None)
+    ran = max(r["generation"] for r in inds) + 1
+    assert synthetic.stopped_at == ran and ran < 40

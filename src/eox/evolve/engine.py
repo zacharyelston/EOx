@@ -73,6 +73,13 @@ class Objective:
     goal: str            # "min" | "max"
     weight: float = 1.0
     scale: float = 1.0   # the metric's "one unit of caring"
+    cap: float | None = None   # credit stops here: beyond it (above for "max", below for "min") is no better
+
+    def value(self, m: dict) -> float:
+        x = m[self.metric]
+        if self.cap is not None:
+            x = min(x, self.cap) if self.goal == "max" else max(x, self.cap)
+        return x
 
 
 @dataclass
@@ -98,15 +105,22 @@ class Trial:
     mutation: float = 0.2        # sigma as a fraction of each gene's range (halves by the last generation)
     mutation_rate: float = 0.35  # chance each gene mutates in a child
     crossover: float = 0.7
+    patience: int = 8            # stop after this many generations without a better design (0: run them all)
+    overrides: dict = field(default_factory=dict)   # fixed for every design in this trial (e.g. the ground)
     path: Path = None
 
     @property
+    def lod(self) -> str:
+        return self.overrides.get("course.lod", "high")
+
+    @property
     def out(self) -> Path:
-        return RESULTS / self.name
+        """trials/<name>/, or trials/<name>@<lod>/ at a cheaper level of detail (its own cache)."""
+        return RESULTS / (self.name if self.lod == "high" else f"{self.name}@{self.lod}")
 
     def baseline(self) -> dict:
-        """The model's current values for every gene."""
-        p = load(self.model)
+        """The model's current values for every gene (with the trial's fixed overrides)."""
+        p = load(self.model, self.overrides)
         out = {}
         for g in self.genes:
             node = p
@@ -132,9 +146,13 @@ def load_trial(name: str) -> Trial:
               [Objective(**o) for o in d.get("objective", [])], [Constraint(**c) for c in d.get("constraint", [])],
               tuple(d.get("course_configs", ["deck"])),
               **{k: d[k] for k in ("population", "generations", "elite", "seed", "mutation", "mutation_rate",
-                                   "crossover") if k in d})
+                                   "crossover", "patience") if k in d})
+    t.overrides = dict(d.get("overrides", {}))
+    clash = set(t.overrides) & {g.key for g in genes}
+    if clash:
+        raise KeyError(f"{name}: {sorted(clash)} is both a gene and a fixed override")
     t.path = path
-    load(t.model, {g.key: t.baseline()[g.key] for g in genes})        # every gene key must exist
+    load(t.model, {**t.overrides, **{g.key: t.baseline()[g.key] for g in genes}})   # every key must exist
     return t
 
 
@@ -159,7 +177,7 @@ def score(trial: Trial, rec: dict) -> float:
     if "error" in rec:
         return math.inf
     m = rec["metrics"]
-    return sum(o.weight * (1 if o.goal == "min" else -1) * m[o.metric] / o.scale for o in trial.objectives)
+    return sum(o.weight * (1 if o.goal == "min" else -1) * o.value(m) / o.scale for o in trial.objectives)
 
 
 def rank_key(trial: Trial, rec: dict):
@@ -201,9 +219,7 @@ def run(trial: Trial, workers: int | None = None, fresh: bool = False, log=print
     def evaluate_all(designs: list[dict]):
         todo = [g for g in {_key(g): g for g in designs}.values() if _key(g) not in cache]
         if todo:
-            log(f"  evaluating {len(todo)} new design(s) on {workers} worker(s)"
-                f" ({len(designs) - len(todo)} cached)")
-            jobs = [(trial.model, g, trial.course_configs) for g in todo]
+            jobs = [(trial.model, {**trial.overrides, **g}, trial.course_configs) for g in todo]
             results = map(lambda j: evaluator(*j), jobs) if evaluator else pool.map(_eval_job, jobs)
             with open(hist_path, "a") as f:
                 for g, res in zip(todo, results):
@@ -236,17 +252,32 @@ def run(trial: Trial, workers: int | None = None, fresh: bool = False, log=print
     reference = cache[_key(base)]
     pop = ([base] if in_range else []) + [{g.key: g.sample(rng) for g in trial.genes}
                                          for _ in range(trial.population - in_range)]
+    best_key, stale = None, 0
+    trial.stopped_at = None
     for gen in range(trial.generations):
-        log(f"generation {gen + 1}/{trial.generations}")
+        new = sum(1 for k in {_key(g) for g in pop} if k not in cache)
         evaluate_all(pop)
         recs = [{**cache[_key(g)], "generation": gen} for g in pop]
         seen.update(_key(g) for g in pop)
         recs.sort(key=lambda r: rank_key(trial, r))
         individuals += recs
         best = recs[0]
-        log(f"  best: score {score(trial, best):.2f}, violation {violation(trial, best):g}  "
-            + ", ".join(f"{k}={v}" for k, v in best["genes"].items()))
+        k = rank_key(trial, best)
+        improved = best_key is None or k < best_key
+        best_key, stale = (k, 0) if improved else (best_key, stale + 1)
+        scores = sorted(score(trial, r) for r in recs if violation(trial, r) == 0)
+        median = f"{scores[len(scores) // 2]:.2f}" if scores else "-"
+        log(f"gen {gen + 1:>2}/{trial.generations}: best {score(trial, best):.2f}"
+            + (f" (violation {violation(trial, best):g})" if violation(trial, best) else "")
+            + f", median {median}, {new} new design(s)"
+            + ("" if improved else f", no better design for {stale} gen(s)"))
+        if improved:
+            log("   new best: " + ", ".join(f"{k_}={v}" for k_, v in best["genes"].items()))
         if gen == trial.generations - 1:
+            break
+        if trial.patience and stale >= trial.patience:
+            trial.stopped_at = gen + 1
+            log(f"stopping: no better design for {stale} generations")
             break
 
         def pick():
