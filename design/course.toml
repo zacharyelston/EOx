@@ -10,7 +10,7 @@
 [course]
 name = "EOX standard test course"
 width = 8.0                    # m, across the course
-resolution = 0.05              # m, heightfield cell
+lod = "high"                   # level of detail: high (the validated reference), medium or low; see [course.lod_levels]
 run_in = 5.0                   # m of flat before the first obstacle
 run_out = 6.0                  # m of flat after the last
 gap = 4.0                      # m of flat between obstacles
@@ -18,8 +18,6 @@ speed_kmh = 3.0                # target ground speed (slope-mowing pace)
 start_x = 1.5                  # m, where the vehicle's rear axle starts
 
 [course.sim]
-timestep = 0.002               # s
-control_hz = 50
 settle_s = 3.0                 # let the machine settle on its tyres before driving
 stuck_s = 5.0                  # no forward progress for this long = stuck
 time_limit_factor = 3.0        # time limit = factor x course length / target speed
@@ -27,6 +25,26 @@ rolled_deg = 50                # roll or pitch past this = rolled over
 friction_torsional = 0.02      # m: tyre spin-in-place friction (REF)
 drive_gain = 50                # N*m per rad/s at each wheel: the drive units' speed loop. Stiffer
                                # loops chatter against the tyre contact and spin the wheels
+
+# Levels of detail: trade fidelity for speed. "high" is the validated reference;
+# check a cheaper level against it with `uv run eox fidelity` before trusting it.
+[course.lod_levels.high]
+timestep = 0.002               # s, physics step
+control_hz = 50                # driver and scoring rate
+resolution = 0.05              # m, heightfield cell
+collide_height = 0             # mm; 0 = every part collides with the ground
+
+[course.lod_levels.medium]
+timestep = 0.004
+control_hz = 50
+resolution = 0.05
+collide_height = 350           # only parts whose underside sits within this of the ground can strike it
+
+[course.lod_levels.low]
+timestep = 0.006
+control_hz = 25
+resolution = 0.10
+collide_height = 350
 
 [course.scoring]
 wheel_lift_n = 50              # a wheel carrying less than this is off the ground ...

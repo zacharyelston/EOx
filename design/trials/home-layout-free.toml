@@ -1,0 +1,98 @@
+# Design trial: the front-battery trial found today's layout better, and its best
+# design ended at three range limits. Here the box may go anywhere, low between
+# the rails or high over the front axle, to test whether moving the operator back
+# pays off with the box left under the seat.
+#   uv run eox evolve --trial home-layout-free
+
+[trial]
+name = "home-layout-free"
+model = "home"
+question = "With the battery box free to go anywhere, what is the best Home layout: box, operator, deck and PTO unit?"
+course_configs = ["deck"]      # mowing is the design case
+population = 20
+generations = 30
+elite = 2
+seed = 1
+
+# Genes: the design values this trial may change (dotted keys, as in [overrides]).
+[[trial.gene]]
+key = "layout.powerbox_x"
+min = 400
+max = 2300
+step = 10
+why = "box centre: over the front axle, or hung out ahead of it"
+
+[[trial.gene]]
+key = "layout.powerbox_z"
+min = 230
+max = 650
+step = 10
+why = "box underside: on the nose rails, or on a stand clear of the steered tyres"
+
+[[trial.gene]]
+key = "layout.front_overhang"
+min = 250
+max = 900
+step = 10
+why = "a longer nose to hang the box out front (rail mass follows length)"
+
+[[trial.gene]]
+key = "layout.operator_cg.0"
+min = 150
+max = 700
+step = 10
+why = "operator fore-aft: back over the rear axle puts weight on the driven tyres"
+
+[[trial.gene]]
+key = "deck.x_center"
+min = 560
+max = 1060
+step = 10
+why = "mid-mount deck fore-aft, between the rear tyres and the steered tyres"
+
+[[trial.gene]]
+key = "deck.pto_unit_y"
+choices = [430, -430, 480, -480]
+why = "where the PTO unit stands: either side, 50 mm further out clears a floor pan above it"
+
+# Objectives: the lowest total wins. Each adds weight x metric / scale,
+# negated for "max". Metrics: src/eox/evolve/evaluate.py.
+[[trial.objective]]
+metric = "grip_limit_deg"
+goal = "max"
+weight = 3
+scale = 1
+
+[[trial.objective]]
+metric = "working_slope_deg"
+goal = "max"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "course_warns"
+goal = "min"
+weight = 2
+scale = 1
+
+[[trial.objective]]
+metric = "wheel_lift_s"
+goal = "min"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "mass_kg"
+goal = "min"
+weight = 1
+scale = 10
+
+# Constraints: a design that breaks one loses to every design that doesn't.
+# calc_fails includes the 12 deg grip and torque checks and every clearance check.
+[[trial.constraint]]
+metric = "calc_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "course_fails"
+max = 0

@@ -1,0 +1,9 @@
+# Trial home-15-degrees: the best design's changed values, as [overrides] for
+# design/models/home.toml. Review before adopting: a trial is evidence, not a decision.
+# Score -114.10 (today -94.90; lower is better).
+
+[overrides]
+"vehicle.max_slope_deg" = 15.5  # today: 12
+"axle.tire_pressure_kpa" = 55   # today: 83
+"deck.x_center" = 560           # today: 800
+"deck.pto_unit_y" = 480         # today: 430

@@ -1,0 +1,82 @@
+# Design trial: size the Pro's steering cylinder. With the front deck fitted the
+# cylinder has only a 12 % margin over the moment needed to articulate at a
+# standstill (README, Pro at a glance). Calcs only, no course: fast.
+#
+# Posed with ceilings: margin earns credit up to 40 % and must be at least 25 %;
+# lock to lock earns credit down to 3 s. Past those, the smaller cylinder and the
+# lower pump draw win. (The first run had no ceilings, so "biggest cylinder,
+# highest pressure" won trivially.)
+#   uv run eox evolve --trial pro-steering
+[trial]
+name = "pro-steering"
+model = "pro"
+question = "What is the smallest, lowest-draw steering cylinder setup that gives the Pro a 25-40 % margin with the deck and steers lock to lock in about 3 s?"
+course_configs = []
+population = 20
+generations = 30
+seed = 1
+
+[[trial.gene]]
+key = "steering.bore"
+choices = [40, 45, 50, 63]
+why = "cylinder bore, ISO 6020 sizes"
+
+[[trial.gene]]
+key = "steering.rod"
+choices = [20, 25]
+why = "rod diameter"
+
+[[trial.gene]]
+key = "steering.relief_bar"
+min = 80
+max = 160
+step = 10
+why = "power-unit relief pressure"
+
+[[trial.gene]]
+key = "steering.lever_arm"
+min = 100
+max = 160
+step = 10
+why = "cylinder line to the pivot axis"
+
+[[trial.gene]]
+key = "steering.pump_flow_lpm"
+min = 3.0
+max = 8.0
+step = 0.5
+why = "power-unit flow"
+
+[[trial.objective]]
+metric = "steer_margin"
+goal = "max"
+weight = 3
+scale = 0.1
+cap = 0.40
+
+[[trial.objective]]
+metric = "lock_to_lock_s"
+goal = "min"
+weight = 1
+scale = 0.5
+cap = 3.0
+
+[[trial.objective]]
+metric = "steer_pump_w"
+goal = "min"
+weight = 1
+scale = 10
+
+[[trial.objective]]
+metric = "steer_bore_mm"
+goal = "min"
+weight = 1
+scale = 5
+
+[[trial.constraint]]
+metric = "calc_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "steer_margin"
+min = 0.25

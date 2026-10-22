@@ -71,6 +71,8 @@ def _smooth(profile: np.ndarray, width_m: float, res: float) -> np.ndarray:
 
 def build(c) -> Course:
     """c: the [course] namespace from params.load()."""
+    from eox.sim import detail
+    res = detail(c).resolution
     x = c.run_in
     segs = []
     for ob in c.obstacle:
@@ -78,8 +80,8 @@ def build(c) -> Course:
         segs.append(Segment(ob.name, ob.kind, x, x + span, ob))
         x += span + c.gap
     length = x - c.gap + c.run_out
-    xs = np.arange(0.0, length + c.resolution / 2, c.resolution)
-    ys = np.arange(-c.width / 2, c.width / 2 + c.resolution / 2, c.resolution)
+    xs = np.arange(0.0, length + res / 2, res)
+    ys = np.arange(-c.width / 2, c.width / 2 + res / 2, res)
     X, Y = np.meshgrid(xs, ys)
     z = np.zeros_like(X)
     for s in segs:
@@ -104,11 +106,11 @@ def build(c) -> Course:
             run = ob.rise / g
             prof = np.clip(np.minimum(u / run, (s.x1 - s.x0 - u) / run), 0.0, 1.0) * ob.rise
             prof = np.where(inside, prof, 0.0)
-            z += _smooth(prof, ob.crest_radius * g, c.resolution)[None, :]
+            z += _smooth(prof, ob.crest_radius * g, res)[None, :]
         elif s.kind == "side_slope":
             full = math.tan(math.radians(ob.slope_deg))
             T = ob.transition
             ramp = np.clip(np.minimum(u / T, (s.x1 - s.x0 - u) / T), 0.0, 1.0)
             tilt = np.where(inside, full * 0.5 * (1 - np.cos(math.pi * ramp)), 0.0)
             z += Y * tilt[None, :]                       # +y side rises: the slope falls to the right
-    return Course(c.name, float(xs[-1]), float(ys[-1] - ys[0]), c.resolution, segs, xs, ys, z)
+    return Course(c.name, float(xs[-1]), float(ys[-1] - ys[0]), res, segs, xs, ys, z)

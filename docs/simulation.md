@@ -82,6 +82,35 @@ means weak soil, not the surface slipperiness of wet grass. So compare
 pressures with this model; don't read the numbers as absolutes. A pull test
 on a real machine at two pressures would calibrate it.
 
+## Levels of detail
+
+`course.lod` picks how much physics each run gets (`design/course.toml`,
+`[course.lod_levels]`). Select a level with `uv run eox course --lod low`, or
+`eox evolve --lod low`. A trial at a cheaper level keeps its own results in
+`trials/<name>@<lod>/`.
+
+| Level | Physics step | Control rate | Terrain grid | Ground collisions | Run time |
+|---|---|---|---|---|---|
+| high (the reference) | 2 ms | 50 Hz | 5 cm | every part | 7–10 s |
+| medium | 4 ms | 50 Hz | 5 cm | parts within 350 mm of the ground | 1.3–1.7× faster |
+| low | 6 ms | 25 Hz | 10 cm | parts within 350 mm of the ground | 2–3.3× faster |
+
+**Checked against high**, both models, bare and deck-fitted, all 7 obstacles
+(28 results per level):
+
+- **Medium:** every status matches but one. Pro's front deck on the kerb needs
+  76 mm of float at medium against 73 mm at high, either side of the 75 mm
+  allowance. Wheel lift, deck clearance and torque agree to within a few
+  percent.
+- **Low:** every status matches. Climbs come out harsher: at the coarser
+  driver rate the wheels slip more near the grip limit. On the 15° climb,
+  Home with the deck sits at peak torque for 15 s at low, against 4 s at high.
+- **Faster physics settings that changed results were rejected:** fewer
+  solver iterations, and a pyramidal friction cone.
+
+Before trusting a cheap level for a trial, compare it with high using
+`uv run eox fidelity` ([trials.md](trials.md)).
+
 ## The course
 
 The course is defined in `design/course.toml`: a heightfield 84.7 m long and

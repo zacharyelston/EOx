@@ -1,0 +1,85 @@
+# Design trial: on soft wet ground (cone index 200 kPa) the rear-drive Home can
+# only climb 6-8 deg. How should it be set up for that ground? The ground and a
+# wet-ground rating of 5 deg are fixed for every design; the climbs above that
+# are scored as information.
+#   uv run eox evolve --trial home-wet-ground
+
+[trial]
+name = "home-wet-ground"
+model = "home"
+question = "How should the Home be set up for soft wet ground: tyre pressures, and where the operator, deck and battery sit?"
+course_configs = ["deck"]
+population = 16
+generations = 20
+seed = 1
+
+[trial.overrides]
+"ground.cone_index_kpa" = 200
+"vehicle.max_slope_deg" = 5
+
+[[trial.gene]]
+key = "axle.tire_pressure_kpa"
+min = 55
+max = 152
+step = 7
+why = "drive-tyre pressure (8-22 psi)"
+
+[[trial.gene]]
+key = "steer_axle.tire_pressure_kpa"
+min = 55
+max = 152
+step = 7
+why = "steering-tyre pressure"
+
+[[trial.gene]]
+key = "layout.operator_cg.0"
+min = 250
+max = 700
+step = 10
+why = "operator fore-aft"
+
+[[trial.gene]]
+key = "layout.powerbox_x"
+min = 450
+max = 900
+step = 10
+why = "battery box fore-aft"
+
+[[trial.gene]]
+key = "deck.x_center"
+min = 560
+max = 1060
+step = 10
+why = "mid-mount deck fore-aft"
+
+[[trial.objective]]
+metric = "grip_limit_deg"
+goal = "max"
+weight = 3
+scale = 1
+
+[[trial.objective]]
+metric = "course_energy_wh"
+goal = "min"
+weight = 1
+scale = 2
+
+[[trial.objective]]
+metric = "working_slope_deg"
+goal = "max"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "course_warns"
+goal = "min"
+weight = 1
+scale = 1
+
+[[trial.constraint]]
+metric = "calc_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "course_fails"
+max = 0

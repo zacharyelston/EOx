@@ -46,7 +46,8 @@ def markdown(p, results: list[RunResult], course) -> str:
         f"Generated {date.today().isoformat()} by `uv run eox course --model {p.model.name.split()[-1].lower()}`: "
         f"a MuJoCo {mujoco.__version__} rigid-body simulation of the same masses and part envelopes the calcs use "
         "(`src/eox/sim/`). Screening level: rigid tyres, REF spring and friction values.", "",
-        f"**Course:** {course.length:.1f} m, {len(course.segments)} obstacles, driven at {p.course.speed_kmh:g} km/h  ",
+        f"**Course:** {course.length:.1f} m, {len(course.segments)} obstacles, driven at {p.course.speed_kmh:g} km/h; "
+        f"level of detail {p.course.lod}  ",
         f"**Ground:** {p.ground.name}, cone index {p.ground.cone_index_kpa:g} kPa; tyre grip and rolling resistance "
         f"follow each wheel's load (at rest: traction {v.traction_coefficient:.2f}, rolling resistance "
         f"{v.rolling_resistance:.3f})  ",

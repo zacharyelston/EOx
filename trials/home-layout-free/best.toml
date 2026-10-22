@@ -1,0 +1,7 @@
+# Trial home-layout-free: the best design's changed values, as [overrides] for
+# design/models/home.toml. Review before adopting: a trial is evidence, not a decision.
+# Score -30.01 (today -28.61; lower is better).
+
+[overrides]
+"deck.x_center" = 580    # today: 800
+"deck.pto_unit_y" = 480  # today: 430

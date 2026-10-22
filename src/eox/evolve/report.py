@@ -55,10 +55,15 @@ def markdown(trial: Trial, individuals: list[dict], reference: dict) -> str:
     L = [f"# Trial: {trial.name}", "",
          f"**Question.** {trial.question}", "",
          f"Generated {date.today().isoformat()} by `uv run eox evolve --trial {trial.name}` from "
-         f"`design/trials/{trial.name}.toml`: {trial.population} designs x {trial.generations} generations, "
+         f"`design/trials/{trial.name}.toml`: {trial.population} designs x "
+         f"{getattr(trial, 'stopped_at', None) or trial.generations} generations"
+         + (f" (stopped early: no better design for {trial.patience})" if getattr(trial, "stopped_at", None) else "")
+         + ", "
          f"seed {trial.seed}; {len(uniq)} distinct designs evaluated ({len(feasible)} feasible), "
          f"{secs / 60:.0f} CPU-minutes. Each design runs the full `eox calc` checks and the terrain course "
-         f"({', '.join(trial.course_configs)}).", ""]
+         f"({', '.join(trial.course_configs) or 'no course runs'})."
+         + (" Fixed for every design: " + ", ".join(f"`{k}` = {v}" for k, v in trial.overrides.items()) + "."
+            if trial.overrides else ""), ""]
 
     L += ["## Answer: the best design against today's", "",
           "| Metric | Today | Best | |", "|---|---|---|---|"]
@@ -113,7 +118,8 @@ def markdown(trial: Trial, individuals: list[dict], reference: dict) -> str:
           "file in a pull request, so the change and its reasons are recorded.", "",
           "Objectives and constraints:", ""]
     for o in trial.objectives:
-        L.append(f"- {o.goal} `{o.metric}` ({METRICS[o.metric][1]}), weight {o.weight:g} per {o.scale:g} {METRICS[o.metric][0]}")
+        L.append(f"- {o.goal} `{o.metric}` ({METRICS[o.metric][1]}), weight {o.weight:g} per {o.scale:g} {METRICS[o.metric][0]}"
+                 + (f", no extra credit past {o.cap:g}" if o.cap is not None else ""))
     for c in trial.constraints:
         lim = " and ".join(x for x in (f">= {c.min:g}" if c.min is not None else "", f"<= {c.max:g}" if c.max is not None else "") if x)
         L.append(f"- constraint: `{c.metric}` {lim}")
@@ -131,7 +137,7 @@ def progress_svg(trial: Trial, individuals: list[dict], reference: dict, theme: 
     lo, hi = min(vals), max(vals)
     pad = (hi - lo) * 0.08 or 1.0
     lo, hi = lo - pad, hi + pad
-    G = trial.generations
+    G = max((r.get("generation", 0) for r in individuals), default=0) + 1
     X = lambda g: x0 + (x1 - x0) * (g / max(1, G - 1))          # noqa: E731
     Y = lambda v: y0 + (y1 - y0) * (v - lo) / (hi - lo)          # noqa: E731  lower score = better = higher up
     s = Svg(W, H, theme)

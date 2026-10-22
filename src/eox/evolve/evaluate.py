@@ -28,6 +28,11 @@ METRICS = {
     "grip_limit_deg": ("deg", "steepest climb on grip, deck fitted"),
     "rated_slope_deg": ("deg", "rated climb (vehicle.max_slope_deg)"),
     "climb_torque_x": ("x rated", "motor torque on the rated climb, deck fitted"),
+    "steer_margin": ("", "Pro: cylinder moment at full lock over the moment needed, minus 1"),
+    "lock_to_lock_s": ("s", "Pro: steering lock-to-lock time"),
+    "steer_rim_n": ("N", "Home: rim force to steer at a standstill"),
+    "steer_bore_mm": ("mm", "Pro: steering cylinder bore (a proxy for its size and cost)"),
+    "steer_pump_w": ("W", "Pro: steering power unit's average draw while working"),
 }
 
 BOX_SECTIONS = ("meta", "battery", "enclosure", "distribution", "battery_clamp", "battery_stop")
@@ -76,6 +81,14 @@ def evaluate(model: str, genes: dict, course_configs: tuple = ("deck",)) -> dict
             "rated_slope_deg": float(v.max_slope_deg),
             "climb_torque_x": _per_motor(p, tr, v.max_slope_deg) / T_rated,
         }
+        cyl = next((c for c in rep.checks if c.name.startswith("cylinder moment at full lock")), None)
+        ltl = next((c for c in rep.checks if c.name.startswith("lock-to-lock time")), None)
+        rim = next((c for c in rep.checks if c.name.startswith("rim force to steer")), None)
+        from eox.calcs.bus import steering_pump_w
+        hyd = getattr(p.steering, "type", "").startswith("hydraulic")
+        m.update(steer_margin=(cyl.value / cyl.limit - 1) if cyl else 0.0, lock_to_lock_s=float(ltl.value) if ltl else 0.0,
+                 steer_rim_n=float(rim.value) if rim else 0.0, steer_bore_mm=float(p.steering.bore) if hyd else 0.0,
+                 steer_pump_w=float(steering_pump_w(p)))
         notes = [f"{c.group}: {c.name}" for c in rep.checks if c.status == "FAIL"]
         warn_notes = []
         course = dict(course_fails=0, course_warns=0, wheel_lift_s=0.0, deck_float_mm=0.0,

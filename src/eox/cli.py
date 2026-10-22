@@ -187,18 +187,19 @@ def _view(p, tr, fitted) -> int:
     d = mujoco.MjData(m)
     rig = sim._Rig(spec, m, course)
     drv = sim.Driver(spec, c.speed_kmh / 3.6, lookahead=max(2.0, 1.5 * spec.wheelbase))
-    dt = 1.0 / c.sim.control_hz
+    from eox.sim import detail
+    dt = 1.0 / detail(c).control_hz
     state = {"next": 0.0}
 
     def control(m_, d_):
         if d_.time < state["next"] - dt:          # the viewer was reset
             state["next"] = 0.0
             drv.restart(0.0)
-        if d_.time < c.sim.settle_s or d_.time < state["next"]:
+        if d_.time < detail(c).settle_s or d_.time < state["next"]:
             return
         loads, _ = rig.wheel_loads(d_)
         rig.rolling_resistance(d_, loads)
-        drv(d_, d_.time - c.sim.settle_s, dt, rig.ground_speed(d_))
+        drv(d_, d_.time - detail(c).settle_s, dt, rig.ground_speed(d_))
         state["next"] = d_.time + dt
 
     mujoco.set_mjcb_control(control)
@@ -210,22 +211,32 @@ def _view(p, tr, fitted) -> int:
 
 
 def cmd_evolve(args) -> int:
-    """Evolve a design trial (design/trials/<name>.toml) and write its results."""
+    """Evolve one or more design trials (design/trials/<name>.toml), in turn, and write their results."""
+    import time
+
     from eox.evolve import engine, report
 
-    trial = engine.load_trial(args.trial)
-    for k in ("population", "generations", "seed"):
-        if getattr(args, k) is not None:
-            setattr(trial, k, getattr(args, k))
-    print(f"trial {trial.name}: {trial.question}")
-    individuals, reference = engine.run(trial, workers=args.workers, fresh=args.fresh)
-    files = report.write(trial, individuals, reference)
-    top = report.best(trial, individuals)
-    print(f"\nbest: score {engine.score(trial, top):.2f} (today {engine.score(trial, reference):.2f}); "
-          + ("feasible" if engine.violation(trial, top) == 0 else "breaks a constraint"))
-    for f in files:
-        print(f"  {f.relative_to(ROOT)}")
-    return 0 if engine.violation(trial, top) == 0 else 1
+    trials = [engine.load_trial(n) for n in args.trial]          # check every file before the long run starts
+    rc = 0
+    for trial in trials:
+        for k in ("population", "generations", "seed"):
+            if getattr(args, k) is not None:
+                setattr(trial, k, getattr(args, k))
+        if args.lod:
+            trial.overrides["course.lod"] = args.lod
+        t0 = time.time()
+        print(f"\n=== trial {trial.name}: {trial.question}", flush=True)
+        individuals, reference = engine.run(trial, workers=args.workers, fresh=args.fresh,
+                                            log=lambda *a: print(*a, flush=True))
+        files = report.write(trial, individuals, reference)
+        top = report.best(trial, individuals)
+        print(f"best: score {engine.score(trial, top):.2f} (today {engine.score(trial, reference):.2f}); "
+              + ("feasible" if engine.violation(trial, top) == 0 else "breaks a constraint")
+              + f"; {(time.time() - t0) / 60:.1f} min", flush=True)
+        for f in files:
+            print(f"  {f.relative_to(ROOT)}", flush=True)
+        rc |= 0 if engine.violation(trial, top) == 0 else 1
+    return rc
 
 
 def cmd_baseline(args) -> int:
@@ -257,9 +268,27 @@ def cmd_tyres(args) -> int:
     return 0
 
 
+def cmd_fidelity(args) -> int:
+    """Compare a trial run at a cheaper level of detail with its full-detail run."""
+    from eox.evolve import fidelity
+
+    if not args.trial or not args.lod or args.lod == "high":
+        raise SystemExit("fidelity needs --trial <name> and --lod medium|low (both levels must have been run)")
+    c = fidelity.compare(args.trial[0], args.lod, workers=args.workers)
+    path = ROOT / "trials" / f"{args.trial[0]}@{args.lod}" / "fidelity.md"
+    path.write_text(fidelity.markdown(c))
+    print(f"{args.trial[0]} at {args.lod} vs high: improvement captured {c['captured'] * 100:.1f} %, "
+          f"rank agreement {c['rho']:.2f} over {c['n']} designs, "
+          f"top-{c['top']} overlap {c['overlap']}, regret {c['regret']:.2f} (spread {c['spread']:.2f}), "
+          f"feasibility flips {c['feasible_flip']}")
+    print(f"  {path.relative_to(ROOT)}")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="eox", description="EOX: calcs, CAD and BOM for a tractor model")
-    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "course", "evolve", "baseline", "tyres", "all"])
+    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "course", "evolve", "baseline", "tyres",
+                                        "fidelity", "all"])
     ap.add_argument("--model", default="pro", choices=MODELS, help="design/models/<model>.toml (default: pro)")
     ap.add_argument("--all", action="store_true", help="calc: also list passing SCS checks")
     ap.add_argument("--out", type=Path, default=ROOT / "docs" / "img", help="drawings: output folder (default docs/img)")
@@ -269,7 +298,8 @@ def main(argv=None) -> int:
     ap.add_argument("--view", action="store_true", help="course: drive it live in MuJoCo's interactive viewer")
     ap.add_argument("--media", action="store_true",
                     help="course: write the README animation (<out>/<model>-course.webp) and video (docs/video/)")
-    ap.add_argument("--trial", help="evolve: design/trials/<name>.toml")
+    ap.add_argument("--lod", choices=["high", "medium", "low"], help="course/evolve: simulation level of detail")
+    ap.add_argument("--trial", action="append", help="evolve: design/trials/<name>.toml (repeat to run a series)")
     ap.add_argument("--population", type=int, help="evolve: designs per generation (default: the trial's)")
     ap.add_argument("--generations", type=int, help="evolve: generations (default: the trial's)")
     ap.add_argument("--seed", type=int, help="evolve: random seed (default: the trial's)")
@@ -280,11 +310,13 @@ def main(argv=None) -> int:
         return cmd_baseline(args)
     if args.command == "tyres":
         return cmd_tyres(args)
+    if args.command == "fidelity":
+        return cmd_fidelity(args)
     if args.command == "evolve":
         if not args.trial:
             ap.error("evolve needs --trial <name> (design/trials/<name>.toml)")
         return cmd_evolve(args)
-    p = load(args.model)
+    p = load(args.model, {"course.lod": args.lod} if args.lod else None)
     tr = tractor.build(p)
     cmds = {"calc": [cmd_calc], "build": [cmd_build], "bom": [cmd_bom], "drawings": [cmd_drawings],
             "course": [cmd_course], "all": [cmd_calc, cmd_bom, cmd_build, cmd_drawings, cmd_course]}
