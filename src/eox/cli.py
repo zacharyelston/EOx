@@ -1,6 +1,7 @@
 """`uv run eox calc | build | bom | drawings | course | all [--model pro]`
 `uv run eox evolve --trial <name>`
-`uv run eox baseline`"""
+`uv run eox baseline`
+`uv run eox tyres --model home`"""
 
 from __future__ import annotations
 
@@ -237,9 +238,24 @@ def cmd_baseline(args) -> int:
     return 0
 
 
+def cmd_tyres(args) -> int:
+    """Sweep the drive-tyre pressure: grip, rolling resistance and the course's climbs, on three grounds."""
+    from eox import tyre_sweep
+
+    rows = tyre_sweep.run(args.model, workers=args.workers)
+    for r in rows:
+        climbs = " ".join(f"{k.split()[-2]}:{v[0]}" for k, v in r.get("climbs", {}).items())
+        print(f"{r['ground']:<14} {r['psi']:>3} psi  deflection {r['deflection_ratio'] * 100:4.0f} %  grip {r['grip']:.2f}  "
+              f"rolling {r['rolling']:.3f}  climb limit {r['grip_limit']:4.1f} deg  {climbs}")
+    print(f"lowest safe drive-tyre pressure: {tyre_sweep.min_safe_psi(args.model):.1f} psi")
+    for f in tyre_sweep.write(args.model, rows):
+        print(f"  {f.relative_to(ROOT)}")
+    return 0
+
+
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(prog="eox", description="EOX: calcs, CAD and BOM for a tractor model")
-    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "course", "evolve", "baseline", "all"])
+    ap.add_argument("command", choices=["calc", "build", "bom", "drawings", "course", "evolve", "baseline", "tyres", "all"])
     ap.add_argument("--model", default="pro", choices=MODELS, help="design/models/<model>.toml (default: pro)")
     ap.add_argument("--all", action="store_true", help="calc: also list passing SCS checks")
     ap.add_argument("--out", type=Path, default=ROOT / "docs" / "img", help="drawings: output folder (default docs/img)")
@@ -256,6 +272,8 @@ def main(argv=None) -> int:
     args = ap.parse_args(argv)
     if args.command == "baseline":
         return cmd_baseline(args)
+    if args.command == "tyres":
+        return cmd_tyres(args)
     if args.command == "evolve":
         if not args.trial:
             ap.error("evolve needs --trial <name> (design/trials/<name>.toml)")
