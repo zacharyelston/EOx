@@ -1,0 +1,23 @@
+EOX open-hardware garden tractor
+Copyright (c) 2026 Zac Elston and EOX contributors.
+
+The hardware design files (design/, bom/, and the CAD and cut files generated
+from them) describe Open Hardware and are licensed under the CERN-OHL-W v2.
+You may redistribute and modify them, and make products from them, under the
+terms of the CERN-OHL-W v2 (LICENSES/CERN-OHL-W-2.0.txt,
+https://ohwr.org/cern_ohl_w_v2.txt).
+
+They are distributed WITHOUT ANY EXPRESS OR IMPLIED WARRANTY, INCLUDING OF
+MERCHANTABILITY, SATISFACTORY QUALITY AND FITNESS FOR A PARTICULAR PURPOSE.
+Please see the CERN-OHL-W v2 for applicable conditions. A ride-on machine can
+injure or kill: read docs/safety-requirements.md before building one.
+
+Source location: https://github.com/zacharyelston/EOx
+
+As per CERN-OHL-W v2 section 4.1, should you make a tractor or other product
+from these files, display this source location on the product where practical
+(a label near the power box or the operator's station), or in its packaging
+or documentation.
+
+If you modify the files and share them, add a notice saying that you changed
+them, with the date and a short description of the change (section 3.3).

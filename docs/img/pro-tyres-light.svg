@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400" role="img" aria-labelledby="t d" font-family="system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif">
+<title id="t">EOX pro tyre-pressure sweep</title>
+<desc id="d">Steepest climb on grip versus drive-tyre pressure for firm dry lawn, lawn turf, soft wet lawn: firm dry lawn 8 psi 26.8 deg; firm dry lawn 10 psi 26.7 deg; firm dry lawn 12 psi 26.7 deg; firm dry lawn 14 psi 26.6 deg; firm dry lawn 17 psi 26.5 deg; firm dry lawn 20 psi 26.5 deg; lawn turf 8 psi 23.6 deg; lawn turf 10 psi 23.1 deg; lawn turf 12 psi 22.7 deg; lawn turf 14 psi 22.3 deg; lawn turf 17 psi 21.9 deg; lawn turf 20 psi 21.6 deg; soft wet lawn 8 psi 15.7 deg; soft wet lawn 10 psi 14.7 deg; soft wet lawn 12 psi 13.9 deg; soft wet lawn 14 psi 13.2 deg; soft wet lawn 17 psi 12.5 deg; soft wet lawn 20 psi 11.9 deg</desc>
+<rect width="100%" height="100%" rx="8" fill="#fcfcfb"/>
+<text x="16.0" y="26.0" font-size="16" font-weight="600" fill="#0b0b0b" text-anchor="start">EOX Pro: steepest climb on grip vs drive-tyre pressure</text>
+<text x="16.0" y="44.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">deck fitted · each line is a ground · dashed: design pressure and rated climb · tyres overload below 2.3 psi</text>
+<line x1="70.0" y1="344.0" x2="610.0" y2="344.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="62.0" y="348.0" font-size="10" font-weight="400" fill="#898781" text-anchor="end">10°</text>
+<line x1="70.0" y1="300.0" x2="610.0" y2="300.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="62.0" y="304.0" font-size="10" font-weight="400" fill="#898781" text-anchor="end">13°</text>
+<line x1="70.0" y1="256.0" x2="610.0" y2="256.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="62.0" y="260.0" font-size="10" font-weight="400" fill="#898781" text-anchor="end">16°</text>
+<line x1="70.0" y1="212.0" x2="610.0" y2="212.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="62.0" y="216.0" font-size="10" font-weight="400" fill="#898781" text-anchor="end">19°</text>
+<line x1="70.0" y1="168.0" x2="610.0" y2="168.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="62.0" y="172.0" font-size="10" font-weight="400" fill="#898781" text-anchor="end">22°</text>
+<line x1="70.0" y1="124.0" x2="610.0" y2="124.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="62.0" y="128.0" font-size="10" font-weight="400" fill="#898781" text-anchor="end">25°</text>
+<line x1="70.0" y1="80.0" x2="610.0" y2="80.0" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
+<text x="62.0" y="84.0" font-size="10" font-weight="400" fill="#898781" text-anchor="end">28°</text>
+<text x="108.6" y="362.0" font-size="10" font-weight="400" fill="#898781" text-anchor="middle">8</text>
+<text x="185.7" y="362.0" font-size="10" font-weight="400" fill="#898781" text-anchor="middle">10</text>
+<text x="262.9" y="362.0" font-size="10" font-weight="400" fill="#898781" text-anchor="middle">12</text>
+<text x="340.0" y="362.0" font-size="10" font-weight="400" fill="#898781" text-anchor="middle">14</text>
+<text x="455.7" y="362.0" font-size="10" font-weight="400" fill="#898781" text-anchor="middle">17</text>
+<text x="571.4" y="362.0" font-size="10" font-weight="400" fill="#898781" text-anchor="middle">20</text>
+<text x="340.0" y="380.0" font-size="11" font-weight="400" fill="#52514e" text-anchor="middle">drive-tyre pressure (psi)</text>
+<line x1="264.3" y1="80.0" x2="264.3" y2="344.0" stroke="#898781" stroke-width="1.2" stroke-linecap="butt" stroke-dasharray="4 3"/>
+<line x1="70.0" y1="270.7" x2="610.0" y2="270.7" stroke="#898781" stroke-width="1.2" stroke-linecap="butt" stroke-dasharray="4 3"/>
+<text x="620.0" y="274.7" font-size="11" font-weight="400" fill="#52514e" text-anchor="start">rated climb 15°</text>
+<polyline points="108.6,97.7 185.7,98.7 262.9,99.7 340.0,100.5 455.7,101.5 571.4,102.4" fill="none" stroke="#2a78d6" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="108.6" cy="97.7" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="185.7" cy="98.7" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="262.9" cy="99.7" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="340.0" cy="100.5" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="455.7" cy="101.5" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="571.4" cy="102.4" r="4" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
+<text x="581.4" y="106.4" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">firm dry lawn</text>
+<polyline points="108.6,144.5 185.7,151.8 262.9,157.9 340.0,163.0 455.7,169.2 571.4,174.1" fill="none" stroke="#eb6834" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="108.6" cy="144.5" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="185.7" cy="151.8" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="262.9" cy="157.9" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="340.0" cy="163.0" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="455.7" cy="169.2" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="571.4" cy="174.1" r="4" fill="#eb6834" stroke="#fcfcfb" stroke-width="2"/>
+<text x="581.4" y="178.1" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">lawn turf</text>
+<polyline points="108.6,260.3 185.7,275.1 262.9,286.9 340.0,296.4 455.7,307.7 571.4,316.5" fill="none" stroke="#1baf7a" stroke-width="2" stroke-linejoin="round"/>
+<circle cx="108.6" cy="260.3" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="185.7" cy="275.1" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="262.9" cy="286.9" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="340.0" cy="296.4" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="455.7" cy="307.7" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<circle cx="571.4" cy="316.5" r="4" fill="#1baf7a" stroke="#fcfcfb" stroke-width="2"/>
+<text x="581.4" y="320.5" font-size="11" font-weight="400" fill="#0b0b0b" text-anchor="start">soft wet lawn</text>
+</svg>

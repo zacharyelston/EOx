@@ -155,6 +155,7 @@ class _Rig:
         gid = {mujoco.mj_id2name(m, mujoco.mjtObj.mjOBJ_GEOM, i): i for i in range(m.ngeom)}
         self.terrain = gid["terrain"]
         self.tyre_of = {gid[f"{w.name}:tyre"]: w for w in spec.wheels}
+        self.tyre_geom = {w.name: gid[f"{w.name}:tyre"] for w in spec.wheels}
         self.deck = gid.get(spec.deck_geom) if spec.deck_geom else None
         self.halves = [m.body(h).id for h in spec.halves]
         self.spin_dof = {w.name: m.jnt_dofadr[m.joint(f"{w.name}:spin").id] for w in spec.wheels}
@@ -179,15 +180,21 @@ class _Rig:
         return loads, strikes
 
     def rolling_resistance(self, d, loads):
-        """Turf motion resistance as a force at each wheel centre, against its
-        rolling direction. As a ground force it uses up the driven tyres' grip
-        (net traction = gross - resistance), the way the drive calc counts it."""
-        crr = self.spec.rolling_resistance
+        """Each tyre's grip and turf motion resistance at its present load
+        (eox.tyres): grip sets the tyre's friction, and the resistance acts as
+        a force at the wheel centre against its rolling direction. As a ground
+        force it uses up the driven tyres' grip (net traction = gross -
+        resistance), the way the drive calc counts it."""
+        from eox import tyres
+        gr = self.spec.ground
         for w in self.spec.wheels:
+            W = loads[w.name]
+            crr = tyres.rolling(w.tyre, W, gr) if W > 1 else 0.0
+            self.m.geom_friction[self.tyre_geom[w.name], 0] = tyres.grip(w.tyre, max(W, 50.0), gr)
             b = self.m.body(w.name).id
             fwd = d.xmat[self.parent[w.name]].reshape(3, 3)[:, 0]
             v = float(_point_velocity(self.m, d, w.name) @ fwd)
-            d.xfrc_applied[b, :3] = -crr * loads[w.name] * math.tanh(v / 0.1) * fwd
+            d.xfrc_applied[b, :3] = -crr * W * math.tanh(v / 0.1) * fwd
 
     def drive_state(self, d, dt):
         """Worst motor torque (x rated), whether a unit is at its limit, worst slip %, wheel energy."""
@@ -259,8 +266,9 @@ def run(p, tr, fitted: tuple = (), config: str | None = None, keep_trajectory: b
     n_sub = max(1, int(round(1.0 / (sim.control_hz * sim.timestep))))
     dt = n_sub * sim.timestep
 
-    rated_slope = p.vehicle.max_slope_deg
-    obs = [ObstacleResult(s.name, s.kind, not (s.kind == "ramp" and s.spec.slope_deg > rated_slope), lim)
+    veh = p.vehicle
+    beyond = {"ramp": veh.max_slope_deg, "side_slope": getattr(veh, "max_cross_slope_deg", veh.max_slope_deg)}
+    obs = [ObstacleResult(s.name, s.kind, not (s.kind in beyond and s.spec.slope_deg > beyond[s.kind]), lim)
            for s in course.segments]
     r_max = max(w.radius for w in spec.wheels)
 

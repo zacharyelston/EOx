@@ -49,16 +49,17 @@ def gauge(materials: dict, material: str, t_mm: float) -> Gauge:
     raise ValueError(f"{material}: no SCS gauge at {t_mm} mm (have {have})")
 
 
-SHARED = ("units", "axle", "steer_axle", "powerbox", "course")
+SHARED = ("units", "axle", "steer_axle", "powerbox", "course", "ground")
 MODELS = tuple(sorted(f.stem for f in (DESIGN / "models").glob("*.toml")))
 
 
-def load(model: str = "pro") -> SimpleNamespace:
+def load(model: str = "pro", overrides: dict | None = None) -> SimpleNamespace:
     """Shared design files + one model file, merged into one namespace.
 
     Section names must be unique across files. A model may change shared
     values with an [overrides] table of dotted keys ("bus.units_installed" = 3),
-    and pick its operating modes with [model] modes = [...]."""
+    and pick its operating modes with [model] modes = [...]. `overrides` takes
+    more dotted keys on top (a design trial's genes), applied last."""
     merged: dict = {}
     for path in [DESIGN / f"{n}.toml" for n in SHARED] + [DESIGN / "models" / f"{model}.toml"]:
         if not path.exists():
@@ -69,13 +70,15 @@ def load(model: str = "pro") -> SimpleNamespace:
         if clash:
             raise ValueError(f"{path.name}: sections {sorted(clash)} already defined in another design file")
         merged.update(data)
-    for dotted, value in merged.pop("overrides", {}).items():
-        *path, key = dotted.split(".")
+    for dotted, value in list(merged.pop("overrides", {}).items()) + list((overrides or {}).items()):
+        *path, key = (int(k) if k.isdigit() else k for k in dotted.split("."))   # "layout.operator_cg.0" = list item
         node = merged
-        for part in path:
-            node = node[part]
-        if key not in node:
-            raise KeyError(f"override {dotted}: no such shared value")
+        try:
+            for part in path:
+                node = node[part]
+            node[key]
+        except (KeyError, IndexError, TypeError):
+            raise KeyError(f"override {dotted}: no such design value") from None
         node[key] = value
     wanted = merged.get("model", {}).get("modes")
     if wanted:

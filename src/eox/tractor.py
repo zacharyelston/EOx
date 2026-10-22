@@ -42,6 +42,8 @@ class Axle:
     group: str
     driven: bool
     clearance: float     # ground to the axle's lowest point
+    rim: float = 203.0   # mm, rim diameter
+    pressure_kpa: float = 83.0
 
 
 @dataclass
@@ -67,6 +69,7 @@ class Tractor:
     bodies: list[tuple[str, str, Body]] = field(default_factory=list)   # (group, kind, body)
     masses: list[Mass] = field(default_factory=list)
     links: list[Link] = field(default_factory=list)
+    tyres: dict = field(default_factory=dict)         # per axle, from eox.tyres.apply
 
     # ---- geometry ----------------------------------------------------------
     def axle(self, name: str) -> Axle:
@@ -198,7 +201,8 @@ class _Builder:
         cl, cw, ct = u.controller_size
         cx = x + outward * (dl / 2 + 20 + cw / 2)
         self.add(group, "controller", "drive unit controller", "box", (cx, 0, rail_z), (cw, cl, ct), u.controller_mass_kg)
-        self.tr.axles.append(Axle(name, x, a.track, a.tire_diameter, a.tire_width, group, True, a.diff_clearance))
+        self.tr.axles.append(Axle(name, x, a.track, a.tire_diameter, a.tire_width, group, True, a.diff_clearance,
+                                  a.tire_rim, a.tire_pressure_kpa))
         return cx
 
     def rails(self, group, x0, x1, rail_z, half_width, kg, name="rail"):
@@ -291,9 +295,12 @@ def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     xr, xf = 0.0, lo.wheelbase
 
     B.drive_axle("chassis", "rear", xr, -1, rail_z)           # controller behind the axle
-    # main rails wide around the rear axle and box; a narrow nose clears the steered wheels
-    B.rails("chassis", xr - lo.rear_overhang, lo.nose_x, rail_z, hw, lo.frame_mass_kg * 0.75)
-    B.rails("chassis", lo.nose_x, xf + lo.front_overhang, rail_z, lo.nose_half_width, lo.frame_mass_kg * 0.25, "nose rail")
+    # main rails wide around the rear axle and box; a narrow nose clears the steered wheels.
+    # Rail mass follows rail length, so a longer frame (e.g. to hang the box out front) weighs more.
+    main, nose = lo.nose_x - (xr - lo.rear_overhang), xf + lo.front_overhang - lo.nose_x
+    B.rails("chassis", xr - lo.rear_overhang, lo.nose_x, rail_z, hw, 2 * main / 1000 * lo.rail_mass_kg_per_m)
+    B.rails("chassis", lo.nose_x, xf + lo.front_overhang, rail_z, lo.nose_half_width,
+            2 * nose / 1000 * lo.rail_mass_kg_per_m, "nose rail")
     B.cross("chassis", "rear cross member", xr - lo.rear_overhang + 20, rail_z, hw)
     B.cross("chassis", "nose cross member", lo.nose_x, rail_z, hw)
     B.cross("chassis", "front cross member", xf + lo.front_overhang - 20, rail_z, lo.nose_half_width)
@@ -307,26 +314,43 @@ def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     B.add("chassis", "axle", "front beam axle", "box", (xf, 0, f.beam_clearance + beam_h / 2),
           (70, f.track - f.tire_width, beam_h), f.mass_kg)
     B.add("chassis", "steering", "steering rack", "cyl_y", (xf - 110, 0, f.beam_clearance + 30), (45, 520))
-    tr.axles.append(Axle("front", xf, f.track, f.tire_diameter, f.tire_width, "chassis", False, f.beam_clearance))
+    tr.axles.append(Axle("front", xf, f.track, f.tire_diameter, f.tire_width, "chassis", False, f.beam_clearance,
+                         f.tire_rim, f.tire_pressure_kpa))
 
-    # power box slung low between the rails and the axles, golf-cart style; operator on top
+    # power box: H0 slings it low between the rails under the seat, golf-cart style. Anywhere
+    # above the rails it sits on a stand (e.g. over the front axle, where an engine would go).
     B.box_masses("chassis")
     L, W, H = box.outer
-    seat_z = lo.powerbox_z + H + 40
+    bx, bz = lo.powerbox_x, lo.powerbox_z
+    rail_top = rail_z + 40
+    if bz > rail_top + 5:
+        B.add("chassis", "frame", "box stand", "box", (bx, 0, (rail_top + bz) / 2), (L - 40, W - 40, bz - rail_top),
+              lo.box_stand_mass_kg)
+    # operator station: the seat, floor, steering wheel and controls are placed from the operator
     oc = lo.operator_cg
-    B.add("chassis", "seat", "seat pan", "box", (oc[0] + 20, 0, seat_z + 35), (420, 440, 70))
+    seat_z = lo.seat_height
+    sx = oc[0] + 20
+    on_box = abs(bx - sx) < L / 2 - 100 and abs(bz + H + 40 - seat_z) < 1
+    if not on_box:            # a seat bridge: a post on each rail and a plate across, clear of what's below
+        for side in (1, -1):
+            B.add("chassis", "frame", f"seat post {'L' if side > 0 else 'R'}", "box",
+                  (sx, side * hw, (rail_top + seat_z - 6) / 2), (300, 40, seat_z - 6 - rail_top), lo.seat_pedestal_mass_kg * 0.3)
+        B.add("chassis", "frame", "seat pedestal", "box", (sx, 0, seat_z - 3), (300, 2 * hw + 40, 6),
+              lo.seat_pedestal_mass_kg * 0.4)
+    B.add("chassis", "seat", "seat pan", "box", (sx, 0, seat_z + 35), (420, 440, 70))
     B.add("chassis", "seat", "seat back", "box", (oc[0] - 190, 0, seat_z + 255), (60, 440, 420))
-    B.add("chassis", "frame", "floor pan", "box", (lo.floor_x, 0, rail_z + 45), (lo.floor_length, 2 * hw + 120, 10))
+    B.add("chassis", "frame", "floor pan", "box", (oc[0] + lo.floor_reach, 0, rail_z + 45), (lo.floor_length, 2 * hw + 120, 10))
+    controls = [oc[i] + lo.seat_and_controls_offset[i] for i in range(3)]
     # steering column: from the rack up and back to the wheel in front of the seat
-    wheel = tuple(lo.steering_wheel_at)
+    wheel = (oc[0] + lo.steering_wheel_reach, 0.0, lo.steering_wheel_height)
     tr.links.append(Link("steering column", "seat", (xf - 110, 0, f.beam_clearance + 30), "chassis", wheel, "chassis", 32))
     B.add("chassis", "seat", "steering wheel", "cyl_z", wheel, (p.steering.steering_wheel_diameter, 25))
     B.add("chassis", "implement", "rear hitch", "box", (xr - lo.rear_overhang - 30, 0, rail_z - 60), (60, 80, 40), lo.hitch_mass_kg)
     B.deck("chassis")                                           # mid-mount, between the axles
-    B.mass("chassis", "seat & controls", lo.seat_and_controls_mass_kg, lo.seat_and_controls_cg)
+    B.mass("chassis", "seat & controls", lo.seat_and_controls_mass_kg, controls)
     B.mass("chassis", "operator", p.vehicle.mass_operator_kg, oc)
     if p.vehicle.mass_payload_kg:
-        B.mass("chassis", "payload", p.vehicle.mass_payload_kg, lo.seat_and_controls_cg)
+        B.mass("chassis", "payload", p.vehicle.mass_payload_kg, controls)
     return tr
 
 
@@ -334,8 +358,14 @@ BUILDERS = {"articulated": build_pro, "steer_axle": build_home}
 
 
 def build(p, box: powerbox.Layout | None = None) -> Tractor:
+    """The machine, with its tyres' grip and rolling resistance worked out for
+    its loads (eox.tyres.apply sets p.vehicle.traction_coefficient and
+    rolling_resistance from each axle's tyre size, pressure and the ground)."""
     try:
         builder = BUILDERS[p.model.layout]
     except KeyError:
         raise NotImplementedError(f"layout '{p.model.layout}' has no builder yet") from None
-    return builder(p, box)
+    from eox import tyres
+    tr = builder(p, box)
+    tyres.apply(p, tr)
+    return tr

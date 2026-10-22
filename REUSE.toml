@@ -1,0 +1,20 @@
+# Which licence covers which files (https://reuse.software). Overview: LICENSE.
+version = 1
+
+[[annotations]]
+path = ["design/**", "bom/**"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Zac Elston and EOX contributors"
+SPDX-License-Identifier = "CERN-OHL-W-2.0"
+
+[[annotations]]
+path = ["src/**", "tests/**", "tools/**", "pyproject.toml", "uv.lock", ".python-version", ".gitignore"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Zac Elston and EOX contributors"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["README.md", "LICENSE", "NOTICE", "CREDITS.md", "REUSE.toml", "docs/**", "trials/**", "assets/README.md", "assets/third_party/.gitkeep"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Zac Elston and EOX contributors"
+SPDX-License-Identifier = "CC-BY-SA-4.0"

@@ -1,0 +1,12 @@
+# The ground the calcs and the terrain course run on (shared by every model
+# and reference machine). Tyre grip and rolling resistance come from this and
+# each tyre's size, pressure and load: src/eox/tyres.py (Brixius / ASAE D497).
+
+[ground]
+name = "lawn turf"
+cone_index_kpa = 400           # REF: ground strength (ASAE cone index). Roughly 1000+ firm dry lawn, 400 typical
+                               # lawn, 200 soft wet lawn. Chosen so an EOX rear tyre at 12 psi gives traction ~0.5 and
+                               # rolling resistance ~0.09, the turf values the calcs used before the tyre model.
+design_slip = 0.12             # wheel slip the grip figures are quoted at (the useful range is about 0.1-0.2)
+carcass_kpa = 15               # REF: the tyre carcass's own share of the load, as an equivalent pressure
+max_deflection_ratio = 0.25    # tyre deflection / section height: beyond this the sidewall is overloaded (FAIL)

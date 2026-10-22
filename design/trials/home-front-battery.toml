@@ -1,0 +1,106 @@
+# Design trial: can the Home carry its battery box up front, the way a
+# tractor carries its engine?
+#
+#   uv run eox evolve --trial home-front-battery
+#
+# Results land in trials/home-front-battery/: the answer (best design against
+# today's), the leaderboard, a progress figure, and best.toml (the changed
+# values, to adopt into design/models/home.toml after review).
+#
+# Home is rear-drive: weight moved forward comes off the driven tyres, and grip
+# already sets its 12 deg rating. So the operator, the deck and the PTO unit
+# may move too, and the box may sit on the nose rails, on a stand clear of the
+# steered tyres, or hang out ahead of the axle on a longer nose.
+
+[trial]
+name = "home-front-battery"
+model = "home"
+question = "Can the Home carry its battery box at the front, like a tractor's engine, and keep its 12 deg climb, its stability and its course results?"
+course_configs = ["deck"]      # mowing is the design case
+population = 14
+generations = 20
+elite = 2
+seed = 1
+
+# Genes: the design values this trial may change (dotted keys, as in [overrides]).
+[[trial.gene]]
+key = "layout.powerbox_x"
+min = 1250
+max = 2300
+step = 10
+why = "box centre: over the front axle, or hung out ahead of it"
+
+[[trial.gene]]
+key = "layout.powerbox_z"
+min = 340
+max = 650
+step = 10
+why = "box underside: on the nose rails, or on a stand clear of the steered tyres"
+
+[[trial.gene]]
+key = "layout.front_overhang"
+min = 250
+max = 900
+step = 10
+why = "a longer nose to hang the box out front (rail mass follows length)"
+
+[[trial.gene]]
+key = "layout.operator_cg.0"
+min = 150
+max = 700
+step = 10
+why = "operator fore-aft: back over the rear axle puts weight on the driven tyres"
+
+[[trial.gene]]
+key = "deck.x_center"
+min = 560
+max = 1060
+step = 10
+why = "mid-mount deck fore-aft, between the rear tyres and the steered tyres"
+
+[[trial.gene]]
+key = "deck.pto_unit_y"
+choices = [430, -430, 480, -480]
+why = "where the PTO unit stands: either side, 50 mm further out clears a floor pan above it"
+
+# Objectives: the lowest total wins. Each adds weight x metric / scale,
+# negated for "max". Metrics: src/eox/evolve/evaluate.py.
+[[trial.objective]]
+metric = "grip_limit_deg"
+goal = "max"
+weight = 3
+scale = 1
+
+[[trial.objective]]
+metric = "working_slope_deg"
+goal = "max"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "course_warns"
+goal = "min"
+weight = 2
+scale = 1
+
+[[trial.objective]]
+metric = "wheel_lift_s"
+goal = "min"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "mass_kg"
+goal = "min"
+weight = 1
+scale = 10
+
+# Constraints: a design that breaks one loses to every design that doesn't.
+# calc_fails includes the 12 deg grip and torque checks and every clearance check.
+[[trial.constraint]]
+metric = "calc_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "course_fails"
+max = 0

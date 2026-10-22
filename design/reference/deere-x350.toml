@@ -1,0 +1,82 @@
+# John Deere X350 lawn tractor, 42 in deck (base code 488DM): a reference machine.
+# Published values carry their source; REF = estimated (not published), basis given.
+# Researched 2026-10-19. Sources:
+#   D1  deere.com X350 spec page (collected 2022-10-03)
+#   D2  operator's manual OMUC29734 (X330-X394), manuals.deere.com/omview/OMUC29734_19/
+#   TT  tufftorq.com/product/k46/ (K46 axle torque)
+#   D4  2026 dealer listing (fastline.com), $3,950
+
+[model]
+name = "John Deere X350"
+layout = "lawn_tractor"
+kind = "gas lawn tractor, 21.5 hp, hydrostatic, 2WD"
+sources = [
+  "https://www.deere.com/en-us/products-solutions/mowers/residential-lawn-mowers/x350-42-in-deck-lawn-tractor-ndg4r0e",
+  "http://manuals.deere.com/omview/OMUC29734_19/",
+  "https://www.tufftorq.com/product/k46/",
+  "https://www.fastline.com/lawn-and-garden/listing-detail/2026-john-deere-x350-heritage-tractor-inc-pontiac-illinois/de88913a-f3a8-44c4-afd7-c570e2d53439",
+]
+
+[vehicle]
+mass_operator_kg = 100         # same operator as the EOX models
+mass_payload_kg = 0
+max_slope_deg = 15             # D2: "Never mow or operate ... on slope angles greater than 15°"
+max_cross_slope_deg = 15       # D2: the same limit in every direction
+design_slope_deg = 10          # D2: 10 deg with attachments or towing
+
+[spec]
+mass_kg = 248                  # D2: tractor 468 lb (212 kg) + 42 in deck 79 lb (36 kg)
+wheelbase = 1255               # D1: 49.4 in
+front_track = 720              # REF: not published; typical for 15x6.00-6 fronts under a 38 in body
+rear_track = 750               # REF: overall width 38-41 in (D1, D2) minus one 10 in tyre
+front_tire = [381, 152]        # D2: 15x6.00-6
+rear_tire = [508, 254]         # D2: 20x10.00-8
+front_tire_rim = 152           # 6 in
+rear_tire_rim = 203            # 8 in
+front_tire_pressure_kpa = 97   # D2: 14 psi
+rear_tire_pressure_kpa = 69    # D2: 10 psi
+deck_width = 1067              # D1: 42 in, mid-mount, slides under
+ground_clearance = 120         # REF: not published; frame underside
+price_usd = 3950               # D4: 2026 dealer price (no deere.com list price)
+
+[estimate]                     # REF: not published
+nose_clearance = 200           # REF: front frame / bumper underside, raised over the front axle
+tail_clearance = 160           # REF: rear frame / hitch underside
+front_share = 0.45             # with deck, no operator: engine and battery over the front axle
+cg_height = 420
+front_wheel_kg = 3
+rear_wheel_kg = 7
+front_axle_kg = 8              # cast-iron pivot axle (D1)
+transaxle_clearance = 90       # K46 underside
+front_overhang = 450
+rear_overhang = 300
+frame_half_width = 200
+hood_width = 460
+hood_top = 800
+seat_x = 150                   # operator CG ahead of the rear axle
+seat_height = 600
+deck_x = 560                   # deck centre ahead of the rear axle
+deck_length = 600
+deck_height = 110
+deck_bottom_clearance = 40     # D1: 1-4 in cut; same housing clearance as the EOX deck
+deck_mass_kg = 36              # D2: 79 lb
+engine_x_from_front_axle = -150
+rear_lump_x = 50
+
+[steer_axle]                   # cast-iron front axle on a centre pivot (D1); angle not published
+track = 720
+tire_diameter = 381
+tire_width = 152
+beam_clearance = 150           # REF
+wheel_tire_mass_kg = 3
+max_steer_deg = 55             # REF: 16 in turning radius (D1) needs a tight lock
+scrub_radius = 30              # REF
+oscillates = true
+oscillation_max_deg = 10       # REF: typical lawn-tractor front pivot stop
+spring_rate_n_per_mm = 200     # no springs: stiff, short travel stands in for tyre compliance
+spring_spacing = 600
+spring_travel = 5
+
+[drive]
+rated_axle_torque_nm = 231     # TT: Tuff Torq K46, 28.04:1 (20 in tyres), open bevel diff, no lock (D1)
+# Peak (relief-limited) torque isn't published: the model gets at least enough to climb the rated slope (+20 %).

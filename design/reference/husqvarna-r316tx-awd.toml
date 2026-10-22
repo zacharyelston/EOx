@@ -1,0 +1,80 @@
+# Husqvarna R 316TX AWD rider (970 54 28-01), Combi 103 front deck: a reference
+# machine for the articulated Pro. Not sold in the US.
+# Published values carry their source; REF = estimated (not published), basis given.
+# Researched 2026-10-19. Sources:
+#   H1  husqvarna.com/za product page
+#   H2  operator's manual 844-014 (2025-05-29), technical data pp. 37-41
+#   H3  husqvarna.com/ee (EUR 8,899 without deck)
+#   TT  tufftorq.com K574 and KTM-10 (axle torque)
+
+[model]
+name = "Husqvarna R 316TX AWD"
+layout = "articulated_rider"
+kind = "gas articulated rider, 9.6 kW, hydrostatic AWD, front deck"
+sources = [
+  "https://www.husqvarna.com/za/ride-on-front-mowers/r316tx-awd/",
+  "https://www.husqvarna.com/uk/support/r316tx/",
+  "https://www.husqvarna.com/ee/raiderid/r316tx-awd/",
+  "https://www.tufftorq.com/product/k574/",
+  "https://www.tufftorq.com/product/ktm-10/",
+]
+
+[vehicle]
+mass_operator_kg = 100
+mass_payload_kg = 0
+max_slope_deg = 10             # H2: "Do not operate the product on ground that slopes more than 10°"
+max_cross_slope_deg = 10
+design_slope_deg = 10
+
+[spec]
+mass_kg = 287                  # H2: 238 kg without deck + Combi 103 deck 49 kg
+wheelbase = 887                # H2
+front_track = 711              # H2 drawing, tyre centres
+rear_track = 627               # H2 drawing, tyre centres
+front_tire = [407, 170]        # H2: 170/60-8
+rear_tire = [407, 170]
+front_tire_rim = 203
+rear_tire_rim = 203
+front_tire_pressure_kpa = 60   # H2: 0.6 bar
+rear_tire_pressure_kpa = 60    # H2: 0.6 bar
+deck_width = 1030              # H2: Combi 103, front-mounted
+ground_clearance = 95          # H2 (AWD)
+price_usd = 10000              # REF: EUR 8,899 without deck (H3) at about 1.1-1.2 USD/EUR
+
+[layout]
+front_axle_x = 440             # REF: pivot about mid-wheelbase
+rear_axle_x = -447
+pivot_height = 300             # REF
+articulation_max_deg = 45      # REF: 30 cm uncut circle (H1) needs a large angle
+oscillation_max_deg = 8        # REF: not published
+
+[steering]                     # H2: manual, steering wires and chain
+moment_nm = 700                # REF: a person on the wheel through cables
+lock_to_lock_s = 3.0           # REF
+
+[estimate]
+nose_clearance = 200           # REF: front frame / bumper underside, raised over the front axle
+tail_clearance = 160           # REF: rear frame / hitch underside
+awd = true
+front_share = 0.45             # REF: front deck ahead, engine behind the rear axle
+cg_height = 380
+front_wheel_kg = 5
+rear_wheel_kg = 5
+knuckle_kg = 6
+axle_clearance = 95            # H2
+overhang = 350                 # frame beyond each axle
+frame_half_width = 180
+hood_width = 560
+hood_top = 760
+seat_x = -330                  # operator ahead of the rear axle, behind the pivot
+seat_height = 540
+deck_x = 1040                  # deck centre ahead of the front axle
+deck_length = 700
+deck_height = 110
+deck_bottom_clearance = 40     # H2: 25-75 mm cut
+deck_mass_kg = 49              # H2: Combi 103
+
+[drive]
+rated_axle_torque_nm = 181     # TT: K574A rear, 21.53:1 (~16 in tyres)
+front_rated_axle_torque_nm = 231  # TT: KTM10 front, 20.52:1; open bevel diffs, no lock in H2
+# Peak (relief-limited) torque isn't published: at least enough to climb the rated slope (+20 %).

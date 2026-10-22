@@ -1,0 +1,83 @@
+# Ryobi 80V HP Brushless 42 in lawn tractor RYRM8060 (discontinued; Ryobi's last
+# 42 in electric lawn tractor): a reference machine for an electric rival.
+# Published values carry their source; REF = estimated (not published), basis given.
+# Researched 2026-10-19. Sources:
+#   R1  ryobitools.com product page (marked discontinued)
+#   R2  operator's manual RYRM8006/8007/8060/8070 (manualslib)
+#   R3  homedepot.com listing ($4,999, 60 min runtime)
+#   R4  bobvila.com review, Aug 2024 (557 lb, 1 h 15 min, ~2.4 kWh)
+
+[model]
+name = "Ryobi 80V 42 in (RYRM8060)"
+layout = "lawn_tractor"
+kind = "electric lawn tractor, 80 V, 3 x 10 Ah, 2WD"
+sources = [
+  "https://www.ryobitools.com/products/46396041845",
+  "https://www.manualslib.com/manual/3699487/Ryobi-Ryrm8007.html",
+  "https://www.homedepot.com/p/322306539",
+  "https://www.bobvila.com/reviews/ryobi-electric-lawn-tractor-review",
+]
+
+[vehicle]
+mass_operator_kg = 100
+mass_payload_kg = 0
+max_slope_deg = 15             # R2: "do not attempt to mow steep slopes greater than 15 degrees"
+max_cross_slope_deg = 15
+design_slope_deg = 10
+
+[spec]
+mass_kg = 253                  # R4: 557 lb (R3's 900 lb looks like a shipping weight)
+wheelbase = 1250               # REF: not published; Deere/Cub class
+front_track = 710              # REF
+rear_track = 730               # REF
+front_tire = [381, 152]        # R2: 15x6x6
+rear_tire = [508, 203]         # R2: 20x8x8
+front_tire_rim = 152
+rear_tire_rim = 203
+front_tire_pressure_kpa = 103  # R2: 15 psi
+rear_tire_pressure_kpa = 83    # R2: 12 psi
+deck_width = 1067              # R1: 42 in 10-gauge fabricated, CrossCut 4 blades, mid-mount
+ground_clearance = 110         # REF
+price_usd = 4999               # R3: launch MSRP, still listed 2026-10-19
+runtime_h = 1.1                # R3: 60 min; R4: 1 h 15 min measured
+
+[estimate]
+nose_clearance = 200           # REF: front frame / bumper underside, raised over the front axle
+tail_clearance = 160           # REF: rear frame / hitch underside
+front_share = 0.42             # REF: batteries and motors spread fore and aft
+cg_height = 400
+front_wheel_kg = 3
+rear_wheel_kg = 6
+front_axle_kg = 7
+transaxle_clearance = 90
+front_overhang = 450
+rear_overhang = 300
+frame_half_width = 200
+hood_width = 460
+hood_top = 760
+seat_x = 150
+seat_height = 600
+deck_x = 560
+deck_length = 600
+deck_height = 120
+deck_bottom_clearance = 40
+deck_mass_kg = 45              # REF: 10-gauge fabricated deck with two blade motors
+engine_x_from_front_axle = -150
+rear_lump_x = 50
+
+[steer_axle]
+track = 710
+tire_diameter = 381
+tire_width = 152
+beam_clearance = 140
+wheel_tire_mass_kg = 3
+max_steer_deg = 50             # REF: ~23 in turning radius (R2)
+scrub_radius = 30
+oscillates = true
+oscillation_max_deg = 10       # REF
+spring_rate_n_per_mm = 200
+spring_spacing = 600
+spring_travel = 5
+
+[drive]
+# Drive motor torque isn't published: the model gets enough to climb the rated 15 deg slope (+20 %).
