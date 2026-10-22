@@ -2,6 +2,8 @@
 name = "eox"
 version = "0.1.0"
 description = "EOX: open-source flat-sheet electric garden tractor — calcs, CAD and BOM"
+license = "MIT"                                  # the software; hardware design files: CERN-OHL-W-2.0, docs: CC-BY-SA-4.0 (LICENSE)
+license-files = ["LICENSES/MIT.txt"]
 authors = [
     { name = "Zac Elston", email = "zacharyelston@gmail.com" }
 ]

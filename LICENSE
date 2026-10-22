@@ -1,21 +1,27 @@
-MIT License
+EOX is open hardware. Copyright (c) 2026 Zac Elston and EOX contributors.
 
-Copyright (c) 2026 Zac Elston
+It is licensed in three parts, by what each file is:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+  Hardware design files: CERN-OHL-W-2.0 (CERN Open Hardware Licence v2, weakly reciprocal)
+    design/        parameters: models, units, axles, power box, course, ground, trials, reference machines
+    bom/           bill of materials
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+  Software: MIT
+    src/  tests/  tools/  pyproject.toml  uv.lock
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+  Documentation and images: CC-BY-SA-4.0 (Creative Commons Attribution-ShareAlike 4.0)
+    README.md  docs/  trials/
+
+The full texts are in LICENSES/. REUSE.toml maps every path to its licence
+(https://reuse.software). Files generated from these sources (out/: STEP, DXF,
+STL, reports) carry the licence of the sources they come from: CAD and cut
+files are hardware design files (CERN-OHL-W-2.0); reports are documentation
+(CC-BY-SA-4.0).
+
+Third-party material keeps its own licence: see assets/third_party/ and CREDITS.md.
+
+Source location (CERN-OHL-W-2.0 section 1.10): https://github.com/zacharyelston/EOx
+See NOTICE for the notice that must travel with the hardware design files and products made from them.
+
+Versions of EOX published before this change (up to commit 632ed92) were
+released under the MIT License, and remain available under it.

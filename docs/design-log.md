@@ -6,6 +6,47 @@ pages each entry links to.
 
 ---
 
+## 2026-10-21: Licence: CERN-OHL-W, MIT and CC-BY-SA
+
+**Why:** EOX is hardware, and MIT is a software licence. This settles
+[issue 13](https://github.com/zacharyelston/EOx/issues/13).
+
+**Options considered:**
+
+- **Strongly reciprocal (CERN-OHL-S):** every derivative shares everything.
+- **Permissive (CERN-OHL-P or MIT):** derivatives may be closed.
+- **No licence:** rejected. Our own licence never bound us; we hold the
+  copyright. Removing it would have made EOX "all rights reserved" for
+  everyone else, and wouldn't have loosened any third-party asset's terms.
+
+**What changed:** EOX is now licensed in three parts.
+
+- **Hardware design files** (`design/`, `bom/`, and the CAD and cut files
+  made from them): CERN-OHL-W-2.0. Anyone may build, sell and modify EOX.
+  Changes to EOX's own design files must be shared, but makers can add their
+  own closed attachments and body panels.
+- **Software:** MIT, as before.
+- **Docs and images:** CC-BY-SA-4.0.
+
+**Files:**
+
+- **`LICENSES/`:** the official texts (CERN's own CERN-OHL-W, SPDX's
+  CC-BY-SA-4.0, our MIT).
+- **`LICENSE`:** a map of what is under which licence.
+- **`REUSE.toml`:** licences by path. The repo passes `reuse lint` (REUSE
+  3.3).
+- **`NOTICE`:** the CERN-OHL notice with the source location, asking anyone
+  who builds a machine to show it on the machine or in its manual.
+- **`assets/README.md`:** the licences we accept for third-party assets
+  (CC0, CC-BY, CC-BY-SA, permissive) and the ones we don't (non-commercial,
+  editorial-only, GrabCAD's default, branded models).
+- **`CREDITS.md`:** credits for dependencies and assets.
+- **`pyproject.toml`:** declares the Python package MIT.
+
+**Earlier versions:** copies taken under MIT, up to `632ed92`, stay MIT.
+
+---
+
 ## 2026-10-19: Tyre pressure and ground strength
 
 **Why:** to test grip by changing tyre air pressure. Until now every tyre had
