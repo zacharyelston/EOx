@@ -3,6 +3,7 @@
     panels   one frame per chosen obstacle, side by side, captioned (PNG)
     overview the whole course from above, the machine at the start (PNG)
     video    the run, chase camera (MP4 with ffmpeg, else GIF)
+    webp     the run as a compact animated WebP for the README (plays inline on GitHub)
 """
 
 from __future__ import annotations
@@ -71,6 +72,24 @@ def overview(p, tr, fitted, path: Path, size=(1600, 640)):
         img = r.render()
     path.parent.mkdir(parents=True, exist_ok=True)
     Image.fromarray(img).save(path, optimize=True)
+    return path
+
+
+def webp(p, tr, fitted, result, path: Path, fps=12, speedup=6.0, size=(640, 360), quality=45, camera="chase") -> Path:
+    """The whole run, sped up, as an animated WebP: about 1 MB for a course run,
+    a quarter of a GIF's size at a higher resolution."""
+    import mujoco
+    from PIL import Image
+
+    m, _ = _model(p, tr, fitted)
+    d = mujoco.MjData(m)
+    times, traj = result.times, result.qpos
+    idx = np.searchsorted(times, np.arange(0.0, times[-1], speedup / fps)).clip(0, len(times) - 1)
+    with mujoco.Renderer(m, size[1], size[0]) as r:
+        frames = [Image.fromarray(_frame(r, m, d, traj[i], camera)) for i in idx]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    frames[0].save(path, save_all=True, append_images=frames[1:], duration=int(1000 / fps), loop=0,
+                   quality=quality, method=4)
     return path
 
 

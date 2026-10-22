@@ -165,6 +165,10 @@ def cmd_course(p, tr, args) -> int:
     if args.video:
         f = render.video(p, tr, configs[-1], shown, OUT / "sim" / f"{model}-{'deck' if configs[-1] else 'bare'}")
         print(f"video: {f.relative_to(ROOT)}")
+    if args.media:                      # the README's animation and full-run video
+        f = render.webp(p, tr, configs[-1], shown, args.out / f"{model}-course.webp")
+        v = render.video(p, tr, configs[-1], shown, ROOT / "docs" / "video" / f"{model}-course")
+        print(f"README media: {f.relative_to(ROOT)}, {v.relative_to(ROOT)}")
     return 1 if any(o.status == "FAIL" for r in results for o in r.obstacles) else 0
 
 
@@ -263,6 +267,8 @@ def main(argv=None) -> int:
     ap.add_argument("--render", action="store_true", help="course: render obstacle frames to <out>/<model>-course.png")
     ap.add_argument("--video", action="store_true", help="course: render the run to out/sim (MP4 with ffmpeg, else GIF)")
     ap.add_argument("--view", action="store_true", help="course: drive it live in MuJoCo's interactive viewer")
+    ap.add_argument("--media", action="store_true",
+                    help="course: write the README animation (<out>/<model>-course.webp) and video (docs/video/)")
     ap.add_argument("--trial", help="evolve: design/trials/<name>.toml")
     ap.add_argument("--population", type=int, help="evolve: designs per generation (default: the trial's)")
     ap.add_argument("--generations", type=int, help="evolve: generations (default: the trial's)")
