@@ -47,7 +47,9 @@ def markdown(p, results: list[RunResult], course) -> str:
         f"a MuJoCo {mujoco.__version__} rigid-body simulation of the same masses and part envelopes the calcs use "
         "(`src/eox/sim/`). Screening level: rigid tyres, REF spring and friction values.", "",
         f"**Course:** {course.length:.1f} m, {len(course.segments)} obstacles, driven at {p.course.speed_kmh:g} km/h  ",
-        f"**Ground:** turf, traction {v.traction_coefficient:g}, rolling resistance {v.rolling_resistance:g}  ",
+        f"**Ground:** {p.ground.name}, cone index {p.ground.cone_index_kpa:g} kPa; tyre grip and rolling resistance "
+        f"follow each wheel's load (at rest: traction {v.traction_coefficient:.2f}, rolling resistance "
+        f"{v.rolling_resistance:.3f})  ",
         f"**Rated climb:** {v.max_slope_deg:g} deg (steeper ramps are scored INFO)", "",
         "Columns: roll / pitch are the worst body angles (deg). The lightest wheel load is averaged over 0.2 s (N). "
         "Motor is the worst drive unit's torque as a multiple of rated (peak is about 4x). "

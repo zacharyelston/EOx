@@ -51,6 +51,7 @@ class Wheel:
     side: int            # +1 left, -1 right
     radius: float
     driven: bool
+    tyre: object = None  # eox.tyres.Tyre: grip and rolling resistance follow the wheel's load (sim.run)
 
 
 @dataclass
@@ -199,12 +200,20 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
     wheels: list[Wheel] = []
 
     def wheel_xml(name, axle, side, pos, r, w, kg, driven):
-        wheels.append(Wheel(name, axle, side, r, driven))
+        ty = tr.tyres[axle]
+        wheels.append(Wheel(name, axle, side, r, driven, ty["tyre"]))
         Ir = kg * (3 * r * r + w * w) / 12
+        k = ty["stiffness"]                                   # the tyre's squash, as a spring under a stiff contact,
+        c = 2 * 0.15 * math.sqrt(k * ty["load_n"] / G)        # REF: 15 % of critical damping
+        travel = 0.6 * ty["tyre"].section_height * MM
+        pre = ty["deflection_mm"] * MM                         # preloaded: parked, the machine sits at its design heights
         return (f'<body name="{name}" pos="{_v(pos)}">'
+                f'<joint name="{name}:tyre" type="slide" axis="0 0 1" stiffness="{k:.5g}" damping="{c:.4g}" '
+                f'springref="{-pre:.5g}" range="{-travel:.4g} {travel:.4g}"/>'
                 f'<joint name="{name}:spin" type="hinge" axis="0 1 0" damping="0.5"/>'
                 f'<inertial pos="0 0 0" mass="{kg:.4g}" diaginertia="{Ir:.4g} {0.6 * kg * r * r:.4g} {Ir:.4g}"/>'
-                f'<geom name="{name}:tyre" class="tyre" type="ellipsoid" size="{r:.4g} {w / 2:.4g} {r:.4g}"/>'
+                f'<geom name="{name}:tyre" class="tyre" type="ellipsoid" size="{r:.4g} {w / 2:.4g} {r:.4g}" '
+                f'friction="{ty["grip"]:.4g} {sim.friction_torsional:g} 0"/>'
                 f'<geom class="visual" type="cylinder" size="{r * 0.995:.4g} {w / 2:.4g}" euler="1.5708 0 0" rgba="{RGBA["wheel"]}"/>'
                 f'<geom class="visual" type="cylinder" size="{r * 0.45:.4g} {w / 2 + 0.002:.4g}" euler="1.5708 0 0" rgba="{RGBA["hub"]}"/>'
                 f'<geom class="visual" type="box" size="{r * 0.9:.4g} {w / 2 + 0.004:.4g} 0.02" rgba="{RGBA["hub"]}"/>'
@@ -337,7 +346,7 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
   </asset>
   <worldbody>
     <light name="sun" directional="true" pos="0 0 10" dir="-0.4 0.3 -1" diffuse="0.75 0.75 0.72" castshadow="true"/>
-    <geom name="terrain" type="hfield" hfield="course" pos="{rx:.4g} 0 {zmin:.4g}" material="grass" contype="1" conaffinity="0"/>
+    <geom name="terrain" type="hfield" hfield="course" pos="{rx:.4g} 0 {zmin:.4g}" material="grass" contype="1" conaffinity="0" friction="0.05 {sim.friction_torsional:g} 0"/>
     {body_xml}
   </worldbody>
   <tendon>{''.join(tendons)}</tendon>
@@ -349,6 +358,7 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
     spec = Spec(p.model.name, root, halves, wheels, drives, steer, deck, start, wheelbase, xml, joints)
     spec.hfield = ((course.z - zmin) / elev).astype(np.float32).ravel()
     spec.rolling_resistance = crr
+    spec.ground = p.ground
     return spec
 
 
