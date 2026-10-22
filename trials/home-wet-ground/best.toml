@@ -1,0 +1,10 @@
+# Trial home-wet-ground: the best design's changed values, as [overrides] for
+# design/models/home.toml. Review before adopting: a trial is evidence, not a decision.
+# Score -30.08 (today -18.92; lower is better).
+
+[overrides]
+"axle.tire_pressure_kpa" = 55        # today: 83
+"steer_axle.tire_pressure_kpa" = 55  # today: 97
+"layout.operator_cg.0" = 560         # today: 520
+"layout.powerbox_x" = 520            # today: 510
+"deck.x_center" = 560                # today: 800

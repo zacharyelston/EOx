@@ -1,0 +1,9 @@
+# Trial home-pivot-axle: the best design's changed values, as [overrides] for
+# design/models/home.toml. Review before adopting: a trial is evidence, not a decision.
+# Score -21.41 (today 2.76; lower is better).
+
+[overrides]
+"steer_axle.oscillates" = true          # today: false
+"steer_axle.oscillation_max_deg" = 15   # today: 10
+"steer_axle.spring_travel" = 65         # today: 40
+"steer_axle.spring_rate_n_per_mm" = 24  # today: 20

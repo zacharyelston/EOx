@@ -1,0 +1,91 @@
+# Design trial: what would it take to rate the Home for 15 deg climbs, like the
+# lawn tractors it competes with? Grip sets its 12 deg rating today. The rating
+# itself is a gene: the calcs fail any design that can't grip or drive its
+# rating, and the course scores the 15 deg climb once it is rated.
+#   uv run eox evolve --trial home-15-degrees
+
+[trial]
+name = "home-15-degrees"
+model = "home"
+question = "What would it take to rate the Home for 15 deg climbs: gearing, tyre pressure, and where the operator, deck and battery sit?"
+course_configs = ["deck"]
+population = 20
+generations = 30
+seed = 1
+
+[[trial.gene]]
+key = "vehicle.max_slope_deg"
+min = 12
+max = 16
+step = 0.5
+why = "the climb rating itself"
+
+[[trial.gene]]
+key = "axle.ratio"
+choices = [12.4, 15.0, 24.8]
+why = "stock, 15:1 gear set, or a 2:1 chain stage"
+
+[[trial.gene]]
+key = "axle.tire_pressure_kpa"
+min = 55
+max = 152
+step = 7
+why = "drive-tyre pressure (8-22 psi)"
+
+[[trial.gene]]
+key = "layout.operator_cg.0"
+min = 250
+max = 700
+step = 10
+why = "operator fore-aft"
+
+[[trial.gene]]
+key = "layout.powerbox_x"
+min = 450
+max = 900
+step = 10
+why = "battery box fore-aft, slung low between the rails"
+
+[[trial.gene]]
+key = "deck.x_center"
+min = 560
+max = 1060
+step = 10
+why = "mid-mount deck fore-aft"
+
+[[trial.gene]]
+key = "deck.pto_unit_y"
+choices = [430, -430, 480, -480]
+why = "where the PTO unit stands"
+
+[[trial.objective]]
+metric = "rated_slope_deg"
+goal = "max"
+weight = 5
+scale = 1
+
+[[trial.objective]]
+metric = "grip_limit_deg"
+goal = "max"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "working_slope_deg"
+goal = "max"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "course_warns"
+goal = "min"
+weight = 1
+scale = 1
+
+[[trial.constraint]]
+metric = "calc_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "course_fails"
+max = 0

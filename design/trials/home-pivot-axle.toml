@@ -1,0 +1,72 @@
+# Design trial: should the Home's front axle pivot, and how far? The leaf-sprung
+# beam axle runs out of roll travel on the twist and the side-slope transitions
+# and lifts a front wheel; real lawn tractors' pivoting axles don't. A pivot costs
+# static stability (the support becomes a triangle).
+#   uv run eox evolve --trial home-pivot-axle
+
+[trial]
+name = "home-pivot-axle"
+model = "home"
+question = "Should the Home's front axle pivot, how far, and what springs, to keep all four wheels down without giving up too much stability?"
+course_configs = ["deck", "bare"]
+population = 16
+generations = 24
+seed = 1
+
+[[trial.gene]]
+key = "steer_axle.oscillates"
+choices = [false, true]
+why = "leaf springs only, or a centre pivot"
+
+[[trial.gene]]
+key = "steer_axle.oscillation_max_deg"
+min = 5
+max = 15
+step = 1
+why = "pivot stop angle (only with a pivot)"
+
+[[trial.gene]]
+key = "steer_axle.spring_travel"
+min = 30
+max = 80
+step = 5
+why = "leaf-spring travel each way, mm"
+
+[[trial.gene]]
+key = "steer_axle.spring_rate_n_per_mm"
+min = 10
+max = 40
+step = 2
+why = "each leaf spring's rate"
+
+[[trial.objective]]
+metric = "wheel_lift_s"
+goal = "min"
+weight = 3
+scale = 1
+
+[[trial.objective]]
+metric = "course_warns"
+goal = "min"
+weight = 2
+scale = 1
+
+[[trial.objective]]
+metric = "working_slope_deg"
+goal = "max"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "side_slope_wheel_n"
+goal = "max"
+weight = 1
+scale = 100
+
+[[trial.constraint]]
+metric = "calc_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "course_fails"
+max = 0

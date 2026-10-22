@@ -1,0 +1,7 @@
+# Trial pro-steering: the best design's changed values, as [overrides] for
+# design/models/pro.toml. Review before adopting: a trial is evidence, not a decision.
+# Score 17.02 (today 23.17; lower is better).
+
+[overrides]
+"steering.relief_bar" = 110  # today: 100
+"steering.lever_arm" = 140   # today: 120
