@@ -106,13 +106,13 @@ pack's own I²R at 56 A, and the lid picks up about 66 W from the sun.
 
 The pack weighs 45 kg and its thermal time constant is about 3.9 h, so a
 mowing run never reaches steady state. The check is the pack temperature at
-the end of a full run (1.4 h), starting heat-soaked in the sun:
+the end of a full run (1.45 h), starting heat-soaked in the sun:
 
 | | Pack temperature |
 |---|---|
 | Starting heat-soaked in the sun | 43 °C |
 | End of a full mowing run in 35 °C sun | **48 °C** (rating 60 °C) |
-| Steady state, if it ran forever | 62 °C |
+| Steady state, if it ran forever | 60 °C |
 
 Parked in the sun while charging at 15 A it reaches 43.9 °C, a WARN against the
 45 °C charge rating. Charge in shade, and let a hot pack cool before charging.
@@ -139,7 +139,7 @@ Parked in the sun while charging at 15 A it reaches 43.9 °C, a WARN against the
 ## Known issues (rev B0)
 
 1. **Pack capacity (WARN).**
-   - One 100 Ah pack gives the Pro 1.3 h of mowing and the Home 1.4 h; the
+   - One 100 Ah pack gives the Pro 1.3 h of mowing and the Home 1.45 h; the
      target is 1.5 h.
    - Transport and backhoe runtimes are also below target.
    - 70 mm of flat length is left for a longer pack. Beyond that, the options

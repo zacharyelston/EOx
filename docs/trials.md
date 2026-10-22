@@ -62,6 +62,10 @@ metric = "calc_fails"
 max = 0
 ```
 
+Tyre pressures can be genes too: `axle.tire_pressure_kpa` and
+`steer_axle.tire_pressure_kpa`. So can the ground: `ground.cone_index_kpa`
+runs the whole trial on firmer or softer turf.
+
 **Metrics** (defined in `src/eox/evolve/evaluate.py`):
 
 | Group | Metrics |
@@ -116,20 +120,20 @@ it knows, so a later model change that breaks a published result shows up.
 **Question:** can the Home carry its battery box at the front, the way a
 tractor carries its engine? [Report](../trials/home-front-battery/report.md)
 
-**Answer:** yes, but it is a near tie with today's layout, and the gain isn't
-the battery's.
+**Answer:** it can, but today's layout scores better (−28.6 against −26.3),
+and the small gain isn't the battery's.
 
 - **Where the box goes:** over the front axle, on a stand that lifts it
-  640 mm, clear of the steered tyres and the steering column.
+  650 mm, clear of the steered tyres and the steering column.
 - **What else has to move:**
   - the operator back over the rear axle (on a seat bridge);
   - the deck back;
   - the PTO unit 50 mm further out.
-- **Gains:** grip improves from 14.1° to 14.9°, because the operator's weight
-  moves onto the driven wheels. Course results are unchanged.
+- **Gains:** grip improves only from 14.2° to 14.5°, because the operator's
+  weight moves onto the driven wheels. Course results are unchanged.
 - **Costs:**
   - the high box lowers the static working slope from 22.7° to 20.6°;
-  - the stand, the seat bridge and the longer nose add 10 kg.
+  - the stand, the seat bridge and the longer nose add 11 kg.
 - **Range limits:** three genes ended at theirs (box height, operator, deck),
   so the layout is boxed in by real parts. The steered tyres, the rear drive
   motor and the rear tyres set those limits.

@@ -44,6 +44,44 @@ CAD use (`src/eox/sim/mjcf.py`). It carries exactly the reconciled masses
   course, the obstacle fails and the driver is set down past it, so every
   obstacle gets a result.
 
+## Tyres and ground
+
+Tyre grip and rolling resistance are worked out from each tyre's size,
+pressure and load, and the ground's strength (`src/eox/tyres.py`). The calcs
+and the course use the same model.
+
+- **Deflection:** a pressed-in tyre's contact patch is an ellipse. So load =
+  (pressure + carcass) × π × deflection × √(diameter × width), and the tyre's
+  spring rate follows from that. In the sim, each wheel rides on that spring,
+  above a stiff contact. Its settled squash matches the formula (13 mm on an
+  EOX drive tyre at 12 psi).
+- **Grip and rolling resistance:** these come from the Brixius equations
+  (ASAE D497). Tyre size, load and deflection make up a mobility number
+  against the ground's cone index. Lower pressure gives more deflection, so
+  more grip and less rolling resistance, and the effect is larger on soft
+  ground.
+- **In the sim:** grip and rolling resistance follow each wheel's live load,
+  so a lightly loaded tyre (on a climb, or across a slope) behaves like one.
+- **The ground:** `design/ground.toml` sets lawn turf, cone index 400 kPa,
+  chosen so an EOX drive tyre at its design pressure gives the turf values
+  used before (traction about 0.5, rolling resistance about 0.09).
+  - For firm dry lawn, set `ground.cone_index_kpa` to about 1000.
+  - For soft wet ground, set it to about 200.
+- **Pressures:**
+  - **EOX:** 12 psi drive tyres and 14 psi steering tyres (REF, lawn-tractor
+    practice).
+  - **Real machines:** their makers' figures.
+- **New checks:** each axle's tyre deflection must stay under 25 % of section
+  height, and its pressure within the tyre's rating.
+- **Pressure sweep:** `uv run eox tyres --model home` sweeps the drive-tyre
+  pressure on firm, typical and wet lawn.
+
+The equations are empirical, from bias-ply tractor tyres measured in the
+1970s and 80s. They under-predict pressure effects. Also, soft ground here
+means weak soil, not the surface slipperiness of wet grass. So compare
+pressures with this model; don't read the numbers as absolutes. A pull test
+on a real machine at two pressures would calibrate it.
+
 ## The course
 
 The course is defined in `design/course.toml`: a heightfield 84.7 m long and
@@ -75,8 +113,9 @@ The course is defined in `design/course.toml`: a heightfield 84.7 m long and
   `Tractor.axle_loads_n` to within 2 %, for both models, bare and deck-fitted
   (`tests/test_course.py`).
 - **Grip on a climb:**
-  - The calc puts Home's grip limit with the deck at 14.1° on turf.
-  - On a long ramp, the sim climbs 12° at speed but spins out from about 13°.
+  - The calc puts Home's grip limit with the deck at 14.2° on turf.
+  - On a long ramp, the sim climbs 12° at speed, slips at 13°, and crawls
+    with wheelspin at 14–15°.
   - The calc assumes both rear tyres reach full grip together. The open diff
     sends equal torque to both wheels, so the lighter wheel sets the limit.
   - The two agree within about a degree.
@@ -95,13 +134,13 @@ The course is defined in `design/course.toml`: a heightfield 84.7 m long and
 
 **EOX Home: 0 FAIL, 2 WARN.**
 
-- **Rated 12° climb:** clears it with the deck, at 3.9× rated motor torque
-  with 31 % peak slip. That is little margin.
+- **Rated 12° climb:** clears it with the deck, at 3.5× rated motor torque.
+  On a long 13° ramp it starts to slip. That is little margin.
 - **15° climb:** above its rating (INFO). It crawls up at peak torque with the
   wheels spinning.
 - **Front axle twist:** the leaf-sprung beam axle runs out of roll travel
   (±7.6° REF) on the twist and at both ends of the side slope, and a front
-  wheel lifts for 1–3 s.
+  wheel lifts for 1–2.5 s.
 - **Steady 17° side slope:** all four wheels stay loaded, with about 400 N on
   the uphill front tyre.
 - **Possible fix:** a pivoting front axle, as most lawn tractors have, would
@@ -113,7 +152,7 @@ The course is defined in `design/course.toml`: a heightfield 84.7 m long and
 
 - **Bare:** clears every obstacle. The trunnion uses 9° of its ±10° on the
   twist, and no wheel lifts. On the 17° side slope the lightest wheel still
-  carries about 540 N.
+  carries about 550 N.
 - **With the deck:** a rigidly mounted front deck would dig 130–310 mm into
   the climbs, the twist and the ditch. The front-deck coupling has to pivot,
   not just float 75 mm (open as

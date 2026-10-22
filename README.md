@@ -98,7 +98,7 @@ A golf cart turned into a tractor:
 | Rated climb | 12° short climbs with the deck fitted |
 | Steering | Manual rack and pinion, ~90 N at the rim to steer at a standstill (estimate) |
 | Turning radius | 2.8 m, outer front tyre (golf-cart wheelbase 1.6 m) |
-| Runtime, one pack | 1.39 h mowing (target 1.5), 3.0 h transport |
+| Runtime, one pack | 1.45 h mowing (target 1.5), 3.5 h transport |
 | Deck | The front axle has no diff, so it clears a mid-mount deck by +50 mm (REF) and the tractor can drive over it |
 | Checks | `eox calc --model home`: **0 FAIL, 4 WARN** |
 
@@ -111,18 +111,18 @@ A golf cart turned into a tractor:
   Golf-cart DC motors peak at about 4× rated (Carryall 3.3 hp rated, 13 hp
   peak), and long climbs heat them.
 - **Grip sets the rating.** With the deck's weight between the axles, the rear
-  tyres grip up to about **14°** on turf (traction 0.5), whatever the gearing.
+  tyres grip up to about **14°** on turf (traction about 0.5 at 12 psi), whatever the gearing.
   Home is rated for 12° short climbs, inside that limit; the Pro (AWD) keeps
   15°.
 - **The 15:1 gear set is standard** (BOM G01, in the stock rear end). On the
-  stock 12.4:1 set a 12° climb needs 4.0× rated, right at the peak; on 15:1 it
-  needs 3.3×.
+  stock 12.4:1 set a 12° climb needs 3.8× rated, close to the ~4× peak; on
+  15:1 it needs 3.2×.
 
 | Rear end | 10° climb | 12° short climb | Top speed at base rpm |
 |---|---|---|---|
-| Stock golf-cart, 12.4:1 | 3.6× rated | 4.0× (at the peak) | 25 km/h |
-| **Stock + aftermarket 15:1 gear set** (Home standard) | 3.0× (WARN) | 3.3× | 21 km/h, limited to 8 |
-| Stock + 2:1 chain stage | 1.8× | 2.1× | 13 km/h |
+| Stock golf-cart, 12.4:1 | 3.4× rated | 3.8× (near the peak) | 25 km/h |
+| **Stock + aftermarket 15:1 gear set** (Home standard) | 2.8× (WARN) | 3.2× | 21 km/h, limited to 8 |
+| Stock + 2:1 chain stage | 1.7× | 2.0× | 13 km/h |
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/home-stability-dark.svg">
@@ -267,19 +267,19 @@ Both models run on one 51.2 V 100 Ah pack (4.1 kWh usable).
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/home-modes-dark.svg">
-  <img alt="EOX Home: stacked bars of average battery power by operating mode: mowing 3.0 kW, slope mowing 3.6 kW, transport 1.3 kW" src="docs/img/home-modes-light.svg" width="100%">
+  <img alt="EOX Home: stacked bars of average battery power by operating mode: mowing 2.8 kW, slope mowing 3.5 kW, transport 1.2 kW" src="docs/img/home-modes-light.svg" width="100%">
 </picture>
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/pro-modes-dark.svg">
-  <img alt="EOX Pro: stacked bars of average battery power by operating mode: mowing 3.2 kW, slope mowing 3.9 kW, transport 1.7 kW, backhoe 5.4 kW" src="docs/img/pro-modes-light.svg" width="100%">
+  <img alt="EOX Pro: stacked bars of average battery power by operating mode: mowing 3.1 kW, slope mowing 3.9 kW, transport 1.5 kW, backhoe 5.4 kW" src="docs/img/pro-modes-light.svg" width="100%">
 </picture>
 
 | Mode | Home: power / runtime | Pro: power / runtime | Target |
 |---|---|---|---|
-| Mowing (5 km/h, flat) | 3.0 kW / 1.39 h (WARN) | 3.2 kW / 1.27 h (WARN) | 1.5 h |
-| Mowing a 10° slope (3 km/h) | 3.6 kW / 1.15 h | 3.9 kW / 1.04 h | 1.0 h |
-| Transport (8 km/h) | 1.3 kW / 3.0 h | 1.7 kW / 2.4 h (WARN) | 3.0 h |
+| Mowing (5 km/h, flat) | 2.8 kW / 1.45 h (WARN) | 3.1 kW / 1.32 h (WARN) | 1.5 h |
+| Mowing a 10° slope (3 km/h) | 3.5 kW / 1.18 h | 3.9 kW / 1.06 h | 1.0 h |
+| Transport (8 km/h) | 1.2 kW / 3.54 h | 1.5 kW / 2.65 h (WARN) | 3.0 h |
 | Backhoe (3 hydraulic units) | n/a | 5.4 kW / 0.8 h (WARN) | 1.0 h |
 
 - **Home:** is within a few minutes of every target on one pack.
@@ -318,15 +318,15 @@ climbs, and a 17° side slope.
 What the course found that the static checks can't:
 
 - **Home's leaf-sprung front axle runs out of roll travel.** On the twist, and
-  where the side slope tilts in and out, a front wheel lifts for 1–3 s. On
+  where the side slope tilts in and out, a front wheel lifts for 1–2.5 s. On
   the steady 17° slope all four wheels stay loaded. A pivoting front axle
   would fix it.
 - **Home's 12° rating has little margin.** With the deck, it climbs 12° at
-  3.9× rated motor torque and starts spinning out near 13°. That is a degree
-  below the calc's 14.1° grip limit: the open diff lets the lighter rear wheel
+  3.5× rated motor torque and starts spinning out near 13°. That is a degree
+  below the calc's 14.2° grip limit: the open diff lets the lighter rear wheel
   set the limit.
 - **Pro clears everything bare.** The trunnion takes the twist (9° of its
-  ±10°), and the 17° side slope leaves about 540 N on the lightest wheel.
+  ±10°), and the 17° side slope leaves about 550 N on the lightest wheel.
 - **The Pro's front deck has to pivot.** Mounted rigidly, it would dig
   130–310 mm into the climbs, the twist and the ditch.
 
@@ -347,13 +347,13 @@ uv run eox evolve --trial home-front-battery
 **The first trial asks:** can the Home carry its battery at the front, like a
 tractor's engine? ([report](trials/home-front-battery/report.md))
 
-**Answer:** yes, as a near tie with today's layout.
+**Answer:** it can, but today's layout scores better (−28.6 against −26.3).
 
 - **The layout:** the box goes high over the front axle, clear of the steered
   tyres. The operator moves back over the rear axle, and the deck moves back.
-- **Gains:** grip goes up from 14.1° to 14.9°.
+- **Gains:** grip goes up only from 14.2° to 14.5°.
 - **Costs:** working slope goes down from 22.7° to 20.6°, and the machine
-  gains 10 kg.
+  gains 11 kg.
 - **Why:** the gain comes from moving the operator onto the driven wheels,
   not from moving the battery.
 
@@ -400,6 +400,33 @@ uv run eox baseline
   - EOX runs longer on a charge: 1.3–1.4 h against the Ryobi's 1.0–1.25 h.
   - EOX parts cost about $3.7k (Home) and $5.3k (Pro). The rivals retail at
     $2.4k–5k, and about $10k for the Husqvarna (EU price, without its deck).
+
+---
+
+## Tyre pressure and ground
+
+Tyre grip and rolling resistance come from each tyre's size, pressure and
+load, and the ground's strength (Brixius / ASAE D497). In the sim, each tyre
+squashes like a spring at its pressure. Details:
+[docs/simulation.md](docs/simulation.md#tyres-and-ground).
+
+```bash
+uv run eox tyres --model home
+```
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/img/home-tyres-dark.svg">
+  <img alt="EOX Home: steepest climb on grip against drive-tyre pressure, on firm, typical and soft wet lawn" src="docs/img/home-tyres-light.svg" width="100%">
+</picture>
+
+- **Softer tyres grip more, and the softer the ground, the more it matters.**
+  On typical lawn, Home's climb limit goes from 14.2° at its 12 psi design
+  pressure to 15.3° at 8 psi. On firm lawn pressure barely matters.
+- **The ground matters far more than pressure.** On soft wet ground the
+  rear-drive Home can only climb 6–8°, half its 12° rating. The AWD Pro
+  holds 12–16°.
+- **Read these as comparisons, not absolutes.** The traction equations are
+  empirical, and a pull test at two pressures would calibrate them.
 
 ---
 
@@ -475,6 +502,10 @@ uv run eox baseline
 ```
 
 ```bash
+uv run eox tyres --model home
+```
+
+```bash
 /Applications/Blender.app/Contents/MacOS/Blender -b -P tools/render_preview.py -- out/cad/pro/stl docs/img/pro-side.png --view side
 ```
 
@@ -504,6 +535,7 @@ uv run eox baseline
 | `src/eox/sim/` | Terrain course: heightfield, MuJoCo model generator, driver and scoring, renders |
 | `src/eox/evolve/` | Design trials: evaluator, genetic algorithm, reports |
 | `src/eox/reference.py`, `baseline.py`, `design/reference/` | Real machines from published specs, and the EOX-vs-real comparison |
+| `src/eox/tyres.py`, `tyre_sweep.py`, `design/ground.toml` | Tyre deflection, grip and rolling resistance on the ground; the pressure sweep |
 | `trials/` | Trial results: report, `best.toml`, progress figure, evaluation history |
 | `bom/purchased.csv` | Purchased parts by module; each model sets its module counts |
 | `docs/` | [Architecture](docs/architecture.md), [power box](docs/powerbox.md), [safety requirements](docs/safety-requirements.md), [design log](docs/design-log.md), [simulation](docs/simulation.md), [design trials](docs/trials.md), [tooling decision](docs/tooling.md), [component candidates](docs/component-candidates.md) |

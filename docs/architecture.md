@@ -76,9 +76,9 @@ These are averages over a job, on one 51.2 V 100 Ah pack (4.1 kWh usable).
 
 | Mode | Units | Battery power | Runtime | Target |
 |---|---|---|---|---|
-| Mowing (5 km/h, flat) | 2 drive + PTO | 3.2 kW | 1.3 h | 1.5 h: WARN |
-| Mowing a 10° slope (3 km/h) | 2 drive + PTO | 3.9 kW | 1.0 h | 1.0 h |
-| Transport (8 km/h) | 2 drive | 1.7 kW | 2.4 h | 3.0 h: WARN |
+| Mowing (5 km/h, flat) | 2 drive + PTO | 3.1 kW | 1.3 h | 1.5 h: WARN |
+| Mowing a 10° slope (3 km/h) | 2 drive + PTO | 3.9 kW | 1.1 h | 1.0 h |
+| Transport (8 km/h) | 2 drive | 1.5 kW | 2.7 h | 3.0 h: WARN |
 | Backhoe | 3 hydraulic | 5.4 kW | 0.8 h | 1.0 h: WARN |
 
 A Pro doing real work wants more than one 100 Ah pack. The options (tracked in
@@ -129,7 +129,7 @@ The Home is a golf cart turned into a tractor. The geometry follows
 | Rated climb, deck fitted | 12° short climbs (rear-tyre grip runs out near 14° on turf) |
 | Front axle load climbing 12° | 27 % of weight, enough to keep steering (≥ 15 %) |
 | Stability | 45° tip angle (worse of bare and deck-fitted), so a 22.7° max working slope |
-| Runtime on one pack | 1.39 h mowing (target 1.5), 3.0 h transport |
+| Runtime on one pack | 1.45 h mowing (target 1.5), 3.5 h transport |
 
 **Gearing and rated slope: 15:1, 12° ([issue 2](https://github.com/zacharyelston/EOx/issues/2)).**
 Climbs are checked with the deck and its PTO unit fitted, since mowing a slope
@@ -147,9 +147,9 @@ The torque each motor needs, as a multiple of its rated torque:
 
 | Rear end | 10° climb | 12° short climb |
 |---|---|---|
-| Stock 12.4:1 | 3.6× (heats on long climbs) | 4.0×, at the peak |
-| **Stock + aftermarket 15:1 gear set** (standard) | 3.0× | 3.3× |
-| Stock + 2:1 chain stage | 1.8× | 2.1× |
+| Stock 12.4:1 | 3.4× (heats on long climbs) | 3.8×, near the peak |
+| **Stock + aftermarket 15:1 gear set** (standard) | 2.8× | 3.2× |
+| Stock + 2:1 chain stage | 1.7× | 2.0× |
 
 ## EOX Pro: articulated AWD
 
@@ -228,9 +228,9 @@ values confirmed from B71.1.
 
 | Option | Torque per motor on a sustained 10° climb |
 |---|---|
-| Stock (default) | 2.1× rated, deck fitted (WARN: fine short, heats on long climbs) |
+| Stock (default) | 2.0× rated, deck fitted (WARN: fine short, heats on long climbs) |
 | Aftermarket 15:1 gear set | 1.7× rated |
-| ~2:1 chain stage added | 1.1× rated |
+| ~2:1 chain stage added | 1.0× rated |
 
 ## Attachments
 

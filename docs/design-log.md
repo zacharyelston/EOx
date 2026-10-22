@@ -6,6 +6,86 @@ pages each entry links to.
 
 ---
 
+## 2026-10-19: Tyre pressure and ground strength
+
+**Why:** to test grip by changing tyre air pressure. Until now every tyre had
+a fixed traction of 0.5 and a rolling resistance of 0.10, whatever its size,
+pressure or load.
+
+**What changed:**
+
+- **`src/eox/tyres.py`:** works out tyre deflection and stiffness from size
+  and pressure with a membrane model, and grip and rolling resistance from
+  the Brixius equations (ASAE D497), against the ground's cone index.
+- **`design/ground.toml`:** lawn turf, cone index 400 kPa, chosen so an EOX
+  drive tyre at 12 psi reproduces the old turf values.
+- **Pressures:**
+  - **EOX:** 12 psi drive tyres and 14 psi steering tyres (REF).
+  - **Real machines:** their makers' figures. Deere 14/10 psi, Ryobi 15/12,
+    Husqvarna 8.5 (0.6 bar).
+- **Calcs:**
+  - The machine's traction and rolling resistance now come from its tyres at
+    their loads.
+  - The grip limit evaluates each axle's tyres at the climb's own load split.
+  - New checks: tyre deflection under 25 % of section height, and pressure
+    within the tyre's rating.
+- **Sim:**
+  - Each wheel rides on a spring with its tyre's stiffness, above a stiff
+    contact.
+  - Grip and rolling resistance follow each wheel's live load.
+  - MuJoCo's soft contact squashes only about 1 mm, and a heightfield
+    contact shares a wheel's load across several points, so contact softness
+    couldn't represent a 13 mm tyre squash. The settled squash in the sim now
+    matches the formula.
+- **Tools:**
+  - `uv run eox tyres --model <m>` sweeps the drive-tyre pressure on three
+    grounds.
+  - Pressures and the ground can be trial genes.
+
+**Findings** (deck fitted, steepest climb on grip):
+
+| Ground | Home, 8 / 12 / 20 psi | Pro, 8 / 12 / 20 psi |
+|---|---|---|
+| Firm dry lawn (cone index 1000) | 19.3 / 19.1 / 18.8° | 26.8 / 26.7 / 26.5° |
+| Lawn turf (400) | 15.3 / 14.2 / 13.0° | 23.6 / 22.7 / 21.6° |
+| Soft wet lawn (200) | 7.8 / 6.3 / 4.7° | 15.7 / 13.9 / 11.9° |
+
+- **Pressure matters more the softer the ground.** On firm lawn it is worth
+  half a degree. On typical lawn, dropping from 12 to 8 psi buys Home a
+  degree. On soft ground it is worth 3°.
+- **The ground matters far more than pressure.** On soft wet ground Home can
+  only climb 6–8°, half its 12° rating, while the AWD Pro holds 12–16°.
+  Home's rating needs a "dry ground" qualifier, or the Home needs more
+  driven grip.
+- **The deflection limit allows pressures down to about 3.6 psi on Home.**
+  The real floor is the tyre maker's minimum, where the bead starts to slip
+  on the rim, which isn't modelled.
+- **Changes to earlier numbers:**
+  - Home's grip limit moves from 14.1° to 14.2°, and Pro's from 21.8° to
+    22.7°, because each axle's tyres now follow their own load.
+  - Every check status is unchanged.
+  - Rolling resistance is lower (about 0.085 at rest, was 0.10). Home's
+    mowing runtime goes from 1.39 to 1.45 h, and the stock-gearing 12° climb
+    needs 3.8× rated (was 4.0×).
+  - The tyre springs are preloaded, so parked machines sit at their design
+    heights. Without that, every deck sat 10–14 mm low.
+  - The front-battery trial re-ran: today's layout now wins more clearly
+    (−28.6 against −26.3), with grip 14.2° → 14.5° and still 2° of working
+    slope and 11 kg lost.
+  - Baselines re-ran: the lawn tractors' 20″ rear tyres at 10 psi grip to
+    about 17.8°, against Home's 14.2° on 18″ golf-cart tyres at 12 psi. Same
+    statuses as before.
+
+**Caveats:**
+
+- The Brixius equations come from 1970s–80s bias-ply tractor tyres and
+  under-predict pressure effects.
+- Soft ground means weak soil here, not slippery wet grass.
+- Use the results to compare pressures. A pull test at two pressures would
+  calibrate the model.
+
+---
+
 ## 2026-10-19: Baselines against real machines
 
 **Why:** a test score means little until we know what a real product scores
