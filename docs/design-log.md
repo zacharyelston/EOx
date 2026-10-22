@@ -6,6 +6,86 @@ pages each entry links to.
 
 ---
 
+## 2026-10-21: Overnight trials, levels of detail and fidelity
+
+**Why:** five design questions the work had raised, run as a series, plus a
+way to trade simulation detail for speed and check the trade.
+
+### The trials
+
+Reports are in `trials/<name>/report.md`.
+
+| Trial | Answer |
+|---|---|
+| `home-pivot-axle` | **Pivot the front axle.** Wheel lift drops from 5.8 s to 0.1 s, the side slope keeps about 400 N on its lightest wheel (was 0), and course WARNs fall from 4 to 1. It costs working slope (22.7° → 19.8°). It wants a stop of 15° or more, which is the range limit. Springs barely matter once it pivots. |
+| `home-15-degrees` | **A 15.5° rating is reachable.** Drive tyres at 8 psi, the deck moved back to 560 mm and the PTO unit out to 480 mm, on the 15:1 gears. Grip goes 14.2° → 15.9°, but the motor sits at 3.8× rated, close to its 4× peak. The rating, pressure and deck position all ended at their range limits. |
+| `home-layout-free` | **Keep the battery where it is**, low under the seat. The only gain is moving the deck back and the PTO unit out (grip 14.2° → 14.7°). |
+| `home-wet-ground` | **No setup clears the kerb on soft ground** (cone index 200 kPa). The best (8 psi tyres, deck back) lifts grip from 6.3° to 8.1° and cuts stuck obstacles from 3 to 1. Soft ground needs driven front wheels. |
+| `pro-steering` | **Keep the 45 mm cylinder and 4 L/min pump; raise relief to 110 bar and the lever arm to 140 mm.** Margin goes from 12 % to 44 %, lock to lock is 3.9 s (target 4 s), and the pump draws 11 W more. The first run had no ceiling on margin and trivially chose the biggest cylinder at the highest pressure; it was re-posed with caps. |
+
+**What recurs:** every Home trial moves the deck back and the PTO unit out,
+and lowers the drive-tyre pressure.
+
+**Candidate next trial:** combine them, with a pivoting axle, about 8–10 psi
+tyres, the deck back and a 15° rating. Also widen the ranges that ended at
+their limits.
+
+### Engine changes
+
+- **Quieter log:** one line per generation, plus the design only when a new
+  best appears. The repetition in the overnight log came from reprinting an
+  unchanged best every generation.
+- **Early stopping:** `patience`, default 8 generations without a better
+  design.
+- **`cap` on objectives:** credit stops at a target.
+- **`[trial.overrides]`:** values fixed for every design in a trial.
+- **Several `--trial` flags:** run a series.
+- **New metrics:** steering margin, lock-to-lock time, bore, pump draw, rim
+  force.
+- **Exploration was fine all along.** The trials evaluated 323–541 distinct
+  designs each, with every gene explored widely. They converged at different
+  speeds; `home-15-degrees` kept improving for 20 generations.
+
+### Levels of detail
+
+Profiling one course run gave 82 % MuJoCo physics (C), 18 % our Python, and
+the genetic algorithm next to nothing. A Rust port would recover at most the
+18 %, so it isn't worth the effort for now; bigger hardware is the easier
+lever. Instead, `course.lod` picks how much physics to ask for:
+
+| Level | Settings | Speed vs high |
+|---|---|---|
+| high | today's validated settings | 1× |
+| medium | 4 ms step; only parts within 350 mm of the ground collide | 1.3–1.7× faster |
+| low | 6 ms step, 25 Hz driver, 10 cm terrain grid | 2–3.3× faster |
+
+**Checked against high**, both models, bare and deck-fitted, 28 obstacle
+results per level:
+
+- **Medium:** every status matches except one borderline deck-float case (76
+  against 73 mm, either side of the 75 mm allowance).
+- **Low:** every status matches. Low is harsher on climbs near the grip limit.
+- **Rejected:** fewer solver iterations and a pyramidal friction cone, since
+  both changed results.
+
+### Fidelity: do low-detail sweeps change the designs?
+
+**No, for the two trials checked** (`uv run eox fidelity`):
+
+| Trial | Run time, low vs high | Improvement captured | Same decisions? |
+|---|---|---|---|
+| `home-pivot-axle` | 9 vs 22 min | 99.6 % | Yes: pivot, 15° stop. The springs differ, but they don't matter once the axle pivots. |
+| `home-15-degrees` | 11 vs 24 min | 100 % | Yes: 15.5°, 8 psi, deck at 560, operator and battery unchanged. Low picked the chain stage over the 15:1 gears, buying torque margin because its climbs are harsher; scored at high the two tie. |
+
+In both, the top designs score within 1–3 % of the improvement of each other.
+Their order is noise at either level, so rank agreement says little; the
+improvement captured is the measure to read.
+
+**How to use it:** sweep at low detail, then confirm the winner at high,
+which the fidelity check does.
+
+---
+
 ## 2026-10-21: Licence: CERN-OHL-W, MIT and CC-BY-SA
 
 **Why:** EOX is hardware, and MIT is a software licence. This settles

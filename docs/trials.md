@@ -62,6 +62,24 @@ metric = "calc_fails"
 max = 0
 ```
 
+More options:
+
+- **`cap`:** an objective can stop paying past a value. For example,
+  `metric = "steer_margin"` with `cap = 0.40` earns credit for steering
+  margin up to 40 %; beyond that, the other objectives (a smaller cylinder,
+  lower pump draw) decide. Without a cap, "more is better" can win trivially.
+  The first `pro-steering` run chose the biggest cylinder at the highest
+  pressure.
+- **`patience`:** the trial stops after this many generations without a better
+  design (default 8; 0 runs them all).
+- **`[trial.overrides]`:** values fixed for every design in the trial, such as
+  `"ground.cone_index_kpa" = 200` for soft wet ground.
+- **`--lod low|medium`:** runs the trial's course at a cheaper level of detail
+  ([simulation.md](simulation.md#levels-of-detail)). Results go to
+  `trials/<name>@<lod>/`.
+- **Several `--trial` flags** run a series, one after another. Wrap a long
+  series in `caffeinate -is` on a Mac so it doesn't sleep.
+
 Tyre pressures can be genes too: `axle.tire_pressure_kpa` and
 `steer_axle.tire_pressure_kpa`. So can the ground: `ground.cone_index_kpa`
 runs the whole trial on firmer or softer turf.
@@ -74,6 +92,20 @@ runs the whole trial on firmer or softer turf.
 | Course | `course_fails`, `course_warns`, `wheel_lift_s`, `deck_float_mm`, `side_slope_wheel_n`, `course_peak_torque_s`, `course_energy_wh` |
 | Machine | `mass_kg`, `cost_usd`, `mowing_runtime_h` |
 | Slopes | `working_slope_deg`, `grip_limit_deg`, `rated_slope_deg`, `climb_torque_x` |
+
+## Is a cheaper level of detail good enough?
+
+`uv run eox fidelity --trial <name> --lod low` compares a trial run at low (or
+medium) detail with its full-detail run. Each run's top designs are scored
+again at the other level, and `trials/<name>@<lod>/fidelity.md` reports:
+
+- **Improvement captured:** how much of the full run's gain over today's
+  design the cheap run's best achieves, scored at full detail. Read this
+  first.
+- **Rank agreement and top-10 overlap:** whether both levels order the
+  designs the same way. When the top designs score almost the same, their
+  order is noise at either level, and the report says so.
+- **The genes of the two bests, side by side.**
 
 ## How it evolves
 
@@ -140,3 +172,17 @@ and the small gain isn't the battery's.
 
 A natural next trial frees the box to go anywhere. That tests whether moving
 the operator back pays off on its own, with the box staying under the seat.
+
+## Other trials
+
+| Trial | Question | Answer |
+|---|---|---|
+| [`home-pivot-axle`](../trials/home-pivot-axle/report.md) | Should Home's front axle pivot? | Yes: a stop of 15° or more. Wheel lift 5.8 s → 0.1 s. Working slope 22.7° → 19.8°. |
+| [`home-15-degrees`](../trials/home-15-degrees/report.md) | What would a 15° rating take? | 8 psi drive tyres, the deck back, the PTO unit out, 15:1 gears. Rated 15.5° with a thin torque margin. |
+| [`home-layout-free`](../trials/home-layout-free/report.md) | Best Home layout, battery anywhere? | The battery stays low under the seat; move the deck back. |
+| [`home-wet-ground`](../trials/home-wet-ground/report.md) | Home on soft wet ground? | No setup clears the kerb. The best reaches 8.1° of grip; soft ground needs driven front wheels. |
+| [`pro-steering`](../trials/pro-steering/report.md) | Size the Pro's steering cylinder | Keep 45 mm and 4 L/min. Relief 110 bar, lever arm 140 mm. Margin 12 → 44 %. |
+
+Low-detail runs of `home-pivot-axle` and `home-15-degrees`
+(`trials/<name>@low/`, with `fidelity.md`) reached the same decisions in less
+than half the time. See the [design log](design-log.md).
