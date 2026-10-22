@@ -140,3 +140,104 @@ and the small gain isn't the battery's.
 
 A natural next trial frees the box to go anywhere. That tests whether moving
 the operator back pays off on its own, with the box staying under the seat.
+
+## Trial: home-layout
+
+**Legacy experiment:** deliberately stopped during generation 15 after 14
+completed generations when the scope was corrected to a fabricated steel
+kit. It holds donor axle envelopes fixed and does not optimize chassis
+sections or joints. The [steel chassis study](steel-chassis.md) is the
+starting point for the next structural search.
+
+The Home-first search keeps the pack low and tests wheelbase, battery and
+operator positions, deck position and PTO side, and a pivoting front axle.
+It runs both bare and deck-fitted configurations for every candidate.
+
+```bash
+uv run eox evolve --trial home-layout --workers 16 --fresh
+```
+
+The configured search is 64 designs for 30 generations, with four elites and
+seed 1. Up to 1,920 population slots are considered; elites and repeated
+designs are cached, so the number of distinct evaluations is lower.
+
+The score prioritizes course warnings and wheel lift, then balances deck
+clearance, grip, static stability and mass. Feasible candidates must have no
+calculation or rated-course failures, at least 14 degrees of modelled grip
+limit, at least 17 degrees of the static half-tip metric, at least 1.4 hours
+of predicted mowing runtime, and no more than 310 kg with the deck. These
+are search constraints, not validated operating ratings; the existing
+1.5-hour runtime target remains unchanged.
+
+Gearing stays at Home's 15:1 ratio. Extra reductions are excluded until their
+geometry, mass and cost are represented. The battery height, tyre pressures,
+soil properties, motor ratings, efficiencies, and operating-slope targets
+are fixed. The pivot option uses the existing 10-degree roll stop; its
+mounting hardware and any mass/cost difference still need detailed design.
+
+The current pivot option also retains vertical spring travel in the dynamic
+model. A conventional donor beam on a fixed frame cradle requires a separate
+roll-only configuration; see [front-axle research](research/home-front-axle.md).
+Treat this search as exploratory until its winners are rechecked with that
+configuration and measured donor geometry.
+
+Before adopting a result, compare it with H0 and with H0 plus only the axle
+pivot. Recheck promising layouts with different operator masses and ground
+strengths, and verify the full terrain course and clearances independently.
+Keep the original model unchanged until the result has been reviewed.
+
+Use [ML2](remote-simulation.md) for larger runs. Keep long jobs in `tmux`,
+use a separate source snapshot for each experiment, and preserve the new
+trial file and its checksum alongside the source commit and dependency lock.
+## Active kit layout study: `home-kit-front`
+
+Launched on ML2 on 2026-10-22 at 17:14 EDT. Configuration:
+[`design/trials/home-kit-front.toml`](../design/trials/home-kit-front.toml),
+model [`home-kit`](../design/models/home-kit.toml): 96 designs × 40
+generations, seed 22, 16 workers, both bare and deck-fitted courses.
+
+This is a new layout surrogate for concept B, not a restart of the stopped
+donor-envelope search. It regenerates the three layer inventories, steel
+masses and 56 × 34 in blank-envelope nests as frame length changes. It keeps
+the battery in front and uses a front roll pivot without a vertical
+suspension joint. The full B0 battery/distribution enclosure is retained as
+a conservative envelope/mass allowance, in addition to the steel body layers.
+Rear reduction/differential/brakes retain a generic 45 kg allowance, with
+ideal open-differential actuation; no donor assembly is selected.
+
+Body-layer CGs are coarse point estimates and full body surfaces are not
+collision-tested. A below-battery steering linkage/column route is a
+packaging hypothesis, not a solved linkage. The study does not validate
+fabricated joints, chassis stiffness, bearing interfaces or the new kit's
+cost. The reported purchased-parts budget is a legacy proxy, not a quote.
+
+Baseline before evolution: no engineering-check or course failures;
+327.6 kg deck-fitted machine mass excluding operator, grip limit 13.5°,
+static working-slope screening metric 17.2°, estimated mowing runtime 1.38 h,
+0.70 s summed wheel lift across both courses and about 108 mm required deck
+float. The course warning is deck float over the twist. These are surrogate
+predictions, not measured operating capabilities. The search's runtime
+screening floor is 1.3 h; the product target remains 1.5 h, its normal
+engineering warning is preserved, and runtime remains an objective.
+
+The new narrow front tyres exposed inconsistent transverse versus axial
+wheel inertia in MJCF generation. The transverse estimate now uses the same
+radial mass distribution as the axial estimate. Older models retain their
+leaf-spring configuration. All 109 local tests passed, including kit mass
+conservation, model compilation and settled axle loads. Old evaluation
+caches must not be reused after this physics change.
+
+Remote snapshot: `/home/ml2/eox-sim/home-kit-front-km5GND`.
+Tmux session: `eox-kit-front-km5GND`. It contains the working-tree source
+snapshot, base commit and per-file SHA256 manifest, job script, preflight
+log and fresh trial cache. Local provenance is in `out/ml2-kit-front/`.
+The source snapshot includes uncommitted changes; it is not described as an
+unmodified checkout of its base commit.
+
+```sh
+ssh ml2@ml2.anceralabs.com 'cd /home/ml2/eox-sim/home-kit-front-km5GND && .venv/bin/python status.py'
+```
+
+The status helper reads progress and writes a checkpoint without restarting
+the optimizer. Review winners and timestep sensitivity before adopting any
+values. Results have not yet been adopted into a recommended design.

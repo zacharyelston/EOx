@@ -1,0 +1,576 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1560" height="1560" viewBox="0 0 1560 1560">
+<style>text{font-family:Arial,sans-serif;fill:#18332f}.title{font-size:30px;font-weight:bold}.h{font-size:22px;font-weight:bold}.b{font-size:16px}.s{font-size:14px}.tiny{font-size:9px}</style>
+<rect width="1560" height="1560" fill="#f4f4ee"/>
+<text x="35" y="48" class="title" >EOX HOME / FRONT BATTERY / MODULAR SHEET KITS</text>
+<text x="35" y="78" class="b" >One 56 × 34 in sheet per functional layer • baseline 0.119 in mild steel / premium 0.125 in 304 stainless</text>
+<text x="35" y="104" class="s" >Packaging and material study. Provisional blanks, no joint holes; no structural validation or released order files.</text>
+<rect x="25" y="130" width="1510" height="422" fill="#fff" stroke="#d4ddd5" rx="12"/>
+<text x="45" y="162" class="h" >A / Compact open channels</text>
+<text x="45" y="188" class="s" >Wheelbase 1250 mm • frame 1550 mm • front 45 kg battery</text>
+<circle cx="280.0" cy="378.75" r="51.25" fill="#293936" stroke="#102c26" stroke-width="3"/>
+<circle cx="280.0" cy="378.75" r="22.55" fill="#d4dacf"/>
+<circle cx="536.25" cy="393.1" r="36.9" fill="#293936" stroke="#102c26" stroke-width="3"/>
+<circle cx="536.25" cy="393.1" r="16.236" fill="#d4dacf"/>
+<rect x="249.25" y="359.275" width="317.75" height="20.5" fill="#8fae9c" stroke="#18332f" />
+<rect x="331.25" y="399.25" width="122.99999999999999" height="16.4" fill="#b0b9a4" stroke="#667559" />
+<text x="339.45" y="408.475" class="tiny" >DECK*</text>
+<rect x="456.29999999999995" y="298.8" width="118.89999999999999" height="57.4" fill="#b9d584" stroke="#18332f" />
+<rect x="462.45" y="307.0" width="106.6" height="45.099999999999994" fill="none" stroke="#637b35" stroke-dasharray="4 3"/>
+<text x="466.54999999999995" y="331.6" class="tiny" >FRONT BATTERY BAY</text>
+<rect x="493.2" y="345.95" width="86.1" height="5.125" fill="#b9d584" stroke="#18332f" />
+<rect x="239.0" y="319.3" width="122.99999999999999" height="6.1499999999999995" fill="#8cbcb7" stroke="#18332f" />
+<rect x="310.75" y="319.3" width="71.75" height="39.974999999999994" fill="#8cbcb7" stroke="#18332f" />
+<text x="316.9" y="344.925" class="tiny" >SEAT BOX</text>
+<rect x="258.475" y="357.225" width="45.099999999999994" height="28.7" fill="#478c88" stroke="#18332f" />
+<text x="261.55" y="373.625" class="tiny" >DRIVE</text>
+<rect x="310.75" y="304.95" width="63.55" height="11.274999999999999" fill="#263b35" stroke="#18332f" />
+<rect x="310.75" y="260.875" width="8.2" height="49.199999999999996" fill="#263b35" stroke="#18332f" />
+<path d="M 423.5 360.3 L 394.8 270.1" stroke="#29433a" stroke-width="5"/>
+<ellipse cx="394.8" cy="270.1" rx="25" ry="6" fill="none" stroke="#29433a" stroke-width="4"/>
+<text x="45" y="457" class="s" >REAR ←   Side elevation (schematic)   → FRONT</text>
+<text x="45" y="492" class="b" >3 layer sheets • steel parts 66.6 kg mild / 70.7 kg 304</text>
+<text x="45" y="518" class="s" >73 provisional blanks / 45 bends; hardware and purchased parts additional</text>
+<text x="770" y="175" class="s" >CHASSIS / 80% area / 23.3 kg</text>
+<rect x="770" y="188" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="771.0545556805399" y="189.05455568053992" width="24.631673964263882" height="136.2134420697413" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="198.05455568053992" class="tiny" >R1</text>
+<rect x="796.3892667651638" y="189.05455568053992" width="24.631673964263882" height="136.2134420697413" fill="#8fae9c" stroke="#fff" />
+<text x="798.3892667651638" y="198.05455568053992" class="tiny" >R2</text>
+<rect x="821.7239778497876" y="189.05455568053992" width="24.631673964263882" height="136.2134420697413" fill="#8fae9c" stroke="#fff" />
+<text x="823.7239778497876" y="198.05455568053992" class="tiny" >R3</text>
+<rect x="847.0586889344114" y="189.05455568053992" width="24.631673964263882" height="136.2134420697413" fill="#8fae9c" stroke="#fff" />
+<text x="849.0586889344114" y="198.05455568053992" class="tiny" >R4</text>
+<rect x="872.3934000190353" y="189.05455568053992" width="114.24353205849269" height="26.38926676516377" fill="#8fae9c" stroke="#fff" />
+<text x="874.3934000190353" y="198.05455568053992" class="tiny" >A1</text>
+<rect x="872.3934000190353" y="216.14685956606365" width="42.20760197326276" height="45.69741282339707" fill="#8fae9c" stroke="#fff" />
+<text x="874.3934000190353" y="225.14685956606365" class="tiny" >M1</text>
+<rect x="872.3934000190353" y="262.5473095098207" width="18.48009916111428" height="63.27334083239595" fill="#8fae9c" stroke="#fff" />
+<text x="874.3934000190353" y="271.5473095098207" class="tiny" >X1</text>
+<rect x="987.339969197888" y="189.05455568053992" width="19.35889556156422" height="59.758155230596174" fill="#8fae9c" stroke="#fff" />
+<text x="989.339969197888" y="198.05455568053992" class="tiny" >B1</text>
+<rect x="915.304039112658" y="216.14685956606365" width="59.758155230596174" height="19.35889556156422" fill="#8fae9c" stroke="#fff" />
+<text x="917.304039112658" y="225.14685956606365" class="tiny" >B2</text>
+<rect x="915.304039112658" y="236.20879224798784" width="31.636670416197976" height="23.74019018798121" fill="#8fae9c" stroke="#fff" />
+<text x="917.304039112658" y="245.20879224798784" class="tiny" >T1</text>
+<rect x="947.6437466492159" y="236.20879224798784" width="31.636670416197976" height="21.10380098663138" fill="#8fae9c" stroke="#fff" />
+<text x="949.6437466492159" y="245.20879224798784" class="tiny" >Q1</text>
+<rect x="979.9834541857739" y="249.51574803149606" width="31.636670416197976" height="14.939538807649043" fill="#8fae9c" stroke="#fff" />
+<text x="981.9834541857739" y="258.51574803149606" class="tiny" >S1</text>
+<rect x="947.6437466492159" y="258.0156303549792" width="31.636670416197976" height="14.939538807649043" fill="#8fae9c" stroke="#fff" />
+<text x="949.6437466492159" y="267.0156303549792" class="tiny" >S2</text>
+<rect x="915.304039112658" y="260.652019556329" width="31.636670416197976" height="14.939538807649043" fill="#8fae9c" stroke="#fff" />
+<text x="917.304039112658" y="269.652019556329" class="tiny" >S3</text>
+<rect x="979.9834541857739" y="265.1583239595051" width="31.636670416197976" height="14.939538807649043" fill="#8fae9c" stroke="#fff" />
+<text x="981.9834541857739" y="274.1583239595051" class="tiny" >S4</text>
+<rect x="1007.401901879812" y="189.05455568053992" width="8.800651380332166" height="50.97019122609674" fill="#8fae9c" stroke="#fff" />
+<text x="1009.401901879812" y="198.05455568053992" class="tiny" >E1</text>
+<rect x="771.0545556805399" y="326.5236874625766" width="50.97019122609674" height="8.800651380332166" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="335.5236874625766" class="tiny" >E2</text>
+<rect x="891.5765363005095" y="262.5473095098207" width="21.09111361079865" height="17.575928008998876" fill="#8fae9c" stroke="#fff" />
+<text x="893.5765363005095" y="271.5473095098207" class="tiny" >J1</text>
+<rect x="947.6437466492159" y="273.65820628298815" width="21.09111361079865" height="17.575928008998876" fill="#8fae9c" stroke="#fff" />
+<text x="949.6437466492159" y="282.65820628298815" class="tiny" >J2</text>
+<rect x="1012.3231617223319" y="240.72778402699663" width="5.272778402699663" height="59.758155230596174" fill="#8fae9c" stroke="#fff" />
+<text x="1014.3231617223319" y="249.72778402699663" class="tiny" >H1</text>
+<rect x="913.3706870316681" y="276.294595484338" width="5.272778402699663" height="59.758155230596174" fill="#8fae9c" stroke="#fff" />
+<text x="915.3706870316681" y="285.294595484338" class="tiny" >H2</text>
+<rect x="891.5765363005095" y="280.82627463917953" width="19.333520809898765" height="15.818335208098988" fill="#8fae9c" stroke="#fff" />
+<text x="893.5765363005095" y="289.82627463917953" class="tiny" >V1</text>
+<rect x="891.5765363005095" y="297.34764696763847" width="19.333520809898765" height="15.818335208098988" fill="#8fae9c" stroke="#fff" />
+<text x="893.5765363005095" y="306.34764696763847" class="tiny" >V2</text>
+<rect x="822.7277840269967" y="325.9710348706412" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="824.7277840269967" y="334.9710348706412" class="tiny" >K1</text>
+<rect x="839.2491563554556" y="325.9710348706412" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="841.2491563554556" y="334.9710348706412" class="tiny" >K2</text>
+<rect x="855.7705286839146" y="325.9710348706412" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="857.7705286839146" y="334.9710348706412" class="tiny" >K3</text>
+<rect x="891.5765363005095" y="313.8690192960974" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="893.5765363005095" y="322.8690192960974" class="tiny" >K4</text>
+<rect x="975.7652314636141" y="216.14685956606365" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="977.7652314636141" y="225.14685956606365" class="tiny" >G1</text>
+<rect x="872.2919010123735" y="326.8752060227566" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="874.2919010123735" y="335.8752060227566" class="tiny" >G2</text>
+<rect x="885.2980877390327" y="326.8752060227566" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="887.2980877390327" y="335.8752060227566" class="tiny" >G3</text>
+<rect x="898.3042744656918" y="326.8752060227566" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="900.3042744656918" y="335.8752060227566" class="tiny" >G4</text>
+<rect x="919.3465025547277" y="276.294595484338" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="921.3465025547277" y="285.294595484338" class="tiny" >G5</text>
+<rect x="932.3526892813869" y="276.294595484338" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="934.3526892813869" y="285.294595484338" class="tiny" >G6</text>
+<rect x="919.3465025547277" y="287.5431894100973" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="921.3465025547277" y="296.5431894100973" class="tiny" >G7</text>
+<rect x="932.3526892813869" y="287.5431894100973" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="934.3526892813869" y="296.5431894100973" class="tiny" >G8</text>
+<rect x="919.3465025547277" y="301.18897637795277" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="921.3465025547277" y="310.18897637795277" class="tiny" >G9</text>
+<rect x="919.3465025547277" y="314.19516310461194" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="921.3465025547277" y="323.19516310461194" class="tiny" >G10</text>
+<rect x="919.3465025547277" y="327.2013498312711" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="921.3465025547277" y="336.2013498312711" class="tiny" >G11</text>
+<rect x="930.595096480487" y="301.18897637795277" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="932.595096480487" y="310.18897637795277" class="tiny" >G12</text>
+<text x="1140" y="175" class="s" >FRONT / 74% area / 21.7 kg</text>
+<rect x="1140" y="188" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="1141.05455568054" y="189.05455568053992" width="65.0563083849613" height="101.94038245219348" fill="#b9d584" stroke="#fff" />
+<text x="1143.05455568054" y="198.05455568053992" class="tiny" >L1</text>
+<rect x="1141.05455568054" y="291.6979752530934" width="101.94038245219348" height="44.83130379877986" fill="#b9d584" stroke="#fff" />
+<text x="1143.05455568054" y="300.6979752530934" class="tiny" >O1</text>
+<rect x="1206.8139011858611" y="189.05455568053992" width="44.83130379877986" height="101.94038245219348" fill="#b9d584" stroke="#fff" />
+<text x="1208.8139011858611" y="198.05455568053992" class="tiny" >O2</text>
+<rect x="1243.6979752530933" y="291.6979752530934" width="73.81889763779527" height="36.9348235705631" fill="#b9d584" stroke="#fff" />
+<text x="1245.6979752530933" y="300.6979752530934" class="tiny" >I1</text>
+<rect x="1252.348242105001" y="189.05455568053992" width="36.9348235705631" height="73.81889763779527" fill="#b9d584" stroke="#fff" />
+<text x="1254.348242105001" y="198.05455568053992" class="tiny" >I2</text>
+<rect x="1318.2199100112487" y="189.05455568053992" width="58.00056242969629" height="46.58889659967975" fill="#b9d584" stroke="#fff" />
+<text x="1320.2199100112487" y="198.05455568053992" class="tiny" >N1</text>
+<rect x="1289.9861027959241" y="236.34648940057963" width="31.649357792030703" height="38.66704161979753" fill="#b9d584" stroke="#fff" />
+<text x="1291.9861027959241" y="245.34648940057963" class="tiny" >C1</text>
+<rect x="1318.2199100112487" y="275.7165681407371" width="21.982597387081324" height="52.72778402699663" fill="#b9d584" stroke="#fff" />
+<text x="1320.2199100112487" y="284.7165681407371" class="tiny" >F1</text>
+<rect x="1322.3384977083147" y="236.34648940057963" width="52.72778402699663" height="21.982597387081324" fill="#b9d584" stroke="#fff" />
+<text x="1324.3384977083147" y="245.34648940057963" class="tiny" >F2</text>
+<rect x="1243.6979752530933" y="329.3358359440164" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1245.6979752530933" y="338.3358359440164" class="tiny" >FG1</text>
+<rect x="1254.9465691788525" y="329.3358359440164" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1256.9465691788525" y="338.3358359440164" class="tiny" >FG2</text>
+<rect x="1266.195163104612" y="329.3358359440164" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1268.195163104612" y="338.3358359440164" class="tiny" >FG3</text>
+<rect x="1277.4437570303712" y="329.3358359440164" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1279.4437570303712" y="338.3358359440164" class="tiny" >FG4</text>
+<rect x="1288.6923509561304" y="329.3358359440164" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1290.6923509561304" y="338.3358359440164" class="tiny" >FG5</text>
+<rect x="1299.9409448818897" y="329.3358359440164" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1301.9409448818897" y="338.3358359440164" class="tiny" >FG6</text>
+<rect x="1311.1895388076491" y="329.3358359440164" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1313.1895388076491" y="338.3358359440164" class="tiny" >FG7</text>
+<rect x="1322.4381327334083" y="329.1473892880937" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1324.4381327334083" y="338.1473892880937" class="tiny" >FG8</text>
+<text x="770" y="351" class="s" >REAR / 74% area / 21.6 kg</text>
+<rect x="770" y="364" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="771.0545556805399" y="365.0545556805399" width="47.48038037596242" height="105.45556805399326" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="374.0545556805399" class="tiny" >RF1</text>
+<rect x="819.2379731768623" y="365.0545556805399" width="47.48038037596242" height="105.45556805399326" fill="#8cbcb7" stroke="#fff" />
+<text x="821.2379731768623" y="374.0545556805399" class="tiny" >RF2</text>
+<rect x="867.4213906731846" y="365.0545556805399" width="52.72778402699663" height="63.27334083239595" fill="#8cbcb7" stroke="#fff" />
+<text x="869.4213906731846" y="374.0545556805399" class="tiny" >SC1</text>
+<rect x="867.4213906731846" y="429.03093363329583" width="50.982878601929464" height="63.27334083239595" fill="#8cbcb7" stroke="#fff" />
+<text x="869.4213906731846" y="438.03093363329583" class="tiny" >RB1</text>
+<rect x="919.1073063954741" y="429.03093363329583" width="50.982878601929464" height="61.51574803149607" fill="#8cbcb7" stroke="#fff" />
+<text x="921.1073063954741" y="438.03093363329583" class="tiny" >SB1</text>
+<rect x="920.8522118205412" y="365.0545556805399" width="50.982878601929464" height="61.51574803149607" fill="#8cbcb7" stroke="#fff" />
+<text x="922.8522118205412" y="374.0545556805399" class="tiny" >SB2</text>
+<rect x="972.5381275428307" y="365.0545556805399" width="45.722787575062526" height="52.72778402699663" fill="#8cbcb7" stroke="#fff" />
+<text x="974.5381275428307" y="374.0545556805399" class="tiny" >P1</text>
+<rect x="972.5381275428307" y="418.4853768278965" width="45.69741282339707" height="23.74019018798121" fill="#8cbcb7" stroke="#fff" />
+<text x="974.5381275428307" y="427.4853768278965" class="tiny" >D1</text>
+<rect x="970.7932221177635" y="442.9286041362377" width="45.69741282339707" height="23.74019018798121" fill="#8cbcb7" stroke="#fff" />
+<text x="972.7932221177635" y="451.9286041362377" class="tiny" >D2</text>
+<rect x="771.0545556805399" y="493.00731158605174" width="8.787964004499438" height="10.545556805399325" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="502.00731158605174" class="tiny" >RG1</text>
+<rect x="771.0545556805399" y="504.255905511811" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="513.2559055118111" class="tiny" >RG2</text>
+<rect x="780.5455568053993" y="493.00731158605174" width="8.787964004499438" height="10.545556805399325" fill="#8cbcb7" stroke="#fff" />
+<text x="782.5455568053993" y="502.00731158605174" class="tiny" >RG3</text>
+<rect x="782.3031496062993" y="504.255905511811" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="784.3031496062993" y="513.2559055118111" class="tiny" >RG4</text>
+<rect x="790.0365579302587" y="493.00731158605174" width="8.787964004499438" height="10.545556805399325" fill="#8cbcb7" stroke="#fff" />
+<text x="792.0365579302587" y="502.00731158605174" class="tiny" >RG5</text>
+<rect x="793.5517435320585" y="504.255905511811" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="795.5517435320585" y="513.2559055118111" class="tiny" >RG6</text>
+<rect x="799.5275590551181" y="493.00731158605174" width="8.787964004499438" height="10.545556805399325" fill="#8cbcb7" stroke="#fff" />
+<text x="801.5275590551181" y="502.00731158605174" class="tiny" >RG7</text>
+<rect x="804.8003374578178" y="504.255905511811" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="806.8003374578178" y="513.2559055118111" class="tiny" >RG8</text>
+<text x="1140" y="405" class="s" >Each rectangle: 56 × 34 in</text>
+<text x="1140" y="432" class="s" >6 mm edge / 4 mm gaps</text>
+<text x="1140" y="459" class="s" >90° rotations allowed</text>
+<text x="1140" y="486" class="s" >Mild-steel blank envelopes.</text>
+<text x="1140" y="513" class="s" >304 checked independently.</text>
+<rect x="25" y="570" width="1510" height="422" fill="#fff" stroke="#d4ddd5" rx="12"/>
+<text x="45" y="602" class="h" >B / Roomier modular chassis</text>
+<text x="45" y="628" class="s" >Wheelbase 1450 mm • frame 1750 mm • front 45 kg battery</text>
+<circle cx="280.0" cy="818.75" r="51.25" fill="#293936" stroke="#102c26" stroke-width="3"/>
+<circle cx="280.0" cy="818.75" r="22.55" fill="#d4dacf"/>
+<circle cx="577.25" cy="833.1" r="36.9" fill="#293936" stroke="#102c26" stroke-width="3"/>
+<circle cx="577.25" cy="833.1" r="16.236" fill="#d4dacf"/>
+<rect x="249.25" y="799.275" width="358.75" height="24.599999999999998" fill="#8fae9c" stroke="#18332f" />
+<rect x="331.25" y="839.25" width="122.99999999999999" height="16.4" fill="#b0b9a4" stroke="#667559" />
+<text x="339.45" y="848.475" class="tiny" >DECK*</text>
+<rect x="497.29999999999995" y="738.8" width="118.89999999999999" height="57.4" fill="#b9d584" stroke="#18332f" />
+<rect x="503.45" y="747.0" width="106.6" height="45.099999999999994" fill="none" stroke="#637b35" stroke-dasharray="4 3"/>
+<text x="507.54999999999995" y="771.6" class="tiny" >FRONT BATTERY BAY</text>
+<rect x="534.2" y="785.95" width="86.1" height="5.125" fill="#b9d584" stroke="#18332f" />
+<rect x="239.0" y="759.3" width="122.99999999999999" height="6.1499999999999995" fill="#8cbcb7" stroke="#18332f" />
+<rect x="310.75" y="759.3" width="71.75" height="39.974999999999994" fill="#8cbcb7" stroke="#18332f" />
+<text x="316.9" y="784.925" class="tiny" >SEAT BOX</text>
+<rect x="258.475" y="797.225" width="45.099999999999994" height="28.7" fill="#478c88" stroke="#18332f" />
+<text x="261.55" y="813.625" class="tiny" >DRIVE</text>
+<rect x="310.75" y="744.95" width="63.55" height="11.274999999999999" fill="#263b35" stroke="#18332f" />
+<rect x="310.75" y="700.875" width="8.2" height="49.199999999999996" fill="#263b35" stroke="#18332f" />
+<path d="M 423.5 800.3 L 394.8 710.1" stroke="#29433a" stroke-width="5"/>
+<ellipse cx="394.8" cy="710.1" rx="25" ry="6" fill="none" stroke="#29433a" stroke-width="4"/>
+<text x="45" y="897" class="s" >REAR ←   Side elevation (schematic)   → FRONT</text>
+<text x="45" y="932" class="b" >3 layer sheets • steel parts 71.2 kg mild / 75.6 kg 304</text>
+<text x="45" y="958" class="s" >73 provisional blanks / 45 bends; hardware and purchased parts additional</text>
+<text x="770" y="615" class="s" >CHASSIS / 90% area / 26.3 kg</text>
+<rect x="770" y="628" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="771.0545556805399" y="629.0545556805399" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="638.0545556805399" class="tiny" >R4</text>
+<rect x="771.0545556805399" y="657.9044523669636" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="666.9044523669636" class="tiny" >R3</text>
+<rect x="771.0545556805399" y="686.7543490533872" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="695.7543490533872" class="tiny" >R2</text>
+<rect x="925.5469628796401" y="629.0545556805399" width="26.38926676516377" height="114.24353205849269" fill="#8fae9c" stroke="#fff" />
+<text x="927.5469628796401" y="638.0545556805399" class="tiny" >A1</text>
+<rect x="771.0545556805399" y="715.6042457398107" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="724.6042457398107" class="tiny" >R1</text>
+<rect x="952.6392667651637" y="629.0545556805399" width="45.69741282339707" height="42.20760197326276" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="638.0545556805399" class="tiny" >M1</text>
+<rect x="999.0397167089208" y="629.0545556805399" width="19.35889556156422" height="59.758155230596174" fill="#8fae9c" stroke="#fff" />
+<text x="1001.0397167089208" y="638.0545556805399" class="tiny" >B2</text>
+<rect x="952.6392667651637" y="689.5157480314961" width="63.27334083239595" height="18.48009916111428" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="698.5157480314961" class="tiny" >X1</text>
+<rect x="952.6392667651637" y="708.6988843129703" width="59.758155230596174" height="19.35889556156422" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="717.6988843129703" class="tiny" >B1</text>
+<rect x="771.0545556805399" y="744.4541424262344" width="21.10380098663138" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="753.4541424262344" class="tiny" >Q1</text>
+<rect x="792.8613937875313" y="744.4541424262344" width="23.74019018798121" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="794.8613937875313" y="753.4541424262344" class="tiny" >T1</text>
+<rect x="817.3046210958724" y="744.4541424262344" width="17.575928008998876" height="21.09111361079865" fill="#8fae9c" stroke="#fff" />
+<text x="819.3046210958724" y="753.4541424262344" class="tiny" >J2</text>
+<rect x="952.6392667651637" y="671.9651947741627" width="31.636670416197976" height="14.939538807649043" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="680.9651947741627" class="tiny" >S1</text>
+<rect x="835.5835862252312" y="744.4541424262344" width="14.939538807649043" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="837.5835862252312" y="753.4541424262344" class="tiny" >S3</text>
+<rect x="952.6392667651637" y="728.7608169948944" width="50.97019122609674" height="8.800651380332166" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="737.7608169948944" class="tiny" >E1</text>
+<rect x="851.2261621532402" y="744.4541424262344" width="17.575928008998876" height="21.09111361079865" fill="#8fae9c" stroke="#fff" />
+<text x="853.2261621532402" y="753.4541424262344" class="tiny" >J1</text>
+<rect x="1013.10045911612" y="708.6988843129703" width="5.272778402699663" height="59.758155230596174" fill="#8fae9c" stroke="#fff" />
+<text x="1015.10045911612" y="717.6988843129703" class="tiny" >H1</text>
+<rect x="869.5051272825991" y="744.4541424262344" width="15.818335208098988" height="19.333520809898765" fill="#8fae9c" stroke="#fff" />
+<text x="871.5051272825991" y="753.4541424262344" class="tiny" >V2</text>
+<rect x="886.0264996110581" y="744.4541424262344" width="14.939538807649043" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="888.0264996110581" y="753.4541424262344" class="tiny" >S2</text>
+<rect x="901.6690755390671" y="769.1600766639265" width="50.97019122609674" height="8.800651380332166" fill="#8fae9c" stroke="#fff" />
+<text x="903.6690755390671" y="778.1600766639265" class="tiny" >E2</text>
+<rect x="952.6392667651637" y="738.2645054955866" width="59.758155230596174" height="5.272778402699663" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="747.2645054955866" class="tiny" >H2</text>
+<rect x="953.3423038855237" y="744.2403210186462" width="14.939538807649043" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="955.3423038855237" y="753.2403210186462" class="tiny" >S4</text>
+<rect x="869.5051272825991" y="764.4907003564931" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="871.5051272825991" y="773.4907003564931" class="tiny" >K2</text>
+<rect x="817.3046210958724" y="766.2482931573929" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="819.3046210958724" y="775.2482931573929" class="tiny" >K4</text>
+<rect x="901.6690755390671" y="744.4541424262344" width="15.818335208098988" height="19.333520809898765" fill="#8fae9c" stroke="#fff" />
+<text x="903.6690755390671" y="753.4541424262344" class="tiny" >V1</text>
+<rect x="851.2261621532402" y="766.2482931573929" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="853.2261621532402" y="775.2482931573929" class="tiny" >K1</text>
+<rect x="984.9789743017217" y="671.9651947741627" width="12.303149606299213" height="15.818335208098988" fill="#8fae9c" stroke="#fff" />
+<text x="986.9789743017217" y="680.9651947741627" class="tiny" >K3</text>
+<rect x="918.190447867526" y="744.4541424262344" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="920.190447867526" y="753.4541424262344" class="tiny" >G1</text>
+<rect x="918.190447867526" y="757.4603291528936" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="920.190447867526" y="766.4603291528936" class="tiny" >G11</text>
+<rect x="929.4390417932852" y="744.2403210186462" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="931.4390417932852" y="753.2403210186462" class="tiny" >G5</text>
+<rect x="931.1966345941852" y="757.2465077453054" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="933.1966345941852" y="766.2465077453054" class="tiny" >G12</text>
+<rect x="940.6876357190445" y="744.2403210186462" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="942.6876357190445" y="753.2403210186462" class="tiny" >G2</text>
+<rect x="968.9848798135328" y="744.2403210186462" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="970.9848798135328" y="753.2403210186462" class="tiny" >G3</text>
+<rect x="968.9848798135328" y="757.2465077453054" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="970.9848798135328" y="766.2465077453054" class="tiny" >G6</text>
+<rect x="980.233473739292" y="744.2403210186462" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="982.233473739292" y="753.2403210186462" class="tiny" >G10</text>
+<rect x="993.2396604659511" y="744.2403210186462" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="995.2396604659511" y="753.2403210186462" class="tiny" >G7</text>
+<rect x="980.233473739292" y="755.4889149444055" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="982.233473739292" y="764.4889149444055" class="tiny" >G4</text>
+<rect x="991.4820676650513" y="755.4889149444055" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="993.4820676650513" y="764.4889149444055" class="tiny" >G8</text>
+<rect x="991.4820676650513" y="766.7375088701648" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="993.4820676650513" y="775.7375088701648" class="tiny" >G9</text>
+<text x="1140" y="615" class="s" >FRONT / 77% area / 22.5 kg</text>
+<rect x="1140" y="628" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="1141.05455568054" y="629.0545556805399" width="65.0563083849613" height="101.94038245219348" fill="#b9d584" stroke="#fff" />
+<text x="1143.05455568054" y="638.0545556805399" class="tiny" >L1</text>
+<rect x="1141.05455568054" y="731.6979752530933" width="101.94038245219348" height="44.83130379877986" fill="#b9d584" stroke="#fff" />
+<text x="1143.05455568054" y="740.6979752530933" class="tiny" >O1</text>
+<rect x="1206.8139011858611" y="629.0545556805399" width="44.83130379877986" height="101.94038245219348" fill="#b9d584" stroke="#fff" />
+<text x="1208.8139011858611" y="638.0545556805399" class="tiny" >O2</text>
+<rect x="1243.6979752530933" y="731.6979752530933" width="73.81889763779527" height="36.9348235705631" fill="#b9d584" stroke="#fff" />
+<text x="1245.6979752530933" y="740.6979752530933" class="tiny" >I1</text>
+<rect x="1252.348242105001" y="629.0545556805399" width="36.9348235705631" height="73.81889763779527" fill="#b9d584" stroke="#fff" />
+<text x="1254.348242105001" y="638.0545556805399" class="tiny" >I2</text>
+<rect x="1318.2199100112487" y="629.0545556805399" width="58.00056242969629" height="46.58889659967975" fill="#b9d584" stroke="#fff" />
+<text x="1320.2199100112487" y="638.0545556805399" class="tiny" >N1</text>
+<rect x="1252.348242105001" y="703.5764904386951" width="63.27334083239595" height="27.255375789780985" fill="#b9d584" stroke="#fff" />
+<text x="1254.348242105001" y="712.5764904386951" class="tiny" >F1</text>
+<rect x="1289.9861027959241" y="629.0545556805399" width="27.255375789780985" height="63.27334083239595" fill="#b9d584" stroke="#fff" />
+<text x="1291.9861027959241" y="638.0545556805399" class="tiny" >F2</text>
+<rect x="1316.3246200577569" y="693.0309336332958" width="38.66704161979753" height="31.649357792030703" fill="#b9d584" stroke="#fff" />
+<text x="1318.3246200577569" y="702.0309336332958" class="tiny" >C1</text>
+<rect x="1243.6979752530933" y="769.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1245.6979752530933" y="778.3358359440165" class="tiny" >FG1</text>
+<rect x="1254.9465691788525" y="769.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1256.9465691788525" y="778.3358359440165" class="tiny" >FG2</text>
+<rect x="1266.195163104612" y="769.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1268.195163104612" y="778.3358359440165" class="tiny" >FG3</text>
+<rect x="1277.4437570303712" y="769.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1279.4437570303712" y="778.3358359440165" class="tiny" >FG4</text>
+<rect x="1288.6923509561304" y="769.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1290.6923509561304" y="778.3358359440165" class="tiny" >FG5</text>
+<rect x="1299.9409448818897" y="769.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1301.9409448818897" y="778.3358359440165" class="tiny" >FG6</text>
+<rect x="1311.1895388076491" y="769.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1313.1895388076491" y="778.3358359440165" class="tiny" >FG7</text>
+<rect x="1289.9861027959241" y="693.0309336332958" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1291.9861027959241" y="702.0309336332958" class="tiny" >FG8</text>
+<text x="770" y="791" class="s" >REAR / 77% area / 22.3 kg</text>
+<rect x="770" y="804" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="771.0545556805399" y="805.0545556805399" width="50.982878601929464" height="61.51574803149607" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="814.0545556805399" class="tiny" >SB2</text>
+<rect x="771.0545556805399" y="867.273340832396" width="50.982878601929464" height="61.51574803149607" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="876.273340832396" class="tiny" >SB1</text>
+<rect x="822.7404714028294" y="805.0545556805399" width="52.72778402699663" height="63.27334083239595" fill="#8cbcb7" stroke="#fff" />
+<text x="824.7404714028294" y="814.0545556805399" class="tiny" >SC1</text>
+<rect x="876.171292550186" y="805.0545556805399" width="105.45556805399326" height="47.48038037596242" fill="#8cbcb7" stroke="#fff" />
+<text x="878.171292550186" y="814.0545556805399" class="tiny" >RF1</text>
+<rect x="876.171292550186" y="853.2379731768623" width="105.45556805399326" height="47.48038037596242" fill="#8cbcb7" stroke="#fff" />
+<text x="878.171292550186" y="862.2379731768623" class="tiny" >RF2</text>
+<rect x="822.7404714028294" y="901.4213906731846" width="63.27334083239595" height="52.753158778662076" fill="#8cbcb7" stroke="#fff" />
+<text x="824.7404714028294" y="910.4213906731846" class="tiny" >P1</text>
+<rect x="886.7168493555853" y="901.4213906731846" width="63.27334083239595" height="50.982878601929464" fill="#8cbcb7" stroke="#fff" />
+<text x="888.7168493555853" y="910.4213906731846" class="tiny" >RB1</text>
+<rect x="771.0545556805399" y="929.492125984252" width="45.69741282339707" height="23.74019018798121" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="938.492125984252" class="tiny" >D2</text>
+<rect x="822.7404714028294" y="869.0309336332958" width="45.69741282339707" height="23.74019018798121" fill="#8cbcb7" stroke="#fff" />
+<text x="824.7404714028294" y="878.0309336332958" class="tiny" >D1</text>
+<rect x="982.3298977245391" y="805.0545556805399" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="984.3298977245391" y="814.0545556805399" class="tiny" >RG1</text>
+<rect x="993.5784916502985" y="805.0545556805399" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="995.5784916502985" y="814.0545556805399" class="tiny" >RG8</text>
+<rect x="1004.8270855760577" y="805.0545556805399" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="1006.8270855760577" y="814.0545556805399" class="tiny" >RG7</text>
+<rect x="982.3298977245391" y="814.5455568053993" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="984.3298977245391" y="823.5455568053993" class="tiny" >RG6</text>
+<rect x="993.5784916502985" y="814.5455568053993" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="995.5784916502985" y="823.5455568053993" class="tiny" >RG4</text>
+<rect x="1004.8270855760577" y="814.5455568053993" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="1006.8270855760577" y="823.5455568053993" class="tiny" >RG2</text>
+<rect x="982.3298977245391" y="824.0365579302587" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="984.3298977245391" y="833.0365579302587" class="tiny" >RG3</text>
+<rect x="993.5784916502985" y="824.0365579302587" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="995.5784916502985" y="833.0365579302587" class="tiny" >RG5</text>
+<text x="1140" y="845" class="s" >Each rectangle: 56 × 34 in</text>
+<text x="1140" y="872" class="s" >6 mm edge / 4 mm gaps</text>
+<text x="1140" y="899" class="s" >90° rotations allowed</text>
+<text x="1140" y="926" class="s" >Mild-steel blank envelopes.</text>
+<text x="1140" y="953" class="s" >304 checked independently.</text>
+<rect x="25" y="1010" width="1510" height="422" fill="#fff" stroke="#d4ddd5" rx="12"/>
+<text x="45" y="1042" class="h" >C / Roomier + hybrid carrier</text>
+<text x="45" y="1068" class="s" >Wheelbase 1450 mm • frame 1750 mm • front 45 kg battery</text>
+<circle cx="280.0" cy="1258.75" r="51.25" fill="#293936" stroke="#102c26" stroke-width="3"/>
+<circle cx="280.0" cy="1258.75" r="22.55" fill="#d4dacf"/>
+<circle cx="577.25" cy="1273.1" r="36.9" fill="#293936" stroke="#102c26" stroke-width="3"/>
+<circle cx="577.25" cy="1273.1" r="16.236" fill="#d4dacf"/>
+<rect x="249.25" y="1239.275" width="358.75" height="24.599999999999998" fill="#8fae9c" stroke="#18332f" />
+<rect x="331.25" y="1279.25" width="122.99999999999999" height="16.4" fill="#b0b9a4" stroke="#667559" />
+<text x="339.45" y="1288.475" class="tiny" >DECK*</text>
+<rect x="497.29999999999995" y="1178.8" width="118.89999999999999" height="57.4" fill="#b9d584" stroke="#18332f" />
+<rect x="503.45" y="1187.0" width="106.6" height="45.099999999999994" fill="none" stroke="#637b35" stroke-dasharray="4 3"/>
+<text x="507.54999999999995" y="1211.6" class="tiny" >FRONT BATTERY BAY</text>
+<rect x="534.2" y="1225.95" width="86.1" height="5.125" fill="#b9d584" stroke="#18332f" />
+<rect x="239.0" y="1199.3" width="122.99999999999999" height="6.1499999999999995" fill="#8cbcb7" stroke="#18332f" />
+<rect x="310.75" y="1199.3" width="71.75" height="39.974999999999994" fill="#8cbcb7" stroke="#18332f" />
+<text x="316.9" y="1224.925" class="tiny" >SEAT BOX</text>
+<rect x="258.475" y="1237.225" width="45.099999999999994" height="28.7" fill="#478c88" stroke="#18332f" />
+<text x="261.55" y="1253.625" class="tiny" >DRIVE</text>
+<rect x="310.75" y="1184.95" width="63.55" height="11.274999999999999" fill="#263b35" stroke="#18332f" />
+<rect x="310.75" y="1140.875" width="8.2" height="49.199999999999996" fill="#263b35" stroke="#18332f" />
+<path d="M 423.5 1240.3 L 394.8 1150.1" stroke="#29433a" stroke-width="5"/>
+<ellipse cx="394.8" cy="1150.1" rx="25" ry="6" fill="none" stroke="#29433a" stroke-width="4"/>
+<rect x="95.5" y="1117.3" width="143.5" height="116.85" fill="#e4b77f" stroke="#a56326" stroke-dasharray="7 4"/>
+<text x="100.625" y="1175.725" class="tiny" >GENERATOR</text>
+<text x="100.625" y="1190.075" class="tiny" >40 kg dry ref.</text>
+<path d="M 95.5 1237.225 H 259.5" stroke="#a56326" stroke-width="5"/>
+<text x="45" y="1337" class="s" >REAR ←   Side elevation (schematic)   → FRONT</text>
+<text x="45" y="1372" class="b" >4 layer sheets • steel parts 89.1 kg mild / 94.6 kg 304</text>
+<text x="45" y="1398" class="s" >81 provisional blanks / 51 bends; hardware and purchased parts additional</text>
+<text x="770" y="1055" class="s" >CHASSIS / 90% area / 26.3 kg</text>
+<rect x="770" y="1068" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="771.0545556805399" y="1069.05455568054" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="1078.05455568054" class="tiny" >R4</text>
+<rect x="771.0545556805399" y="1097.9044523669636" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="1106.9044523669636" class="tiny" >R3</text>
+<rect x="771.0545556805399" y="1126.7543490533872" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="1135.7543490533872" class="tiny" >R2</text>
+<rect x="925.5469628796401" y="1069.05455568054" width="26.38926676516377" height="114.24353205849269" fill="#8fae9c" stroke="#fff" />
+<text x="927.5469628796401" y="1078.05455568054" class="tiny" >A1</text>
+<rect x="771.0545556805399" y="1155.6042457398107" width="153.78937007874015" height="28.146859566063657" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="1164.6042457398107" class="tiny" >R1</text>
+<rect x="952.6392667651637" y="1069.05455568054" width="45.69741282339707" height="42.20760197326276" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="1078.05455568054" class="tiny" >M1</text>
+<rect x="999.0397167089208" y="1069.05455568054" width="19.35889556156422" height="59.758155230596174" fill="#8fae9c" stroke="#fff" />
+<text x="1001.0397167089208" y="1078.05455568054" class="tiny" >B2</text>
+<rect x="952.6392667651637" y="1129.515748031496" width="63.27334083239595" height="18.48009916111428" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="1138.515748031496" class="tiny" >X1</text>
+<rect x="952.6392667651637" y="1148.6988843129702" width="59.758155230596174" height="19.35889556156422" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="1157.6988843129702" class="tiny" >B1</text>
+<rect x="771.0545556805399" y="1184.4541424262343" width="21.10380098663138" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="773.0545556805399" y="1193.4541424262343" class="tiny" >Q1</text>
+<rect x="792.8613937875313" y="1184.4541424262343" width="23.74019018798121" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="794.8613937875313" y="1193.4541424262343" class="tiny" >T1</text>
+<rect x="817.3046210958724" y="1184.4541424262343" width="17.575928008998876" height="21.09111361079865" fill="#8fae9c" stroke="#fff" />
+<text x="819.3046210958724" y="1193.4541424262343" class="tiny" >J2</text>
+<rect x="952.6392667651637" y="1111.9651947741627" width="31.636670416197976" height="14.939538807649043" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="1120.9651947741627" class="tiny" >S1</text>
+<rect x="835.5835862252312" y="1184.4541424262343" width="14.939538807649043" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="837.5835862252312" y="1193.4541424262343" class="tiny" >S3</text>
+<rect x="952.6392667651637" y="1168.7608169948944" width="50.97019122609674" height="8.800651380332166" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="1177.7608169948944" class="tiny" >E1</text>
+<rect x="851.2261621532402" y="1184.4541424262343" width="17.575928008998876" height="21.09111361079865" fill="#8fae9c" stroke="#fff" />
+<text x="853.2261621532402" y="1193.4541424262343" class="tiny" >J1</text>
+<rect x="1013.10045911612" y="1148.6988843129702" width="5.272778402699663" height="59.758155230596174" fill="#8fae9c" stroke="#fff" />
+<text x="1015.10045911612" y="1157.6988843129702" class="tiny" >H1</text>
+<rect x="869.5051272825991" y="1184.4541424262343" width="15.818335208098988" height="19.333520809898765" fill="#8fae9c" stroke="#fff" />
+<text x="871.5051272825991" y="1193.4541424262343" class="tiny" >V2</text>
+<rect x="886.0264996110581" y="1184.4541424262343" width="14.939538807649043" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="888.0264996110581" y="1193.4541424262343" class="tiny" >S2</text>
+<rect x="901.6690755390671" y="1209.1600766639265" width="50.97019122609674" height="8.800651380332166" fill="#8fae9c" stroke="#fff" />
+<text x="903.6690755390671" y="1218.1600766639265" class="tiny" >E2</text>
+<rect x="952.6392667651637" y="1178.2645054955865" width="59.758155230596174" height="5.272778402699663" fill="#8fae9c" stroke="#fff" />
+<text x="954.6392667651637" y="1187.2645054955865" class="tiny" >H2</text>
+<rect x="953.3423038855237" y="1184.2403210186462" width="14.939538807649043" height="31.636670416197976" fill="#8fae9c" stroke="#fff" />
+<text x="955.3423038855237" y="1193.2403210186462" class="tiny" >S4</text>
+<rect x="869.5051272825991" y="1204.490700356493" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="871.5051272825991" y="1213.490700356493" class="tiny" >K2</text>
+<rect x="817.3046210958724" y="1206.248293157393" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="819.3046210958724" y="1215.248293157393" class="tiny" >K4</text>
+<rect x="901.6690755390671" y="1184.4541424262343" width="15.818335208098988" height="19.333520809898765" fill="#8fae9c" stroke="#fff" />
+<text x="903.6690755390671" y="1193.4541424262343" class="tiny" >V1</text>
+<rect x="851.2261621532402" y="1206.248293157393" width="15.818335208098988" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="853.2261621532402" y="1215.248293157393" class="tiny" >K1</text>
+<rect x="984.9789743017217" y="1111.9651947741627" width="12.303149606299213" height="15.818335208098988" fill="#8fae9c" stroke="#fff" />
+<text x="986.9789743017217" y="1120.9651947741627" class="tiny" >K3</text>
+<rect x="918.190447867526" y="1184.4541424262343" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="920.190447867526" y="1193.4541424262343" class="tiny" >G1</text>
+<rect x="918.190447867526" y="1197.4603291528936" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="920.190447867526" y="1206.4603291528936" class="tiny" >G11</text>
+<rect x="929.4390417932852" y="1184.2403210186462" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="931.4390417932852" y="1193.2403210186462" class="tiny" >G5</text>
+<rect x="931.1966345941852" y="1197.2465077453053" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="933.1966345941852" y="1206.2465077453053" class="tiny" >G12</text>
+<rect x="940.6876357190445" y="1184.2403210186462" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="942.6876357190445" y="1193.2403210186462" class="tiny" >G2</text>
+<rect x="968.9848798135328" y="1184.2403210186462" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="970.9848798135328" y="1193.2403210186462" class="tiny" >G3</text>
+<rect x="968.9848798135328" y="1197.2465077453053" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="970.9848798135328" y="1206.2465077453053" class="tiny" >G6</text>
+<rect x="980.233473739292" y="1184.2403210186462" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="982.233473739292" y="1193.2403210186462" class="tiny" >G10</text>
+<rect x="993.2396604659511" y="1184.2403210186462" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="995.2396604659511" y="1193.2403210186462" class="tiny" >G7</text>
+<rect x="980.233473739292" y="1195.4889149444055" width="10.545556805399325" height="12.303149606299213" fill="#8fae9c" stroke="#fff" />
+<text x="982.233473739292" y="1204.4889149444055" class="tiny" >G4</text>
+<rect x="991.4820676650513" y="1195.4889149444055" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="993.4820676650513" y="1204.4889149444055" class="tiny" >G8</text>
+<rect x="991.4820676650513" y="1206.7375088701647" width="12.303149606299213" height="10.545556805399325" fill="#8fae9c" stroke="#fff" />
+<text x="993.4820676650513" y="1215.7375088701647" class="tiny" >G9</text>
+<text x="1140" y="1055" class="s" >FRONT / 77% area / 22.5 kg</text>
+<rect x="1140" y="1068" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="1141.05455568054" y="1069.05455568054" width="65.0563083849613" height="101.94038245219348" fill="#b9d584" stroke="#fff" />
+<text x="1143.05455568054" y="1078.05455568054" class="tiny" >L1</text>
+<rect x="1141.05455568054" y="1171.6979752530933" width="101.94038245219348" height="44.83130379877986" fill="#b9d584" stroke="#fff" />
+<text x="1143.05455568054" y="1180.6979752530933" class="tiny" >O1</text>
+<rect x="1206.8139011858611" y="1069.05455568054" width="44.83130379877986" height="101.94038245219348" fill="#b9d584" stroke="#fff" />
+<text x="1208.8139011858611" y="1078.05455568054" class="tiny" >O2</text>
+<rect x="1243.6979752530933" y="1171.6979752530933" width="73.81889763779527" height="36.9348235705631" fill="#b9d584" stroke="#fff" />
+<text x="1245.6979752530933" y="1180.6979752530933" class="tiny" >I1</text>
+<rect x="1252.348242105001" y="1069.05455568054" width="36.9348235705631" height="73.81889763779527" fill="#b9d584" stroke="#fff" />
+<text x="1254.348242105001" y="1078.05455568054" class="tiny" >I2</text>
+<rect x="1318.2199100112487" y="1069.05455568054" width="58.00056242969629" height="46.58889659967975" fill="#b9d584" stroke="#fff" />
+<text x="1320.2199100112487" y="1078.05455568054" class="tiny" >N1</text>
+<rect x="1252.348242105001" y="1143.5764904386951" width="63.27334083239595" height="27.255375789780985" fill="#b9d584" stroke="#fff" />
+<text x="1254.348242105001" y="1152.5764904386951" class="tiny" >F1</text>
+<rect x="1289.9861027959241" y="1069.05455568054" width="27.255375789780985" height="63.27334083239595" fill="#b9d584" stroke="#fff" />
+<text x="1291.9861027959241" y="1078.05455568054" class="tiny" >F2</text>
+<rect x="1316.3246200577569" y="1133.030933633296" width="38.66704161979753" height="31.649357792030703" fill="#b9d584" stroke="#fff" />
+<text x="1318.3246200577569" y="1142.030933633296" class="tiny" >C1</text>
+<rect x="1243.6979752530933" y="1209.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1245.6979752530933" y="1218.3358359440165" class="tiny" >FG1</text>
+<rect x="1254.9465691788525" y="1209.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1256.9465691788525" y="1218.3358359440165" class="tiny" >FG2</text>
+<rect x="1266.195163104612" y="1209.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1268.195163104612" y="1218.3358359440165" class="tiny" >FG3</text>
+<rect x="1277.4437570303712" y="1209.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1279.4437570303712" y="1218.3358359440165" class="tiny" >FG4</text>
+<rect x="1288.6923509561304" y="1209.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1290.6923509561304" y="1218.3358359440165" class="tiny" >FG5</text>
+<rect x="1299.9409448818897" y="1209.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1301.9409448818897" y="1218.3358359440165" class="tiny" >FG6</text>
+<rect x="1311.1895388076491" y="1209.3358359440165" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1313.1895388076491" y="1218.3358359440165" class="tiny" >FG7</text>
+<rect x="1289.9861027959241" y="1133.030933633296" width="10.545556805399325" height="8.787964004499438" fill="#b9d584" stroke="#fff" />
+<text x="1291.9861027959241" y="1142.030933633296" class="tiny" >FG8</text>
+<text x="770" y="1231" class="s" >REAR / 77% area / 22.3 kg</text>
+<rect x="770" y="1244" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="771.0545556805399" y="1245.05455568054" width="50.982878601929464" height="61.51574803149607" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="1254.05455568054" class="tiny" >SB2</text>
+<rect x="771.0545556805399" y="1307.273340832396" width="50.982878601929464" height="61.51574803149607" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="1316.273340832396" class="tiny" >SB1</text>
+<rect x="822.7404714028294" y="1245.05455568054" width="52.72778402699663" height="63.27334083239595" fill="#8cbcb7" stroke="#fff" />
+<text x="824.7404714028294" y="1254.05455568054" class="tiny" >SC1</text>
+<rect x="876.171292550186" y="1245.05455568054" width="105.45556805399326" height="47.48038037596242" fill="#8cbcb7" stroke="#fff" />
+<text x="878.171292550186" y="1254.05455568054" class="tiny" >RF1</text>
+<rect x="876.171292550186" y="1293.2379731768624" width="105.45556805399326" height="47.48038037596242" fill="#8cbcb7" stroke="#fff" />
+<text x="878.171292550186" y="1302.2379731768624" class="tiny" >RF2</text>
+<rect x="822.7404714028294" y="1341.4213906731848" width="63.27334083239595" height="52.753158778662076" fill="#8cbcb7" stroke="#fff" />
+<text x="824.7404714028294" y="1350.4213906731848" class="tiny" >P1</text>
+<rect x="886.7168493555853" y="1341.4213906731848" width="63.27334083239595" height="50.982878601929464" fill="#8cbcb7" stroke="#fff" />
+<text x="888.7168493555853" y="1350.4213906731848" class="tiny" >RB1</text>
+<rect x="771.0545556805399" y="1369.492125984252" width="45.69741282339707" height="23.74019018798121" fill="#8cbcb7" stroke="#fff" />
+<text x="773.0545556805399" y="1378.492125984252" class="tiny" >D2</text>
+<rect x="822.7404714028294" y="1309.030933633296" width="45.69741282339707" height="23.74019018798121" fill="#8cbcb7" stroke="#fff" />
+<text x="824.7404714028294" y="1318.030933633296" class="tiny" >D1</text>
+<rect x="982.3298977245391" y="1245.05455568054" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="984.3298977245391" y="1254.05455568054" class="tiny" >RG1</text>
+<rect x="993.5784916502985" y="1245.05455568054" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="995.5784916502985" y="1254.05455568054" class="tiny" >RG8</text>
+<rect x="1004.8270855760577" y="1245.05455568054" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="1006.8270855760577" y="1254.05455568054" class="tiny" >RG7</text>
+<rect x="982.3298977245391" y="1254.5455568053994" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="984.3298977245391" y="1263.5455568053994" class="tiny" >RG6</text>
+<rect x="993.5784916502985" y="1254.5455568053994" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="995.5784916502985" y="1263.5455568053994" class="tiny" >RG4</text>
+<rect x="1004.8270855760577" y="1254.5455568053994" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="1006.8270855760577" y="1263.5455568053994" class="tiny" >RG2</text>
+<rect x="982.3298977245391" y="1264.0365579302588" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="984.3298977245391" y="1273.0365579302588" class="tiny" >RG3</text>
+<rect x="993.5784916502985" y="1264.0365579302588" width="10.545556805399325" height="8.787964004499438" fill="#8cbcb7" stroke="#fff" />
+<text x="995.5784916502985" y="1273.0365579302588" class="tiny" >RG5</text>
+<text x="1140" y="1231" class="s" >HYBRID / 61% area / 17.9 kg</text>
+<rect x="1140" y="1244" width="250" height="151.78571428571428" fill="#eef1e7" stroke="#6f8979" />
+<rect x="1141.05455568054" y="1245.05455568054" width="107.2385356065586" height="137.1176132218567" fill="#e4b77f" stroke="#fff" />
+<text x="1143.05455568054" y="1254.05455568054" class="tiny" >Y1</text>
+<rect x="1248.9961284074584" y="1245.05455568054" width="98.4251968503937" height="52.72778402699663" fill="#e4b77f" stroke="#fff" />
+<text x="1250.9961284074584" y="1254.05455568054" class="tiny" >W1</text>
+<rect x="1248.9961284074584" y="1298.4853768278965" width="15.831022583931716" height="79.09167604049495" fill="#e4b77f" stroke="#fff" />
+<text x="1250.9961284074584" y="1307.4853768278965" class="tiny" >Z1</text>
+<rect x="1248.9961284074584" y="1378.2800899887513" width="79.09167604049495" height="15.831022583931716" fill="#e4b77f" stroke="#fff" />
+<text x="1250.9961284074584" y="1387.2800899887513" class="tiny" >Z2</text>
+<rect x="1348.124362378212" y="1245.05455568054" width="17.575928008998876" height="14.0607424071991" fill="#e4b77f" stroke="#fff" />
+<text x="1350.124362378212" y="1254.05455568054" class="tiny" >U1</text>
+<rect x="1366.403327507571" y="1245.05455568054" width="17.575928008998876" height="14.0607424071991" fill="#e4b77f" stroke="#fff" />
+<text x="1368.403327507571" y="1254.05455568054" class="tiny" >U2</text>
+<rect x="1348.124362378212" y="1259.818335208099" width="17.575928008998876" height="14.0607424071991" fill="#e4b77f" stroke="#fff" />
+<text x="1350.124362378212" y="1268.818335208099" class="tiny" >U3</text>
+<rect x="1366.403327507571" y="1259.818335208099" width="17.575928008998876" height="14.0607424071991" fill="#e4b77f" stroke="#fff" />
+<text x="1368.403327507571" y="1268.818335208099" class="tiny" >U4</text>
+<text x="35" y="1484" class="s" >* Deck and wagon have independent sheet budgets; neither is designed in this comparison. Same battery capacity in every concept.</text>
+<text x="35" y="1509" class="s" >Nests prove only this provisional inventory. Joint design, steering sweep, strength, body clearances and supplier acceptance remain open.</text>
+<text x="35" y="1534" class="s" >Hybrid: reserve service/cooling/exhaust space, fuel mass and BMS controls; no onboard running approval or runtime claim is implied.</text>
+</svg>

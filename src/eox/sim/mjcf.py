@@ -202,7 +202,11 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
     def wheel_xml(name, axle, side, pos, r, w, kg, driven):
         ty = tr.tyres[axle]
         wheels.append(Wheel(name, axle, side, r, driven, ty["tyre"]))
-        Ir = kg * (3 * r * r + w * w) / 12
+        # Same radial mass distribution for all axes: axial I = .6*m*r^2,
+        # transverse I = axial I / 2 + m*w^2/12. The former solid-cylinder
+        # transverse estimate (.25*m*r^2) violated the inertia triangle for
+        # narrow tyres while the axial axis used .6*m*r^2.
+        Ir = kg * (0.3 * r * r + w * w / 12)
         k = ty["stiffness"]                                   # the tyre's squash, as a spring under a stiff contact,
         c = 2 * 0.15 * math.sqrt(k * ty["load_n"] / G)        # REF: 15 % of critical damping
         travel = 0.6 * ty["tyre"].section_height * MM
@@ -288,6 +292,11 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
             k_roll, roll_max = 0.0, math.radians(f.oscillation_max_deg)
         unsprung = inert["front_axle"].mass + 2 * f.wheel_tire_mass_kg
         sprung_load = tr.axle_loads_n(fitted=fitted)["front"] - unsprung * G
+        vertical = getattr(f, "vertical_suspension", True)
+        bounce_joint = (
+            f'<joint name="bounce" type="slide" axis="0 0 1" range="{-trav:.4g} {trav:.4g}" stiffness="{k_bounce:.5g}" '
+            f'springref="{-sprung_load / k_bounce:.5g}" damping="{0.3 * 2 * math.sqrt(k_bounce * 60):.4g}"/>'
+            if vertical else "")
         mmax = math.radians(f.max_steer_deg)
         knuckles = "".join(
             f'<body name="kingpin_{sd}" pos="0 {side * t / 2:.4g} 0">'
@@ -304,8 +313,7 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
             + f'<camera name="side" mode="trackcom" pos="0.2 -5.5 0.9" xyaxes="{_look((0.2, -5.5, 0.9), (0.2, 0, 0.3))}"/>'
             + f'<camera name="front" mode="trackcom" pos="4.5 -2.5 1.6" xyaxes="{_look((4.5, -2.5, 1.6), (0, 0, 0.2))}"/>'
             + f'<body name="front_axle" pos="{_v(origins["front_axle"])}">'
-            f'<joint name="bounce" type="slide" axis="0 0 1" range="{-trav:.4g} {trav:.4g}" stiffness="{k_bounce:.5g}" '
-            f'springref="{-sprung_load / k_bounce:.5g}" damping="{0.3 * 2 * math.sqrt(k_bounce * 60):.4g}"/>'
+            + bounce_joint +
             f'<joint name="axle_roll" type="hinge" axis="1 0 0" range="{-roll_max:.4g} {roll_max:.4g}" '
             f'stiffness="{k_roll:.5g}" damping="{max(0.3 * 2 * math.sqrt(k_roll * 3), 60):.4g}"/>'
             + inert["front_axle"].xml(origins["front_axle"]) + "".join(geoms["front_axle"]) + knuckles
@@ -315,7 +323,9 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
                              f'ctrlrange="{-mmax:.4g} {mmax:.4g}" forcerange="-1500 1500"/>')
         steer = dict(kind="ackermann", actuators=("steer_L", "steer_R"), max=mmax, track=t,
                      wheelbase=(fa.x - rear.x) * MM)
-        joints = {"bounce": "bounce", "axle_roll": "axle_roll"}
+        joints = {"axle_roll": "axle_roll"}
+        if vertical:
+            joints["bounce"] = "bounce"
         wheelbase = (fa.x - rear.x) * MM
 
     # terrain

@@ -1,8 +1,26 @@
 # EOX: open-source electric garden tractor from flat sheet
 
+![EOX Home concepts: front battery, rear electric drive and sheet-sized assembly layers](docs/img/concepts.png)
+
+*Concept layouts and provisional layer nests; structural and assembly validation are still in progress.*
+
 EOX is a battery-electric garden tractor built from laser-cut and press-brake-bent
-sheet metal, plus off-the-shelf **golf-cart** drive parts. The sheet metal is
-ordered from SendCutSend, or any shop with the same rules.
+sheet metal, with off-the-shelf motors, controllers and electrical power
+components. The steel chassis and axle structures are EOX parts that a
+homeowner can order cut/bent and assemble with standard hardware.
+
+**Current direction (2026-10-22):** develop Home as a simple, appealing
+open-source steel kit with one 56 × 34 in reference sheet per functional layer:
+chassis, front bodywork, rear bodywork/seat box, plus separate attachments.
+Publish reproducible SendCutSend order files, assembly instructions and
+complete costs so homeowners can build it and contributors can iterate on it.
+The battery bay is at the front and electric drive at the rear. Compare mild
+steel with premium 0.125 in 304 stainless. See the [product brief](docs/product-brief.md)
+and [new concept layouts and layer nests](docs/home-concepts.md).
+Golf-cart sourcing is for power components and controllers, not donor frames,
+axles or steering assemblies. See the [steel chassis study](docs/steel-chassis.md).
+The H0/P0 layouts, costs and simulation results below describe the earlier
+donor-based reference models; they are not results for the redesigned kit.
 
 The tractor's work is split into standard **3 HP units**: a golf-cart motor plus
 its controller on a shared **48 V bus**. Drive axles, the mower PTO and hydraulic

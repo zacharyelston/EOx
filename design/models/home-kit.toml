@@ -1,0 +1,87 @@
+# Home kit vehicle-layout SURROGATE. Layer masses/nests follow concept B.
+# B0 battery enclosure and generic rear-drive envelopes remain conservative
+# allowances; this does not validate fabricated joints or a donor driveline.
+
+[model]
+name = "EOX Home kit layout surrogate"
+layout = "steer_axle"
+revision = "K0-study"
+modes = ["mowing", "slope_mowing", "transport"]
+
+[overrides]
+
+"steer_axle.oscillates" = true
+"steer_axle.vertical_suspension" = false
+"steer_axle.tire_diameter" = 360
+"steer_axle.tire_width" = 130
+"steer_axle.tire_rim" = 152
+"steer_axle.wheel_tire_mass_kg" = 6
+"steer_axle.beam_clearance" = 130
+"bus.max_simultaneous_units" = 2
+"bus.branch_conductor_length_m" = 3.0
+"axle.name" = "Generic rear reduction/differential/brake allowance"
+"axle.ratio" = 15.0
+
+
+[vehicle]
+mass_operator_kg = 100
+mass_payload_kg = 0
+top_speed_kmh = 8.0
+design_slope_deg = 10
+max_slope_deg = 12
+max_cross_slope_deg = 17
+duty_overhead = 1.25
+
+[layout]
+wheelbase = 1450
+rear_overhang = 150
+front_overhang = 150
+frame_half_width = 310
+nose_x = 1200
+nose_half_width = 100
+rail_mass_kg_per_m = 5.0
+powerbox_x = 1250
+powerbox_z = 410
+box_stand_mass_kg = 5
+seat_and_controls_mass_kg = 30
+hitch_mass_kg = 3
+operator_cg = [250, 0, 790]
+seat_height = 538
+seat_pedestal_mass_kg = 4
+seat_and_controls_offset = [180, 0, -190]
+floor_reach = 560
+floor_length = 360
+steering_wheel_reach = 540
+steering_wheel_height = 840
+
+[steering]
+type = "rack and pinion"
+scrub_coefficient = 0.6
+steering_wheel_diameter = 330
+
+[deck]
+mount = "mid (drive-over)"
+x_center = 650
+length = 600
+width = 1070
+housing_height = 110
+bottom_clearance = 40
+top_height_min_cut = 150
+mass_kg = 45
+pto_unit_y = 480
+
+[bom]
+powerbox = 1
+drive_axle = 1
+steer_axle = 1
+gear_set = 1
+controls = 1
+
+
+[kit]
+concept = "B"
+material_id = "mild"
+front_purchased_mass_kg = 8.0
+powerbox_front_offset = -250
+nose_setback = 400
+rail_depth_mm = 120

@@ -6,6 +6,61 @@ pages each entry links to.
 
 ---
 
+## 2026-10-22: Home as a fabricated steel kit
+
+**New evolution run:** the README now leads with the concept PNG. A separate
+`home-kit` layout surrogate carries the concept-B sheet-layer masses,
+regenerates masses/nests with frame length and uses a fixed-height front
+roll pivot. Narrow tyres prompted a consistent wheel-inertia correction.
+All 109 tests passed before launching `home-kit-front` on ML2: 96 designs,
+40 generations, 16 workers, seed 22. See [the active study](trials.md) for
+scope, baseline, runtime shortfall, provenance and progress commands. The
+surrogate's retained B0 enclosure and generic rear-drive allowance do not
+define a final fabricated assembly.
+
+**Latest clarification:** one sheet is allowed per functional layer, rather
+than for the entire tractor. The first-choice reference sheet is 56 × 34 in.
+Separate chassis, front fenders/covers and rear fenders/seat-box kits; mower
+deck, wagon and optional hybrid carrier have their own budgets. Put the
+battery in front and electric drive behind. Compare baseline 0.119 in mild
+steel with premium 0.125 in 304 stainless using their own bend deductions.
+
+`uv run python -m eox.home_concepts` now generates three provisional layouts,
+part inventories and conservative envelope nests for both materials. All 20
+layer/material combinations fit with 4 mm inter-part gaps and 6 mm edge
+reserves under free 90-degree rotation. These are study assumptions, not
+supplier acceptance. See [the comparison](home-concepts.md) for remaining
+joint, clearance, cost and physics work, plus conflicting generator dimensions.
+
+**Earlier product refinement, before the layer clarification:** the goal is a useful, appealing open-source
+SendCutSend order, simple to assemble and designed around a single source
+sheet. Optimize the complete kit rather than isolated rails. The
+[product brief](product-brief.md) records the scorecard, ordering workflow
+and the refined sheet/layer scope. The earlier rail study remains a component
+comparison, not a selected whole-machine architecture or proven nest.
+
+**Scope correction:** golf-cart sourcing is for electrical power components
+and controllers. It does not dictate a donor chassis, front end or transaxle.
+Home's structure is to be designed from flat-cut and shop-bent steel parts
+that a homeowner can order and assemble with normal hand tools.
+
+The next architecture is a modular bolted frame with fabricated axle and
+steering supports, using standard purchased bearings, bushes, pins, shafts
+and fasteners. The rear driveline remains an explicit design decision.
+The earlier donor-based H0/P0 models remain reference data.
+
+The ML2 `home-layout` search was deliberately stopped during generation 15,
+after 14 completed generations; its source snapshot and results are retained.
+It cannot answer structural section/joint questions. A new independent
+`uv run python -m eox.chassis` study enumerates 144 folded-rail sections using
+manufacturing-envelope and preliminary elastic-beam screens. The study
+produces a report, CSV and concept SVG, not fabrication files.
+
+See [the steel chassis study](steel-chassis.md) for assumptions, assembly
+requirements and the next CAD/structural-analysis steps.
+
+---
+
 ## 2026-10-21: Licence: CERN-OHL-W, MIT and CC-BY-SA
 
 **Why:** EOX is hardware, and MIT is a software licence. This settles

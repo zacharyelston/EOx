@@ -207,9 +207,10 @@ class _Builder:
 
     def rails(self, group, x0, x1, rail_z, half_width, kg, name="rail"):
         x0, x1 = sorted((x0, x1))
+        depth = getattr(self.tr.p.layout, "rail_depth_mm", 80)
         for side in (1, -1):
             self.add(group, "frame", f"{name} {'L' if side > 0 else 'R'}", "box", ((x0 + x1) / 2, side * half_width, rail_z),
-                     (x1 - x0, 40, 80), kg / 2)
+                     (x1 - x0, 40, depth), kg / 2)
 
     def cross(self, group, name, x, rail_z, half_width, kg=0.0):
         self.add(group, "frame", name, "box", (x, 0, rail_z), (40, 2 * half_width + 40, 80), kg)
@@ -286,11 +287,15 @@ def build_pro(p, box: powerbox.Layout | None = None) -> Tractor:
 def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     """Conventional 2WD: golf-cart front steering axle, one drive-axle module at the rear."""
     box = box or powerbox.build(p)
+    if hasattr(p, "kit"):
+        from eox.kit_sim import prepare
+        prepare(p)
     a, f, lo = p.axle, p.steer_axle, p.layout
     tr = Tractor(p, box, (lo.powerbox_x, 0.0, lo.powerbox_z), "chassis", articulated=False)
     B = _Builder(tr)
     r = a.tire_diameter / 2
-    rail_z = r + 30 + 40
+    depth = getattr(lo, "rail_depth_mm", 80)
+    rail_z = r + 30 + depth / 2
     hw = lo.frame_half_width
     xr, xf = 0.0, lo.wheelbase
 
@@ -301,7 +306,7 @@ def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     B.rails("chassis", xr - lo.rear_overhang, lo.nose_x, rail_z, hw, 2 * main / 1000 * lo.rail_mass_kg_per_m)
     B.rails("chassis", lo.nose_x, xf + lo.front_overhang, rail_z, lo.nose_half_width,
             2 * nose / 1000 * lo.rail_mass_kg_per_m, "nose rail")
-    B.cross("chassis", "rear cross member", xr - lo.rear_overhang + 20, rail_z, hw)
+    B.cross("chassis", "rear cross member", xr - lo.rear_overhang + (0 if hasattr(p, "kit") else 20), rail_z, hw)
     B.cross("chassis", "nose cross member", lo.nose_x, rail_z, hw)
     B.cross("chassis", "front cross member", xf + lo.front_overhang - 20, rail_z, lo.nose_half_width)
 
@@ -322,7 +327,7 @@ def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     B.box_masses("chassis")
     L, W, H = box.outer
     bx, bz = lo.powerbox_x, lo.powerbox_z
-    rail_top = rail_z + 40
+    rail_top = rail_z + depth / 2
     if bz > rail_top + 5:
         B.add("chassis", "frame", "box stand", "box", (bx, 0, (rail_top + bz) / 2), (L - 40, W - 40, bz - rail_top),
               lo.box_stand_mass_kg)
@@ -343,12 +348,24 @@ def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     controls = [oc[i] + lo.seat_and_controls_offset[i] for i in range(3)]
     # steering column: from the rack up and back to the wheel in front of the seat
     wheel = (oc[0] + lo.steering_wheel_reach, 0.0, lo.steering_wheel_height)
-    tr.links.append(Link("steering column", "seat", (xf - 110, 0, f.beam_clearance + 30), "chassis", wheel, "chassis", 32))
+    if hasattr(p, "kit"):
+        # Packaging hypothesis: longitudinal linkage below the battery, then
+        # a column behind its enclosure. Actual linkage/effort needs design.
+        elbow = (min(bx - L / 2 - 40, wheel[0]), 0.0, f.beam_clearance + 30)
+        tr.links.append(Link("steering drag link", "seat", (xf - 110, 0, f.beam_clearance + 30), "chassis", elbow, "chassis", 24))
+        tr.links.append(Link("steering column", "seat", elbow, "chassis", wheel, "chassis", 32))
+    else:
+        tr.links.append(Link("steering column", "seat", (xf - 110, 0, f.beam_clearance + 30), "chassis", wheel, "chassis", 32))
     B.add("chassis", "seat", "steering wheel", "cyl_z", wheel, (p.steering.steering_wheel_diameter, 25))
-    B.add("chassis", "implement", "rear hitch", "box", (xr - lo.rear_overhang - 30, 0, rail_z - 60), (60, 80, 40), lo.hitch_mass_kg)
+    B.add("chassis", "implement", "rear hitch", "box", (xr - lo.rear_overhang - 30, 0, rail_z - (110 if hasattr(p, "kit") else 60)), (60, 80, 40), lo.hitch_mass_kg)
     B.deck("chassis")                                           # mid-mount, between the axles
     B.mass("chassis", "seat & controls", lo.seat_and_controls_mass_kg, controls)
     B.mass("chassis", "operator", p.vehicle.mass_operator_kg, oc)
+    if hasattr(p, "kit"):
+        B.mass("chassis", "kit front body layer", p.kit.front_mass_kg,
+               (bx, 0, bz + H / 2))
+        B.mass("chassis", "kit rear body layer", p.kit.rear_mass_kg,
+               (sx, 0, (rail_top + seat_z) / 2))
     if p.vehicle.mass_payload_kg:
         B.mass("chassis", "payload", p.vehicle.mass_payload_kg, controls)
     return tr

@@ -101,7 +101,17 @@ def evaluate(model: str, genes: dict, course_configs: tuple = ("deck",)) -> dict
         if course["side_slope_wheel_n"] == float("inf"):
             course["side_slope_wheel_n"] = 0.0
         m.update(course)
-        return {"metrics": {k: round(float(x), 4) for k, x in m.items()}, "fails": notes, "warns": warn_notes,
-                "elapsed_s": round(time.time() - t0, 1)}
+        result = {"metrics": {k: round(float(x), 4) for k, x in m.items()}, "fails": notes, "warns": warn_notes,
+                  "elapsed_s": round(time.time() - t0, 1)}
+        if hasattr(p, "kit"):
+            result["study_notes"] = [
+                "Layout surrogate: layer masses/nests regenerate with frame length; fabricated joints, stiffness and full body collision surfaces are not validated.",
+                "Complete B0 electrical enclosure is retained as a conservative packaging/mass allowance, additional to steel body layers; it is larger than the concept hood.",
+                "Rear drive retains a generic 45 kg reduction/differential/brake envelope and ideal open-differential actuation; no donor assembly is selected.",
+                "Steering uses a below-battery linkage/column routing hypothesis with ideal knuckle actuators; actual linkage mechanics need design.",
+                "Cost is the legacy purchased-component budget proxy, excluding a quote for the new kit; do not use it as the new product price.",
+                "The 1.5 h mowing target, thermal warnings and reference peak-torque assumptions still require validation; this search does not approve operating ratings.",
+            ]
+        return result
     except Exception as e:                                   # a gene combination that can't be built
         return {"error": f"{type(e).__name__}: {e}", "elapsed_s": round(time.time() - t0, 1)}

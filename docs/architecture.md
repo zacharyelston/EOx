@@ -5,9 +5,21 @@
 EOX splits a garden tractor's work into standard **3 HP units** on one
 **48 V bus**. Each unit is a golf-cart motor plus its controller. Driving,
 mowing and hydraulics are all the same unit; a big job bundles several.
-Most of the hardware comes from the golf-cart parts ecosystem: rear ends,
-motors, controllers, 48 V LiFePO4 packs, chargers, contactors and 18x8.50-8
-wheels.
+Electrical power components and controllers may come from the golf-cart
+ecosystem. The current Home direction is a custom steel chassis, axle
+structures and steering supports ordered as cut/bent parts and bolted
+together by the owner. See the [steel chassis study](steel-chassis.md).
+
+The [product brief](product-brief.md) adds the complete-product constraint:
+one 56 × 34 in reference sheet per functional layer, with simple assembly,
+appealing finished form, reproducible ordering and competitive complete cost.
+Home places its battery bay at the front and electric drive at the rear;
+an optional hybrid carrier is a separate module. The [concept comparison](home-concepts.md)
+checks provisional layer nests in mild steel and 0.125 in 304 stainless.
+
+The H0/P0 donor-based layouts and numerical results below are retained as
+legacy reference models. They do not define the new kit's structure or
+driveline, and their performance figures do not transfer to it automatically.
 
 Numbers on this page are from `uv run eox calc --model pro` at model rev P0 /
 power box rev B0. Re-run it for current values.
@@ -110,7 +122,12 @@ The Home is a golf cart turned into a tractor. The geometry follows
   the only self-contained golf-cart front axle we found. The frame necks in to
   ±100 mm at the nose so the steered wheels can sweep. On the terrain course
   its leaf springs run out of roll travel on twisting ground, and a front wheel
-  lifts ([simulation.md](simulation.md)). A pivoting front axle would fix it.
+  lifts ([simulation.md](simulation.md)). The new kit will use a custom
+  cut/bent structure; conventional tractor centre-pivot geometry is a
+  mechanism reference, not a requirement to buy a donor axle. See the
+  [steel chassis study](steel-chassis.md) and
+  [front-axle research](research/home-front-axle.md), including the difference
+  between a fixed-carrier pivot and the current sprung-pivot simulation.
 - **Operator station:** the seat, floor, steering wheel and controls are
   placed from the operator's position, so a design trial can move them. With
   the box elsewhere, the seat stands on a bridge over the rear axle. The

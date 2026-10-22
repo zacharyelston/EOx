@@ -70,6 +70,8 @@ def load(model: str = "pro", overrides: dict | None = None) -> SimpleNamespace:
         if clash:
             raise ValueError(f"{path.name}: sections {sorted(clash)} already defined in another design file")
         merged.update(data)
+    # Optional front-axle translation: older/reference files retain leaf springs.
+    merged["steer_axle"].setdefault("vertical_suspension", True)
     for dotted, value in list(merged.pop("overrides", {}).items()) + list((overrides or {}).items()):
         *path, key = (int(k) if k.isdigit() else k for k in dotted.split("."))   # "layout.operator_cg.0" = list item
         node = merged

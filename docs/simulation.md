@@ -6,6 +6,9 @@ and scores every obstacle. The physics runs in MuJoCo's C engine. Python only
 builds the model, steers it at 50 Hz and reads the results. Each run takes
 about 5 s for 100 s of simulated driving.
 
+For SSH runs, parallel trials, and headless NVIDIA rendering on ML2, see
+[Remote simulations](remote-simulation.md).
+
 The hand calcs (`eox calc`) answer static questions: the tip angle, torque on a
 slope, grip on a slope. The course answers the ones the calcs can't:
 

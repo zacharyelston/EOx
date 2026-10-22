@@ -1,0 +1,117 @@
+# LEGACY donor-envelope search, stopped 2026-10-22. The new direction is a
+# fabricated steel kit: docs/steel-chassis.md and design/chassis-study.toml.
+# Home-first layout search. Keep the low pack, 42-inch deck, 15:1 drive,
+# operator mass, soil, tyres, efficiencies, and slope ratings unchanged.
+# Extra reduction is excluded until its geometry, mass and cost are modelled.
+# A pivoting front axle is a design hypothesis; its mounts still need design.
+#
+#   uv run eox evolve --trial home-layout --workers 16 --fresh
+
+[trial]
+name = "home-layout"
+model = "home"
+question = "Can Home reduce wheel lift and deck interference while keeping its battery low, its climb reserve, runtime and static stability?"
+course_configs = ["bare", "deck"]
+population = 64
+generations = 30
+elite = 4
+seed = 1
+
+[[trial.gene]]
+key = "layout.wheelbase"
+min = 1450
+max = 1700
+step = 25
+why = "balance turning and terrain clearance against space for the operator and deck; rail mass follows length"
+
+[[trial.gene]]
+key = "layout.powerbox_x"
+min = 380
+max = 700
+step = 10
+why = "move the pack fore-aft under the seat; its underside stays at the existing 230 mm"
+
+[[trial.gene]]
+key = "layout.operator_cg.0"
+min = 400
+max = 600
+step = 10
+why = "shift the operator station within a restrained range; its geometry follows the operator"
+
+[[trial.gene]]
+key = "deck.x_center"
+min = 650
+max = 950
+step = 10
+why = "place the mid-mount deck between the rear axle, operator floor and steering-wheel sweep"
+
+[[trial.gene]]
+key = "deck.pto_unit_y"
+choices = [430, -430, 480, -480]
+why = "choose the PTO side and clearance around the rail and operator floor"
+
+[[trial.gene]]
+key = "steer_axle.oscillates"
+choices = [false, true]
+why = "compare the current leaf-sprung front axle with a centre pivot at the existing 10-degree roll stop"
+
+[[trial.objective]]
+metric = "course_warns"
+goal = "min"
+weight = 5
+scale = 1
+
+[[trial.objective]]
+metric = "wheel_lift_s"
+goal = "min"
+weight = 4
+scale = 1
+
+[[trial.objective]]
+metric = "deck_float_mm"
+goal = "min"
+weight = 1
+scale = 25
+
+[[trial.objective]]
+metric = "grip_limit_deg"
+goal = "max"
+weight = 2
+scale = 1
+
+[[trial.objective]]
+metric = "working_slope_deg"
+goal = "max"
+weight = 1
+scale = 1
+
+[[trial.objective]]
+metric = "mass_kg"
+goal = "min"
+weight = 1
+scale = 10
+
+[[trial.constraint]]
+metric = "calc_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "course_fails"
+max = 0
+
+[[trial.constraint]]
+metric = "grip_limit_deg"
+min = 14
+
+# A search-screening floor, not a validated operating-slope rating.
+[[trial.constraint]]
+metric = "working_slope_deg"
+min = 17
+
+[[trial.constraint]]
+metric = "mowing_runtime_h"
+min = 1.4
+
+[[trial.constraint]]
+metric = "mass_kg"
+max = 310

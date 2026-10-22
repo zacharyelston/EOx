@@ -20,4 +20,9 @@ def run(p, tr) -> Report:
     drive.run(p, tr, r)
     vehicle.run(p, tr, r)
     powerbox.run(p, tr.box, r)
+    if hasattr(p, "kit"):
+        from eox.checks import Check
+        r.add(Check("Kit study", "all layer blank envelopes fit their reference sheets",
+                    p.kit.nest_fails, "layers without fit", 0, "<=",
+                    note="provisional inventory; not joint/tooling/structural approval"))
     return r

@@ -60,6 +60,8 @@ def markdown(trial: Trial, individuals: list[dict], reference: dict) -> str:
          f"{secs / 60:.0f} CPU-minutes. Each design runs the full `eox calc` checks and the terrain course "
          f"({', '.join(trial.course_configs)}).", ""]
 
+    if reference.get("study_notes"):
+        L += ["## Model scope", ""] + ["- " + n for n in reference["study_notes"]] + [""]
     L += ["## Answer: the best design against today's", "",
           "| Metric | Today | Best | |", "|---|---|---|---|"]
     if "error" in top:

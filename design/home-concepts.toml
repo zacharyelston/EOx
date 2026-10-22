@@ -1,0 +1,64 @@
+# Packaging / material-budget study, not fabrication or validated vehicle data.
+[sheet]
+size_in = [56, 34]              # user's first-choice reference sheet
+edge_mm = 6
+gap_mm = 4                     # design reserve, not supplier acceptance
+trials = 250
+
+[[materials]]
+id = "mild"
+material = "mild_steel"
+thickness_in = 0.119           # existing supplier-listed baseline gauge
+
+[[materials]]
+id = "304"
+material = "ss_304"
+thickness_in = 0.125           # user's premium option
+
+[packaging]
+battery_mm = [520, 270, 220]    # retains existing 100 Ah / 45 kg reference pack
+battery_mass_kg = 45
+terminal_clearance_mm = 35
+battery_front_axle_offset_mm = -100 # centre behind front axle, above axle cradle
+generator_mm = [700, 530, 570]  # union of conflicting official dimensions, rounded up
+generator_dry_mass_kg = 40      # larger manual value, rounded up; excludes fuel/mounts
+generator_position = "rear removable carrier"
+
+[[concepts]]
+id = "A"
+name = "Compact open channels"
+wheelbase_mm = 1250
+frame_length_mm = 1550
+rail_depth_mm = 100
+rail_flange_mm = 25
+foot_length_mm = 300
+foot_width_mm = 110
+seat_length_mm = 300
+seat_width_mm = 220
+hybrid = false
+
+[[concepts]]
+id = "B"
+name = "Roomier modular chassis"
+wheelbase_mm = 1450
+frame_length_mm = 1750
+rail_depth_mm = 120
+rail_flange_mm = 25
+foot_length_mm = 360
+foot_width_mm = 140
+seat_length_mm = 360
+seat_width_mm = 260
+hybrid = false
+
+[[concepts]]
+id = "C"
+name = "Roomier + hybrid carrier"
+wheelbase_mm = 1450
+frame_length_mm = 1750
+rail_depth_mm = 120
+rail_flange_mm = 25
+foot_length_mm = 360
+foot_width_mm = 140
+seat_length_mm = 360
+seat_width_mm = 260
+hybrid = true
