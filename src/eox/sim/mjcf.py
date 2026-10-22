@@ -138,8 +138,12 @@ def _look(pos, target=(0, 0, 0.5)) -> str:
 # the model
 # ---------------------------------------------------------------------------
 def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
+    from eox.sim import detail
     c = p.course
-    sim = c.sim
+    sim = detail(c)
+
+    def touches(b: Body) -> bool:            # can this part reach the ground (at this level of detail)?
+        return not sim.collide_height or b.bounds()[4] <= sim.collide_height
     mu, crr = p.vehicle.traction_coefficient, p.vehicle.rolling_resistance
     rear = tr.axle("rear")
     start = (c.start_x - rear.x * MM, 0.0, 0.0)
@@ -175,14 +179,14 @@ def build(p, tr: Tractor, course, fitted: tuple = ()) -> Spec:
         seen[name] = seen.get(name, 0) + 1
         if seen[name] > 1:
             name += f" {seen[name]}"
-        geoms[mjb].append(_geom(name, b, origins[mjb], kind, collide=kind not in VISUAL_ONLY))
+        geoms[mjb].append(_geom(name, b, origins[mjb], kind, collide=kind not in VISUAL_ONLY and touches(b)))
     box_dims = {}
     if tr.box is not None:                                # EOX models; reference tractors have none
         L, W, H = tr.box.outer
         bx, _, bz = tr.box_pos
         box = Body("power box", "box", (bx, 0, bz + H / 2), (L, W, H))
         gb = body_of_group[tr.box_group]
-        geoms[gb].append(_geom(f"{tr.box_group}:power box", box, origins[gb], "powerbox"))
+        geoms[gb].append(_geom(f"{tr.box_group}:power box", box, origins[gb], "powerbox", collide=touches(box)))
         box_dims = {f"box {b.name}": _dims(b) for b in tr.box.bodies}
 
     wheel_mass = {}

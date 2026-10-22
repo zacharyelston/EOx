@@ -252,7 +252,8 @@ def run(p, tr, fitted: tuple = (), config: str | None = None, keep_trajectory: b
     import mujoco
 
     c = p.course
-    sim, sc = c.sim, c.scoring
+    from eox.sim import detail
+    sim, sc = detail(c), c.scoring
     lim = Limits(sc.wheel_lift_s, sc.peak_torque_s, sc.deck_float)
     course = terrain.build(c)
     spec = mjcf.build(p, tr, course, fitted)
