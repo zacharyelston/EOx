@@ -18,6 +18,15 @@ sheet with straight bends, which gives EOX its low-poly look.
 the same battery & distribution box, the same golf-cart drive-axle module and
 the same 3 HP unit.*
 
+| EOX Home on the terrain course | EOX Pro on the terrain course |
+|---|---|
+| ![EOX Home with its mid-mount deck driving the simulated terrain course: bump, kerb, ditch, twist, 12 and 15 degree climbs, 17 degree side slope](docs/img/home-course.webp) | ![EOX Pro with its front deck driving the simulated terrain course, articulating over the twist and holding the side slope](docs/img/pro-course.webp) |
+
+*MuJoCo simulation, deck fitted, at 6× speed. The machines and their masses
+are the same objects the calcs use. Videos at 3× speed:
+[Home](docs/video/home-course.mp4), [Pro](docs/video/pro-course.mp4). Results
+are under [Terrain course](#terrain-course).*
+
 ---
 
 ## The idea: 3 HP units on a 48 V bus
@@ -308,12 +317,19 @@ climbs, and a 17° side slope.
 
 ![EOX Home with the deck fitted on the twist, the 12 degree climb and the 17 degree side slope](docs/img/home-course.png)
 
+*EOX Home, deck fitted: the twist, its rated 12° climb and the 17° side slope.
+[Watch the run](docs/video/home-course.mp4) (MP4, 36 s at 3× speed).*
+
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/img/pro-course-dark.svg">
   <img alt="EOX Pro on the test course: elevation profile, and per-obstacle results bare and with the deck fitted" src="docs/img/pro-course-light.svg" width="100%">
 </picture>
 
 ![EOX Pro with the deck fitted on the twist, the 15 degree climb and the 17 degree side slope](docs/img/pro-course.png)
+
+*EOX Pro, deck fitted: the twist on its trunnion, its rated 15° climb and the
+17° side slope. [Watch the run](docs/video/pro-course.mp4) (MP4, 33 s at 3×
+speed).*
 
 What the course found that the static checks can't:
 
@@ -516,6 +532,7 @@ uv run eox tyres --model home
 - `course` drives the terrain course in MuJoCo and writes
   `out/<model>-course.md` and the course figures. `--view` opens MuJoCo's
   live viewer, `--render` writes the frames, and `--video` records the run.
+  `--media` writes the README's animation and video.
 - `evolve` runs a design trial and writes `trials/<name>/`. Cached designs
   replay instantly; `--generations N` extends a run and `--fresh` starts over.
 - The Blender command renders one view; `tools/render_preview.py` lists the
@@ -578,5 +595,22 @@ This is open hardware for builders, not a certified product. Read
 
 ## License
 
-MIT; see [LICENSE](LICENSE). A hardware-specific licence for the design files
-is open: see [issue 13](https://github.com/zacharyelston/EOx/issues/13).
+EOX is open hardware, licensed in three parts ([LICENSE](LICENSE)):
+
+| What | Licence | Where |
+|---|---|---|
+| Hardware design files | [CERN-OHL-W-2.0](LICENSES/CERN-OHL-W-2.0.txt): share changes to EOX's own files; your own add-on parts can stay yours | `design/`, `bom/`, and the CAD and cut files made from them |
+| Software | [MIT](LICENSES/MIT.txt) | `src/`, `tests/`, `tools/` |
+| Documentation and images | [CC-BY-SA-4.0](LICENSES/CC-BY-SA-4.0.txt) | `README.md`, `docs/`, `trials/` |
+
+- **If you build or sell a machine from these files**, follow [NOTICE](NOTICE).
+  Keep the notices, show the source location
+  (https://github.com/zacharyelston/EOx) on the machine or in its manual, and
+  publish changes you make to EOX's design files.
+- **Third-party assets** keep their own licences. See
+  [assets/README.md](assets/README.md) for which ones we accept, and
+  [CREDITS.md](CREDITS.md).
+- **Checking:** `REUSE.toml` maps every file to its licence, and
+  `uvx --from 'reuse[charset-normalizer]' reuse lint` checks it.
+- **Earlier versions,** up to commit `632ed92`, were MIT, and copies taken
+  under MIT stay MIT.
