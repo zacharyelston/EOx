@@ -22,8 +22,6 @@ modes = ["mowing", "slope_mowing", "transport"]   # no 3-unit hydraulics on Home
 [vehicle]
 mass_operator_kg = 100
 mass_payload_kg = 0
-rolling_resistance = 0.10
-traction_coefficient = 0.5     # turf
 top_speed_kmh = 8.0
 design_slope_deg = 10
 max_slope_deg = 12             # short climbs with the deck fitted: rear-tyre grip on turf runs out near 14 deg

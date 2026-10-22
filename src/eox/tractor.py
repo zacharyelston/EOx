@@ -42,6 +42,8 @@ class Axle:
     group: str
     driven: bool
     clearance: float     # ground to the axle's lowest point
+    rim: float = 203.0   # mm, rim diameter
+    pressure_kpa: float = 83.0
 
 
 @dataclass
@@ -67,6 +69,7 @@ class Tractor:
     bodies: list[tuple[str, str, Body]] = field(default_factory=list)   # (group, kind, body)
     masses: list[Mass] = field(default_factory=list)
     links: list[Link] = field(default_factory=list)
+    tyres: dict = field(default_factory=dict)         # per axle, from eox.tyres.apply
 
     # ---- geometry ----------------------------------------------------------
     def axle(self, name: str) -> Axle:
@@ -198,7 +201,8 @@ class _Builder:
         cl, cw, ct = u.controller_size
         cx = x + outward * (dl / 2 + 20 + cw / 2)
         self.add(group, "controller", "drive unit controller", "box", (cx, 0, rail_z), (cw, cl, ct), u.controller_mass_kg)
-        self.tr.axles.append(Axle(name, x, a.track, a.tire_diameter, a.tire_width, group, True, a.diff_clearance))
+        self.tr.axles.append(Axle(name, x, a.track, a.tire_diameter, a.tire_width, group, True, a.diff_clearance,
+                                  a.tire_rim, a.tire_pressure_kpa))
         return cx
 
     def rails(self, group, x0, x1, rail_z, half_width, kg, name="rail"):
@@ -310,7 +314,8 @@ def build_home(p, box: powerbox.Layout | None = None) -> Tractor:
     B.add("chassis", "axle", "front beam axle", "box", (xf, 0, f.beam_clearance + beam_h / 2),
           (70, f.track - f.tire_width, beam_h), f.mass_kg)
     B.add("chassis", "steering", "steering rack", "cyl_y", (xf - 110, 0, f.beam_clearance + 30), (45, 520))
-    tr.axles.append(Axle("front", xf, f.track, f.tire_diameter, f.tire_width, "chassis", False, f.beam_clearance))
+    tr.axles.append(Axle("front", xf, f.track, f.tire_diameter, f.tire_width, "chassis", False, f.beam_clearance,
+                         f.tire_rim, f.tire_pressure_kpa))
 
     # power box: H0 slings it low between the rails under the seat, golf-cart style. Anywhere
     # above the rails it sits on a stand (e.g. over the front axle, where an engine would go).
@@ -353,8 +358,14 @@ BUILDERS = {"articulated": build_pro, "steer_axle": build_home}
 
 
 def build(p, box: powerbox.Layout | None = None) -> Tractor:
+    """The machine, with its tyres' grip and rolling resistance worked out for
+    its loads (eox.tyres.apply sets p.vehicle.traction_coefficient and
+    rolling_resistance from each axle's tyre size, pressure and the ground)."""
     try:
         builder = BUILDERS[p.model.layout]
     except KeyError:
         raise NotImplementedError(f"layout '{p.model.layout}' has no builder yet") from None
-    return builder(p, box)
+    from eox import tyres
+    tr = builder(p, box)
+    tyres.apply(p, tr)
+    return tr

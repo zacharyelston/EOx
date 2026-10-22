@@ -33,8 +33,10 @@ def load(name: str):
     path = REFERENCE / f"{name}.toml"
     if not path.exists():
         raise FileNotFoundError(f"design/reference/{name}.toml (references: {', '.join(NAMES)})")
-    with open(DESIGN / "course.toml", "rb") as f:
-        merged = tomllib.load(f)
+    merged = {}
+    for shared in ("course", "ground"):
+        with open(DESIGN / f"{shared}.toml", "rb") as f:
+            merged.update(tomllib.load(f))
     with open(path, "rb") as f:
         merged.update(tomllib.load(f))
     return _ns(merged)
@@ -76,10 +78,12 @@ def build_lawn_tractor(p) -> Tractor:
         B.add("chassis", "wheel", f"wheel {nm}", "cyl_y", (0, side * s.rear_track / 2, rr), (rd, rw), e.rear_wheel_kg)
         B.add("chassis", "wheel", f"front wheel {nm}", "cyl_y", (L, side * f.track / 2, fr), (fd, fw), e.front_wheel_kg)
     B.add("chassis", "axle", "rear end", "box", (0, 0, rr), (220, 260, 2 * (rr - e.transaxle_clearance)))
-    tr.axles.append(Axle("rear", 0.0, s.rear_track, rd, rw, "chassis", True, e.transaxle_clearance))
+    tr.axles.append(Axle("rear", 0.0, s.rear_track, rd, rw, "chassis", True, e.transaxle_clearance,
+                         s.rear_tire_rim, s.rear_tire_pressure_kpa))
     B.add("chassis", "axle", "front beam axle", "box", (L, 0, fr), (60, f.track - fw, 2 * (fr - f.beam_clearance)),
           e.front_axle_kg)
-    tr.axles.append(Axle("front", L, f.track, fd, fw, "chassis", False, f.beam_clearance))
+    tr.axles.append(Axle("front", L, f.track, fd, fw, "chassis", False, f.beam_clearance,
+                         s.front_tire_rim, s.front_tire_pressure_kpa))
     # body envelopes: frame, hood over the engine, rear body / fenders under the seat
     rail_z = clr + 40
     for side in (1, -1):              # low between the axles; the nose and tail sit higher, as real frames do
@@ -131,7 +135,8 @@ def build_articulated_rider(p) -> Tractor:
             B.add(group, "wheel", f"wheel {nm}", "cyl_y", (x, side * track / 2, d / 2), (d, w),
                   e.rear_wheel_kg if group == "rear" else e.front_wheel_kg)
         B.add(group, "axle", "rear end", "box", (x, 0, d / 2), (200, 240, 2 * (d / 2 - e.axle_clearance)))
-        tr.axles.append(Axle(group, x, track, d, w, group, driven, e.axle_clearance))
+        tr.axles.append(Axle(group, x, track, d, w, group, driven, e.axle_clearance,
+                             getattr(s, f"{group}_tire_rim"), getattr(s, f"{group}_tire_pressure_kpa")))
         sgn = 1 if group == "front" else -1
         end_z = (e.nose_clearance if group == "front" else e.tail_clearance) + 40
         for side in (1, -1):
@@ -173,7 +178,9 @@ def build(p) -> Tractor:
     from eox.calcs.common import tractive_force
     from eox.tractor import DECK
 
+    from eox import tyres
     tr = BUILDERS[p.model.layout](p)
+    tyres.apply(p, tr)
     d = p.drive
     driven = [ax for ax in tr.axles if ax.driven]
     r = driven[0].tire_diameter / 2000

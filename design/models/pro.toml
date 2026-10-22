@@ -16,8 +16,6 @@ revision = "P0"
 [vehicle]
 mass_operator_kg = 100
 mass_payload_kg = 0
-rolling_resistance = 0.10      # ~0.06 firm lawn, 0.10 typical turf, 0.15+ soft/wet
-traction_coefficient = 0.5     # turf, for the traction-limit check
 top_speed_kmh = 8.0            # controller speed limit
 design_slope_deg = 10          # sustained climb the drive must handle (mowing on a slope)
 max_slope_deg = 15             # short climbs on peak torque

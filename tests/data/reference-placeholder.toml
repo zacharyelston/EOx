@@ -7,8 +7,6 @@ kind = "gas lawn tractor"
 [vehicle]
 mass_operator_kg = 100
 mass_payload_kg = 0
-rolling_resistance = 0.10
-traction_coefficient = 0.5
 max_slope_deg = 15
 design_slope_deg = 10
 
@@ -19,6 +17,10 @@ front_track = 750
 rear_track = 800
 front_tire = [381, 152]
 rear_tire = [508, 254]
+front_tire_rim = 152
+rear_tire_rim = 203
+front_tire_pressure_kpa = 97
+rear_tire_pressure_kpa = 69
 deck_width = 1070
 ground_clearance = 100
 price_usd = 3000
