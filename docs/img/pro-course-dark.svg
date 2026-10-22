@@ -39,7 +39,7 @@
 <circle cx="153.0" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="153.0" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="165.0" y="270.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
-<text x="146.0" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">pitch 3 deg</text>
+<text x="146.0" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">pitch 4 deg</text>
 <circle cx="270.1" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="270.1" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="282.1" y="270.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
@@ -55,29 +55,29 @@
 <circle cx="621.6" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="621.6" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="633.6" y="270.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
-<text x="614.6" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">motor 2.5x rated</text>
+<text x="614.6" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">motor 2.3x rated</text>
 <circle cx="738.7" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="738.7" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="750.7" y="270.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
-<text x="731.7" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">motor 3.3x rated</text>
+<text x="731.7" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">motor 2.8x rated</text>
 <circle cx="855.9" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="855.9" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="867.9" y="270.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
-<text x="848.9" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">lightest wheel 537 N</text>
+<text x="848.9" y="286.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">lightest wheel 556 N</text>
 <text x="40.0" y="329.7" font-size="12" font-weight="600" fill="#f0efec" text-anchor="start">deck fitted</text>
 <line x1="40.0" y1="306.7" x2="956.0" y2="306.7" stroke="#2c2c2a" stroke-width="1" stroke-linecap="butt"/>
 <circle cx="153.0" cy="324.7" r="7" fill="#0ca30c"/>
 <text x="153.0" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="165.0" y="328.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
-<text x="146.0" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">pitch 3 deg</text>
+<text x="146.0" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">pitch 4 deg</text>
 <circle cx="270.1" cy="324.7" r="7" fill="#0ca30c"/>
 <text x="270.1" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="282.1" y="328.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
-<text x="263.1" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">pitch 4 deg</text>
+<text x="263.1" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">pitch 5 deg</text>
 <circle cx="387.3" cy="324.7" r="7" fill="#fab219"/>
 <text x="387.3" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
 <text x="399.3" y="328.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">WARN</text>
-<text x="380.3" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">deck needs 307 mm of</text>
+<text x="380.3" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">deck needs 311 mm of</text>
 <text x="380.3" y="356.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">float (has 75)</text>
 <circle cx="504.4" cy="324.7" r="7" fill="#fab219"/>
 <text x="504.4" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
@@ -87,15 +87,15 @@
 <circle cx="621.6" cy="324.7" r="7" fill="#fab219"/>
 <text x="621.6" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
 <text x="633.6" y="328.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">WARN</text>
-<text x="614.6" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">deck needs 129 mm of</text>
+<text x="614.6" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">deck needs 127 mm of</text>
 <text x="614.6" y="356.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">float (has 75)</text>
 <circle cx="738.7" cy="324.7" r="7" fill="#fab219"/>
 <text x="738.7" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
 <text x="750.7" y="328.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">WARN</text>
-<text x="731.7" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">deck needs 161 mm of</text>
+<text x="731.7" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">deck needs 159 mm of</text>
 <text x="731.7" y="356.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">float (has 75)</text>
 <circle cx="855.9" cy="324.7" r="7" fill="#0ca30c"/>
 <text x="855.9" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="867.9" y="328.7" font-size="11" font-weight="600" fill="#f0efec" text-anchor="start">PASS</text>
-<text x="848.9" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">lightest wheel 594 N</text>
+<text x="848.9" y="344.7" font-size="10" font-weight="400" fill="#c3c2b7" text-anchor="start">lightest wheel 636 N</text>
 </svg>

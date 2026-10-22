@@ -1,11 +1,11 @@
 # Trial home-front-battery: the best design's changed values, as [overrides] for
 # design/models/home.toml. Review before adopting: a trial is evidence, not a decision.
-# Score -26.55 (today -27.09; lower is better).
+# Score -26.33 (today -28.61; lower is better).
 
 [overrides]
-"layout.powerbox_x" = 1370     # today: 510
-"layout.powerbox_z" = 640      # today: 230
-"layout.front_overhang" = 290  # today: 250
+"layout.powerbox_x" = 1400     # today: 510
+"layout.powerbox_z" = 650      # today: 230
+"layout.front_overhang" = 390  # today: 250
 "layout.operator_cg.0" = 150   # today: 520
 "deck.x_center" = 560          # today: 800
 "deck.pto_unit_y" = 480        # today: 430

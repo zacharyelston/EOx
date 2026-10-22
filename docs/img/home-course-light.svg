@@ -52,20 +52,20 @@
 <text x="504.4" y="270.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
 <text x="516.4" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
 <text x="497.4" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">front L wheel lifts</text>
-<text x="497.4" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">1.2 s</text>
+<text x="497.4" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">0.9 s</text>
 <circle cx="621.6" cy="266.7" r="7" fill="#0ca30c"/>
 <text x="621.6" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="633.6" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
-<text x="614.6" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 3.1x rated</text>
+<text x="614.6" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 3.0x rated</text>
 <circle cx="738.7" cy="266.7" r="7" fill="#898781"/>
 <text x="738.7" y="270.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">i</text>
 <text x="750.7" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">INFO</text>
-<text x="731.7" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 4.0x rated</text>
+<text x="731.7" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 3.3x rated</text>
 <circle cx="855.9" cy="266.7" r="7" fill="#fab219"/>
 <text x="855.9" y="270.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
 <text x="867.9" y="270.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
 <text x="848.9" y="286.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">front L wheel lifts</text>
-<text x="848.9" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">2.8 s</text>
+<text x="848.9" y="298.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">2.4 s</text>
 <text x="40.0" y="329.7" font-size="12" font-weight="600" fill="#0b0b0b" text-anchor="start">deck fitted</text>
 <line x1="40.0" y1="306.7" x2="956.0" y2="306.7" stroke="#e1e0d9" stroke-width="1" stroke-linecap="butt"/>
 <circle cx="153.0" cy="324.7" r="7" fill="#0ca30c"/>
@@ -84,19 +84,19 @@
 <text x="504.4" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
 <text x="516.4" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
 <text x="497.4" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">front L wheel lifts</text>
-<text x="497.4" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">1.3 s</text>
+<text x="497.4" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">0.9 s</text>
 <circle cx="621.6" cy="324.7" r="7" fill="#0ca30c"/>
 <text x="621.6" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">✓</text>
 <text x="633.6" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">PASS</text>
-<text x="614.6" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 3.9x rated</text>
+<text x="614.6" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor 3.5x rated</text>
 <circle cx="738.7" cy="324.7" r="7" fill="#898781"/>
 <text x="738.7" y="328.7" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">i</text>
 <text x="750.7" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">INFO</text>
 <text x="731.7" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">motor at peak torque</text>
-<text x="731.7" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">9.9 s</text>
+<text x="731.7" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">4.1 s</text>
 <circle cx="855.9" cy="324.7" r="7" fill="#fab219"/>
 <text x="855.9" y="328.7" font-size="10" font-weight="700" fill="#0b0b0b" text-anchor="middle">!</text>
 <text x="867.9" y="328.7" font-size="11" font-weight="600" fill="#0b0b0b" text-anchor="start">WARN</text>
 <text x="848.9" y="344.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">front L wheel lifts</text>
-<text x="848.9" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">2.2 s</text>
+<text x="848.9" y="356.7" font-size="10" font-weight="400" fill="#52514e" text-anchor="start">1.5 s</text>
 </svg>
